@@ -160,6 +160,7 @@ export type GeneralTerms =
   | "no"
   | "no.event"
   | "no.have.bumpkin"
+  | "not.required"
   | "ocean.fishing"
   | "off"
   | "offer.end"
@@ -712,6 +713,24 @@ export type BumpkinItemBuff =
   | "bumpkinItemBuff.hornet.mask"
   | "bumpkinItemBuff.honeycomb.shield"
   | "bumpkinItemBuff.flower.crown";
+
+export type BumpkinPart =
+  | "equip.background"
+  | "equip.hair"
+  | "equip.body"
+  | "equip.shirt"
+  | "equip.pants"
+  | "equip.shoes"
+  | "equip.tool"
+  | "equip.necklace"
+  | "equip.coat"
+  | "equip.hat"
+  | "equip.secondaryTool"
+  | "equip.onesie"
+  | "equip.suit"
+  | "equip.wings"
+  | "equip.dress"
+  | "equip.beard";
 
 export type BumpkinPartRequirements =
   | "equip.missingHair"
@@ -3235,6 +3254,7 @@ export type TranslationKeys =
   | BuildingDescriptions
   | BumpkinDelivery
   | BumpkinItemBuff
+  | BumpkinPart
   | BumpkinPartRequirements
   | BumpkinSkillsDescription
   | BumpkinTrade
