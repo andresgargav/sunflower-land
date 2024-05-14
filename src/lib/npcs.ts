@@ -1,6 +1,7 @@
 import { Equipped } from "features/game/types/bumpkin";
 
 export type NPCName =
+  | "gaucho"
   | "hopper"
   | "flopsy"
   | "betty"
@@ -74,9 +75,18 @@ export type NPCName =
   | "robert" // faction spruiker;
   | "maximus"; // faction spruiker;
 
-// Ol Salty
-
 export const NPC_WEARABLES: Record<NPCName, Equipped> = {
+  gaucho: {
+    body: "Beige Farmer Potion",
+    hair: "Wise Hair",
+    beard: "Wise Beard",
+    pants: "Farmer Overalls",
+    shirt: "Red Farmer Shirt",
+    tool: "Auction Megaphone",
+    background: "Farm Background",
+    shoes: "Brown Boots",
+    hat: "Boater Hat",
+  },
   flopsy: {
     body: "Dark Brown Farmer Potion",
     hair: "Wise Hair",
@@ -420,9 +430,10 @@ export const NPC_WEARABLES: Record<NPCName, Equipped> = {
     body: "Beige Farmer Potion",
     background: "Farm Background",
     hair: "Brown Long Hair",
+    coat: "Royal Robe",
     dress: "Rose Dress",
-    hat: "Flower Crown",
-    tool: "Beehive Staff",
+    hat: "Crown",
+    tool: "Pan",
     shoes: "Black Farmer Boots",
     wings: "Bee Wings",
   },

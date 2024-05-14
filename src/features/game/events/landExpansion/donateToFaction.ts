@@ -53,17 +53,24 @@ export function donateToFaction({
 
     const playerBalance = game.inventory[request.resource] ?? new Decimal(0);
 
-    if (playerBalance.lt(request.amount)) {
+    if (playerBalance.lt(action.donation.resources)) {
       throw new Error("You do not have enough resources to donate");
     }
 
-    game.inventory[request.resource] = playerBalance.minus(request.amount);
-    game.faction.points = game.faction.points + POINTS_PER_TYPE["resources"];
+    const requestedAmount = new Decimal(request.amount);
+    const totalPointsReward =
+      (action.donation.resources / requestedAmount.toNumber()) *
+      POINTS_PER_TYPE["resources"];
+
+    game.inventory[request.resource] = playerBalance.minus(
+      action.donation.resources
+    );
+    game.faction.points = game.faction.points + totalPointsReward;
 
     // Update total items donated
     game.faction.donated.totalItems[request.resource] =
       (game.faction.donated.totalItems[request.resource] ?? 0) +
-      request.amount.toNumber();
+      action.donation.resources;
 
     const donatedResourcesToday =
       game.faction.donated?.daily.resources.day === today;
@@ -72,11 +79,11 @@ export function donateToFaction({
       // Today's Donation record
       const alreadyDonated = game.faction.donated?.daily.resources.amount ?? 0;
       game.faction.donated.daily.resources.amount =
-        alreadyDonated + request.amount.toNumber();
+        alreadyDonated + action.donation.resources;
     } else {
       // New day, reset the daily donation record
       game.faction.donated.daily.resources.day = today;
-      game.faction.donated.daily.resources.amount = request.amount.toNumber();
+      game.faction.donated.daily.resources.amount = action.donation.resources;
     }
   }
 

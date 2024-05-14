@@ -37,7 +37,6 @@ import land from "assets/land/islands/island.webp";
 import { IslandNotFound } from "./components/IslandNotFound";
 import { Rules } from "../components/Rules";
 import { Introduction } from "./components/Introduction";
-import { SpecialOffer } from "./components/SpecialOffer";
 import { Purchasing } from "../components/Purchasing";
 import { Transacting } from "../components/Transacting";
 import { Minting } from "../components/Minting";
@@ -67,6 +66,8 @@ import { PersonhoodContent } from "features/retreat/components/personhood/Person
 import { hasFeatureAccess } from "lib/flags";
 import { SUNNYSIDE } from "assets/sunnyside";
 import { PriceChange } from "../components/PriceChange";
+import { VIPOffer } from "../components/modal/components/VIPItems";
+import { GreenhouseInside } from "features/greenhouse/GreenhouseInside";
 
 export const AUTO_SAVE_INTERVAL = 1000 * 30; // autosave every 30 seconds
 const SHOW_MODAL: Record<StateValues, boolean> = {
@@ -96,7 +97,7 @@ const SHOW_MODAL: Record<StateValues, boolean> = {
   buyingSFL: true,
   depositing: true,
   introduction: false,
-  specialOffer: false,
+  specialOffer: true,
   transacting: true,
   minting: true,
   auctionResults: false,
@@ -238,6 +239,7 @@ const GameContent = () => {
           {/* Legacy route */}
           <Route path="/farm" element={<Land />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/greenhouse" element={<GreenhouseInside />} />
           <Route path="/helios" element={<Helios key="helios" />} />
           <Route path="*" element={<IslandNotFound />} />
         </Routes>
@@ -462,7 +464,7 @@ export const GameWrapper: React.FC = ({ children }) => {
             {minting && <Minting />}
             {promo && <Promo />}
             {airdrop && <AirdropPopup />}
-            {specialOffer && <SpecialOffer />}
+            {specialOffer && <VIPOffer />}
             {withdrawing && <Withdrawing />}
             {withdrawn && <Withdrawn />}
           </Panel>
@@ -471,7 +473,6 @@ export const GameWrapper: React.FC = ({ children }) => {
         {claimingAuction && <ClaimAuction />}
         {refundAuction && <RefundAuction />}
 
-        <SpecialOffer />
         <Introduction />
         <NewMail />
 

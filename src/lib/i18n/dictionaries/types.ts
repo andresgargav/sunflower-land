@@ -4,6 +4,7 @@ export type GeneralTerms =
   | "accept"
   | "accepting.terms"
   | "advanced"
+  | "already.own.item"
   | "amount.matic"
   | "are.you.sure"
   | "deposit"
@@ -23,6 +24,7 @@ export type GeneralTerms =
   | "bait"
   | "balance"
   | "banner"
+  | "banners"
   | "basket"
   | "beach.bounty"
   | "beta"
@@ -33,7 +35,6 @@ export type GeneralTerms =
   | "cancel"
   | "card.cash"
   | "caught"
-  | "change.Language"
   | "check"
   | "chest"
   | "chores"
@@ -43,6 +44,7 @@ export type GeneralTerms =
   | "claim"
   | "clear"
   | "close"
+  | "coins"
   | "collect"
   | "coming.soon"
   | "common"
@@ -107,7 +109,7 @@ export type GeneralTerms =
   | "for"
   | "for.info.wearable"
   | "forbidden"
-  | "free.trade"
+  | "free"
   | "fruit"
   | "fruits"
   | "gift"
@@ -117,6 +119,7 @@ export type GeneralTerms =
   | "gotIt"
   | "goto"
   | "grant.wish"
+  | "greenhouse"
   | "guide"
   | "harvested"
   | "honey"
@@ -136,7 +139,6 @@ export type GeneralTerms =
   | "list"
   | "loading"
   | "locked"
-  | "logout"
   | "loser.refund"
   | "lvl"
   | "maintenance"
@@ -192,7 +194,10 @@ export type GeneralTerms =
   | "refresh"
   | "refreshing"
   | "remaining"
-  | "remaining.trades"
+  | "remaining.free.listings"
+  | "remaining.free.purchases"
+  | "remaining.free.listing"
+  | "remaining.free.purchase"
   | "remove"
   | "reqSkillPts"
   | "reqSkills"
@@ -310,7 +315,8 @@ export type GeneralTerms =
   | "boosts"
   | "decorations"
   | "goblin.deliveries"
-  | "vipAccess";
+  | "vipAccess"
+  | "vip";
 
 export type TimeUnits =
   // Singular
@@ -497,6 +503,7 @@ export type BoostDescriptions =
   | "description.emerald.turtle"
   | "description.iron.idol"
   | "description.crim.peckster"
+  | "description.knight.chicken"
   | "description.skill.shrimpy"
   | "description.soil.krabby"
   | "description.nana"
@@ -616,7 +623,9 @@ export type BoostEffectDescriptions =
   | "description.nugget.boost"
   | "description.rock.golem.boost"
   | "description.crimson.carp.boost"
+  | "description.battle.fish.boost"
   | "description.crim.peckster.boost"
+  | "description.knight.chicken.boost"
   | "description.queen.bee.boost"
   | "description.humming.bird.boost"
   | "description.beehive.boost"
@@ -627,12 +636,22 @@ export type BoostEffectDescriptions =
   | "description.genie.lamp.boost"
   | "description.observatory.boost"
   | "description.blossombeard.boost"
+  | "description.desertgnome.boost"
   | "description.christmas.festive.tree.boost"
   | "description.grinxs.hammer.boost"
   | "description.time.warp.totem.boost"
   | "description.radiant.ray.boost"
   | "description.beekeeper.hat.boost"
-  | "description.flower.fox.boost";
+  | "description.flower.fox.boost"
+  | "description.turbo.sprout.boost"
+  | "description.soybliss.boost"
+  | "description.grape.granny.boost"
+  | "description.non.la.hat.boost"
+  | "description.oil.can.boost"
+  | "description.paw.shield.boost"
+  | "description.olive.shield.boost"
+  | "description.pan.boost"
+  | "description.vinny.boost";
 
 export type BountyDescription =
   | "description.clam.shell"
@@ -656,6 +675,7 @@ export type BuildingDescriptions =
   | "description.compost.bin"
   | "description.hen.house"
   | "description.bakery"
+  | "description.greenhouse"
   | "description.turbo.composter"
   | "description.deli"
   | "description.smoothie.shack"
@@ -967,6 +987,12 @@ export type CropFruitDescriptions =
   | "description.radish"
   | "description.wheat"
   | "description.kale"
+  | "description.soybean"
+
+  // Greenhouse
+  | "description.rice"
+  | "description.olive"
+  | "description.grape"
 
   //Fruit
   | "description.blueberry"
@@ -1160,6 +1186,7 @@ export type DecorationDescriptions =
   | "description.shroom.glow"
   | "description.clementine"
   | "description.blossombeard"
+  | "description.desertgnome"
   | "description.cobalt"
   | "description.hoot"
   | "description.genie.bear"
@@ -1187,6 +1214,21 @@ export type DecorationDescriptions =
   | "description.parrotFish"
   | "description.Farmhand"
   | "description.Beehive"
+  | "description.battleCryDrum"
+  | "description.bullseyBoard"
+  | "description.chessRug"
+  | "description.cluckapult"
+  | "description.goldenGallant"
+  | "description.goldenGarrison"
+  | "description.goldenGurdian"
+  | "description.noviceKnight"
+  | "description.regularPawn"
+  | "description.rookieRook"
+  | "description.silverSentinel"
+  | "description.silverStallion"
+  | "description.silverSquire"
+  | "description.traineeTarget"
+  | "description.twisterRug"
 
   //Flowers
   | "description.red.pansy"
@@ -1214,6 +1256,7 @@ export type DecorationDescriptions =
   | "description.flower.fox"
   | "description.hungry.caterpillar"
   | "description.sunrise.bloom.rug"
+  | "description.gauchoRug"
   | "description.blossom.royale"
   | "description.rainbow"
   | "description.enchanted.rose"
@@ -1240,7 +1283,18 @@ export type DecorationDescriptions =
   | "description.sunflorian.faction.banner"
   | "description.nightshade.faction.banner"
   | "description.bumpkin.faction.banner"
-  | "description.goblin.faction.banner";
+  | "description.goblin.faction.banner"
+
+  // Clash of Factions
+  | "description.turbo.sprout"
+  | "description.soybliss"
+  | "description.grape.granny"
+  | "description.royal.throne"
+  | "description.lily.egg"
+  | "description.goblet"
+  | "description.fancy.rug"
+  | "description.clock"
+  | "description.vinny";
 
 export type Delivery =
   | "delivery.resource"
@@ -1289,7 +1343,14 @@ export type DraftBid =
   | "draftBid.unsuccessfulParticipants"
   | "draftBid.termsAndConditions";
 
-export type Donation = "donation.one";
+export type Donation =
+  | "donation.one"
+  | "donation.specialEvent"
+  | "donation.rioGrandeDoSul.one"
+  | "donation.rioGrandeDoSul.two"
+  | "donation.matic"
+  | "donation.minimum"
+  | "donation.airdrop";
 
 export type ErrorAndAccess =
   | "errorAndAccess.blocked.betaTestersOnly"
@@ -1393,7 +1454,9 @@ export type Factions =
   | "faction.donation.bulk.resources.unlimited.per.day"
   | "faction.donation.confirm"
   | "faction.seasonal.delivery.start.at"
-  | "faction.points";
+  | "faction.points.with.number"
+  | "faction.points.title"
+  | "faction.points.pledge.warning";
 
 export type FestiveTree =
   | "festivetree.greedyBumpkin"
@@ -1463,7 +1526,8 @@ export type FishDescriptions =
   | "description.radiant.ray"
   | "description.phantom.barracuda"
   | "description.gilded.swordfish"
-  | "description.crimson.carp";
+  | "description.crimson.carp"
+  | "description.battle.fish";
 
 export type FishermanModal =
   | "fishermanModal.attractFish"
@@ -1589,6 +1653,24 @@ export type FoodDescriptions =
   | "description.cabbers.mash"
   | "description.popcorn"
   | "description.gumbo"
+  | "description.rapidRoast"
+  | "description.carrotJuice"
+  | "description.fishBasket"
+  | "description.fishBurger"
+  | "description.fishnChips"
+  | "description.fishOmelette"
+  | "description.friedCalamari"
+  | "description.friedTofu"
+  | "description.grapeJuice"
+  | "description.oceansOlive"
+  | "description.quickJuice"
+  | "description.riceBun"
+  | "description.slowJuice"
+  | "description.steamedRedRice"
+  | "description.sushirRoll"
+  | "description.theLot"
+  | "description.tofuScramble"
+  | "description.antipasto"
 
   //Kitchen
   | "description.roast.veggies"
@@ -1604,6 +1686,7 @@ export type FoodDescriptions =
   | "description.bumpkin.ganoush"
   | "description.chowder"
   | "description.pancakes"
+  | "description.beetrootBlaze"
 
   //Bakery
   | "description.apple.pie"
@@ -1630,6 +1713,7 @@ export type FoodDescriptions =
   | "description.sauerkraut"
   | "description.fancy.fries"
   | "description.fermented.fish"
+  | "description.fermented.shroomSyrup"
 
   //Smoothie Shack
   | "description.apple.juice"
@@ -1897,9 +1981,12 @@ export type Islandupgrade =
   | "islandupgrade.locked"
   | "islandupgrade.exploring"
   | "islandupgrade.welcomePetalParadise"
+  | "islandupgrade.welcomeDesertIsland"
   | "islandupgrade.itemsReturned"
   | "islandupgrade.notReadyExpandMore"
-  | "islandupgrade.exoticResourcesDescription";
+  | "islandupgrade.exoticResourcesDescription"
+  | "islandupgrade.desertResourcesDescription"
+  | "islandupgrade.requiredIsland";
 
 export type InteractableModals =
   | "interactableModals.returnhome.message"
@@ -2605,17 +2692,8 @@ export type OrderHelp =
   | "orderhelp.New.Season.arrival"
   | "orderhelp.Wisely"
   | "orderhelp.SkipIn"
-  | "orderhelp.NoRight";
-
-export type PageFounds =
-  | "pageFounds.title"
-  | "pageFounds.gardeningBookPage"
-  | "pageFounds.lastPageFound"
-  | "pageFounds.knowHowToGrow"
-  | "pageFounds.checkCodex"
-  | "pageFounds.all"
-  | "pageFounds.pageContainsInfo"
-  | "pageFounds";
+  | "orderhelp.NoRight"
+  | "orderhelp.ticket.deliveries.closed";
 
 export type Pending = "pending.calcul" | "pending.comeback";
 
@@ -2646,15 +2724,6 @@ export type Pickserver =
   | "pickserver.full"
   | "pickserver.explore"
   | "pickserver.built";
-
-export type PlazaSettings =
-  | "plazaSettings.changeServer"
-  | "plazaSettings.title.main"
-  | "plazaSettings.title.mutedPlayers"
-  | "plazaSettings.title.keybinds"
-  | "plazaSettings.mutedPlayers.description"
-  | "plazaSettings.keybinds.description"
-  | "plazaSettings.noMutedPlayers";
 
 export type PlayerTrade =
   | "playerTrade.no.trade"
@@ -2793,18 +2862,12 @@ export type SeasonTerms =
   | "season.supporter.gift"
   | "season.free.season.passes"
   | "season.vip.access"
+  | "season.vip.description"
   | "season.mystery.gift"
   | "season.xp.boost"
   | "season.free.season.passes.description"
-  | "season.lifetime.farmer";
-
-export type SettingsMenu =
-  | "settingsMenu.timeMachine"
-  | "settingsMenu.storeOnChain"
-  | "settingsMenu.howToPlay"
-  | "settingsMenu.swapMaticForSFL"
-  | "settingsMenu.share"
-  | "settingsMenu.confirmLogout";
+  | "season.lifetime.farmer"
+  | "season.free.with.lifetime";
 
 export type Share =
   | "share.TweetText"
@@ -2961,13 +3024,6 @@ export type StopGoblin =
   | "stopGoblin.tap.two"
   | "stopGoblin.left";
 
-export type SubSettings =
-  | "subSettings.disableAnimations"
-  | "subSettings.enableAnimations"
-  | "subSettings.logout"
-  | "subSettings.transferOwnership"
-  | "subSettings.refreshDescription";
-
 export type Swarming = "swarming.tooLongToFarm" | "swarming.goblinsTakenOver";
 
 export type TieBreaker =
@@ -2987,7 +3043,8 @@ export type ToolDescriptions =
   | "description.shovel"
   | "description.sand.shovel"
   | "description.sand.drill"
-  | "description.gold.pickaxe";
+  | "description.gold.pickaxe"
+  | "description.oil.drill";
 
 export type TransactionTerms =
   | "transaction.storeBlockBucks"
@@ -3237,6 +3294,34 @@ export type Leaderboard =
   | "leaderboard.topTen"
   | "leaderboard.yourPosition";
 
+export type GameOptions =
+  | "gameOptions.title"
+  | "gameOptions.howToPlay"
+  | "gameOptions.amoyActions"
+  | "gameOptions.amoyActions.timeMachine"
+  | "gameOptions.blockchainSettings"
+  | "gameOptions.blockchainSettings.refreshChain"
+  | "gameOptions.blockchainSettings.storeOnChain"
+  | "gameOptions.blockchainSettings.swapMaticForSFL"
+  | "gameOptions.blockchainSettings.transferOwnership"
+  | "gameOptions.generalSettings"
+  | "gameOptions.generalSettings.connectDiscord"
+  | "gameOptions.generalSettings.assignRole"
+  | "gameOptions.generalSettings.changeLanguage"
+  | "gameOptions.generalSettings.disableAnimations"
+  | "gameOptions.generalSettings.enableAnimations"
+  | "gameOptions.generalSettings.share"
+  | "gameOptions.plazaSettings"
+  | "gameOptions.plazaSettings.changeServer"
+  | "gameOptions.plazaSettings.title.mutedPlayers"
+  | "gameOptions.plazaSettings.title.keybinds"
+  | "gameOptions.plazaSettings.mutedPlayers.description"
+  | "gameOptions.plazaSettings.keybinds.description"
+  | "gameOptions.plazaSettings.noMutedPlayers"
+  | "gameOptions.farmId"
+  | "gameOptions.logout"
+  | "gameOptions.confirmLogout";
+
 export type TranslationKeys =
   | AchievementsTerms
   | Auction
@@ -3297,6 +3382,7 @@ export type TranslationKeys =
   | FlowerShopTerms
   | FoodDescriptions
   | GameDescriptions
+  | GameOptions
   | GameTerms
   | GarbageCollector
   | GeneralTerms
@@ -3348,13 +3434,11 @@ export type TranslationKeys =
   | Onboarding
   | OnCollectReward
   | OrderHelp
-  | PageFounds
   | Pending
   | PersonHood
   | PirateChest
   | PirateQuest
   | Pickserver
-  | PlazaSettings
   | PlayerTrade
   | Portal
   | PurchaseableBaitTranslation
@@ -3376,7 +3460,6 @@ export type TranslationKeys =
   | PwaInstall
   | SceneDialogueKey
   | SeasonTerms
-  | SettingsMenu
   | Share
   | SharkBumpkinDialogues
   | Shelly
@@ -3388,7 +3471,6 @@ export type TranslationKeys =
   | SpecialEvent
   | Statements
   | StopGoblin
-  | SubSettings
   | Swarming
   | TieBreaker
   | TimeUnits

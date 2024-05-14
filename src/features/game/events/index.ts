@@ -112,7 +112,6 @@ import {
 import { sellTreasure, SellTreasureAction } from "./landExpansion/treasureSold";
 import { restock, RestockAction } from "./landExpansion/restock";
 import { sellGarbage, SellGarbageAction } from "./landExpansion/garbageSold";
-import { startChore, StartChoreAction } from "./landExpansion/startChore";
 import {
   completeChore,
   CompleteChoreAction,
@@ -246,10 +245,6 @@ import {
 import { moveSunstone, MoveSunstoneAction } from "./landExpansion/moveSunstone";
 import { mineSunstone, MineSunstoneAction } from "./landExpansion/mineSunstone";
 import {
-  discoverFlowerPage,
-  FlowerPageDiscoveredAction,
-} from "./landExpansion/discoverFlowerPage";
-import {
   FlowerShopTradedAction,
   tradeFlowerShop,
 } from "./landExpansion/tradeFlowerShop";
@@ -284,6 +279,10 @@ import {
   donateToFaction,
   DonateToFactionAction,
 } from "./landExpansion/donateToFaction";
+import {
+  drillOilReserve,
+  DrillOilReserveAction,
+} from "./landExpansion/drillOilReserve";
 
 export type PlayingEvent =
   | LandExpansionPlantAction
@@ -319,7 +318,6 @@ export type PlayingEvent =
   | RestockAction
   | SellGarbageAction
   // Chores
-  | StartChoreAction
   | CompleteChoreAction
   | SkipChoreAction
   | ExpandLandAction
@@ -358,7 +356,6 @@ export type PlayingEvent =
   | HarvestFlowerAction
   | UpgradeFarmAction
   | PurchaseBannerAction
-  | FlowerPageDiscoveredAction
   | FlowerShopTradedAction
   | BuyMegaStoreItemAction
   | CompleteSpecialEventTaskAction
@@ -367,7 +364,8 @@ export type PlayingEvent =
   | EnterRaffleAction
   | ExchangeSFLtoCoinsAction
   | PledgeFactionAction
-  | DonateToFactionAction;
+  | DonateToFactionAction
+  | DrillOilReserveAction;
 
 export type PlacementEvent =
   | ConstructBuildingAction
@@ -468,7 +466,6 @@ export const PLAYING_EVENTS: Handlers<PlayingEvent> = {
   "shops.restocked": restock,
   "garbage.sold": sellGarbage,
   "chore.completed": completeChore,
-  "chore.started": startChore,
   "chore.skipped": skipChore,
   "land.expanded": expandLand,
   "message.read": readMessage,
@@ -506,7 +503,6 @@ export const PLAYING_EVENTS: Handlers<PlayingEvent> = {
   "flower.harvested": harvestFlower,
   "farm.upgraded": upgrade,
   "banner.purchased": purchaseBanner,
-  "flowerPage.discovered": discoverFlowerPage,
   "flowerShop.traded": tradeFlowerShop,
   "megastoreItem.bought": buyMegaStoreItem,
   "specialEvent.taskCompleted": completeSpecialEventTask,
@@ -516,6 +512,7 @@ export const PLAYING_EVENTS: Handlers<PlayingEvent> = {
   "sfl.exchanged": exchangeSFLtoCoins,
   "faction.pledged": pledgeFaction,
   "faction.donated": donateToFaction,
+  "oilReserve.drilled": drillOilReserve,
 };
 
 export const PLACEMENT_EVENTS: Handlers<PlacementEvent> = {

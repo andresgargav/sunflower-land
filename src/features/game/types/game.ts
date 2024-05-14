@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Decimal } from "decimal.js-light";
 
-import { CropName, CropSeedName } from "./crops";
+import {
+  CropName,
+  CropSeedName,
+  GreenHouseCropName,
+  GreenHouseCropSeedName,
+} from "./crops";
 
 import { CollectibleName, CraftableName, Food } from "./craftables";
 import { CommodityName, MushroomName, ResourceName } from "./resources";
@@ -15,7 +20,12 @@ import { AchievementName } from "./achievements";
 import { BumpkinActivityName } from "./bumpkinActivity";
 import { DecorationName } from "./decorations";
 import { BeanName, ExoticCropName, MutantCropName } from "./beans";
-import { FruitName, FruitSeedName } from "./fruits";
+import {
+  FruitName,
+  FruitSeedName,
+  GreenHouseFruitName,
+  GreenHouseFruitSeedName,
+} from "./fruits";
 import { TreasureName } from "./treasure";
 import {
   GoblinBlacksmithItemName,
@@ -26,8 +36,7 @@ import {
   PurchasableItems,
   SoldOutCollectibleName,
 } from "./collectibles";
-import { TreasureToolName } from "./tools";
-import { Chore } from "./chores";
+import { TreasureToolName, WorkbenchToolName } from "./tools";
 import { ConversationName } from "./announcements";
 import { NPCName } from "lib/npcs";
 import { SeasonalTicket } from "./seasons";
@@ -148,7 +157,8 @@ export type MutantChicken =
   | "Ayam Cemani"
   | "El Pollo Veloz"
   | "Banana Chicken"
-  | "Crim Peckster";
+  | "Crim Peckster"
+  | "Knight Chicken";
 
 export type Coupons =
   | "Gold Pass"
@@ -297,6 +307,10 @@ export type InventoryItemName =
   | FruitName
   | FruitSeedName
   | FlowerSeedName
+  | GreenHouseFruitSeedName
+  | GreenHouseFruitName
+  | GreenHouseCropName
+  | GreenHouseCropSeedName
   | CraftableName
   | CommodityName
   | ResourceName
@@ -333,7 +347,8 @@ export type InventoryItemName =
   | MarineMarvelName
   | FlowerName
   | MegaStoreCollectibleName
-  | FactionBanner;
+  | FactionBanner
+  | WorkbenchToolName;
 
 export type Inventory = Partial<Record<InventoryItemName, Decimal>>;
 
@@ -437,7 +452,8 @@ export type Oil = {
 
 export type OilReserve = {
   oil: Oil;
-  drillsLeft: number;
+  drilled: number;
+  createdAt: number;
 } & Position;
 
 export type CropPlot = {
@@ -519,6 +535,7 @@ export type ExpansionConstruction = {
 
 export interface ExpansionRequirements {
   resources: Partial<Record<InventoryItemName, number>>;
+  coins?: number;
   seconds: number;
   bumpkinLevel: number;
 }
@@ -556,18 +573,6 @@ export type Bid = {
   tickets: number;
 };
 
-export type HayseedHank = {
-  choresCompleted: number;
-  dawnBreakerChoresCompleted?: number;
-  dawnBreakerChoresSkipped?: number;
-  chore: Chore;
-  progress?: {
-    bumpkinId: number;
-    startedAt: number;
-    startCount: number;
-  };
-};
-
 export type MazeAttempts = Partial<Record<SeasonWeek, MazeMetadata>>;
 
 export type WitchesEve = {
@@ -580,9 +585,9 @@ export type CatchTheKraken = {
   hunger: InventoryItemName;
 };
 
-export type SpringBlossom = {
+export type FlowerShop = {
+  week: number;
   weeklyFlower: FlowerName;
-  collectedFlowerPages: number[];
   tradedFlowerShop?: boolean;
 };
 
@@ -628,7 +633,6 @@ export type Order = {
   from: NPCName;
   items: Partial<Record<InventoryItemName | "coins" | "sfl", number>>;
   reward: {
-    tickets?: number;
     sfl?: number;
     coins?: number;
     items?: Partial<Record<InventoryItemName, number>>;
@@ -723,7 +727,6 @@ export type ChoreV2 = {
   requirement: number;
   bumpkinId: number;
   startCount: number;
-  tickets: number;
 };
 
 export type SeasonWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
@@ -855,6 +858,12 @@ export type MegaStore = {
 
 export type IslandType = "basic" | "spring" | "desert";
 
+/**
+ * The order of the islands is important as it determines the levels of the islands.
+ * Each new island should be added to the end of the array.
+ */
+export const ISLAND_EXPANSIONS: IslandType[] = ["basic", "spring", "desert"];
+
 export type Home = {
   collectibles: Collectibles;
 };
@@ -931,6 +940,7 @@ export interface GameState {
     type: IslandType;
     upgradedAt?: number;
     previousExpansions?: number;
+    sunstones?: number;
   };
 
   username?: string;
@@ -971,7 +981,7 @@ export interface GameState {
   iron: Record<string, Rock>;
   crimstones: Record<string, FiniteResource>;
   sunstones: Record<string, FiniteResource>;
-  oil: Record<string, OilReserve>;
+  oilReserves: Record<string, OilReserve>;
 
   crops: Record<string, CropPlot>;
   fruitPatches: Record<string, FruitPatch>;
@@ -1029,7 +1039,6 @@ export interface GameState {
   auctioneer: {
     bid?: Bid;
   };
-  hayseedHank?: HayseedHank;
   chores?: ChoresV2;
   mushrooms: Mushrooms;
   catchTheKraken: CatchTheKraken;
@@ -1037,11 +1046,13 @@ export interface GameState {
 
   trades: {
     listings?: Record<string, TradeListing>;
+    dailyListings?: { date: number; count: number };
+    dailyPurchases?: { date: number; count: number };
   };
   buds?: Record<number, Bud>;
 
   christmas?: Christmas;
-  springBlossom: Record<number, SpringBlossom>;
+  flowerShop?: FlowerShop;
   megastore: MegaStore;
   specialEvents: SpecialEvents;
   goblinMarket: {

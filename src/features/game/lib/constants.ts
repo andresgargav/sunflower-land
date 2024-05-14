@@ -1,6 +1,5 @@
 import Decimal from "decimal.js-light";
 import { fromWei } from "web3-utils";
-import { translate } from "lib/i18n/translate";
 import {
   Bumpkin,
   GameState,
@@ -55,6 +54,7 @@ export const INITIAL_STOCK = (state?: GameState): Inventory => {
     "Stone Pickaxe": new Decimal(20),
     "Iron Pickaxe": new Decimal(5),
     "Gold Pickaxe": new Decimal(5),
+    "Oil Drill": new Decimal(5),
     Rod: new Decimal(50),
   };
 
@@ -69,6 +69,7 @@ export const INITIAL_STOCK = (state?: GameState): Inventory => {
       "Stone Pickaxe": new Decimal(30),
       "Iron Pickaxe": new Decimal(8),
       "Gold Pickaxe": new Decimal(8),
+      "Oil Drill": new Decimal(8),
       Rod: new Decimal(75),
     };
   }
@@ -79,6 +80,7 @@ export const INITIAL_STOCK = (state?: GameState): Inventory => {
     "Pumpkin Seed": new Decimal(150),
     "Carrot Seed": new Decimal(100),
     "Cabbage Seed": new Decimal(90),
+    "Soybean Seed": new Decimal(90),
     "Beetroot Seed": new Decimal(80),
     "Cauliflower Seed": new Decimal(80),
     "Parsnip Seed": new Decimal(60),
@@ -87,6 +89,10 @@ export const INITIAL_STOCK = (state?: GameState): Inventory => {
     "Radish Seed": new Decimal(40),
     "Wheat Seed": new Decimal(40),
     "Kale Seed": new Decimal(30),
+
+    "Grape Seed": new Decimal(10),
+    "Olive Seed": new Decimal(10),
+    "Rice Seed": new Decimal(10),
 
     "Apple Seed": new Decimal(10),
     "Orange Seed": new Decimal(10),
@@ -108,6 +114,7 @@ export const INITIAL_STOCK = (state?: GameState): Inventory => {
       "Pumpkin Seed": new Decimal(180),
       "Carrot Seed": new Decimal(120),
       "Cabbage Seed": new Decimal(108),
+      "Soybean Seed": new Decimal(108),
       "Beetroot Seed": new Decimal(96),
       "Cauliflower Seed": new Decimal(96),
       "Parsnip Seed": new Decimal(72),
@@ -120,6 +127,10 @@ export const INITIAL_STOCK = (state?: GameState): Inventory => {
       "Orange Seed": new Decimal(12),
       "Blueberry Seed": new Decimal(12),
       "Banana Plant": new Decimal(12),
+
+      "Grape Seed": new Decimal(12),
+      "Olive Seed": new Decimal(12),
+      "Rice Seed": new Decimal(12),
 
       "Sunpetal Seed": new Decimal(20),
       "Bloom Seed": new Decimal(10),
@@ -151,6 +162,7 @@ export const INVENTORY_LIMIT = (state?: GameState): Inventory => {
     "Pumpkin Seed": new Decimal(400),
     "Carrot Seed": new Decimal(250),
     "Cabbage Seed": new Decimal(240),
+    "Soybean Seed": new Decimal(240),
     "Beetroot Seed": new Decimal(220),
     "Cauliflower Seed": new Decimal(200),
     "Parsnip Seed": new Decimal(150),
@@ -164,6 +176,10 @@ export const INVENTORY_LIMIT = (state?: GameState): Inventory => {
     "Orange Seed": new Decimal(33),
     "Blueberry Seed": new Decimal(40),
     "Banana Plant": new Decimal(25),
+
+    "Rice Seed": new Decimal(50),
+    "Grape Seed": new Decimal(50),
+    "Olive Seed": new Decimal(50),
 
     "Sunpetal Seed": new Decimal(40),
     "Bloom Seed": new Decimal(20),
@@ -180,6 +196,7 @@ export const INVENTORY_LIMIT = (state?: GameState): Inventory => {
       "Pumpkin Seed": new Decimal(480),
       "Carrot Seed": new Decimal(300),
       "Cabbage Seed": new Decimal(288),
+      "Soybean Seed": new Decimal(288),
       "Beetroot Seed": new Decimal(264),
       "Cauliflower Seed": new Decimal(240),
       "Parsnip Seed": new Decimal(180),
@@ -193,6 +210,10 @@ export const INVENTORY_LIMIT = (state?: GameState): Inventory => {
       "Orange Seed": new Decimal(40),
       "Blueberry Seed": new Decimal(50),
       "Banana Plant": new Decimal(30),
+
+      "Rice Seed": new Decimal(75),
+      "Grape Seed": new Decimal(75),
+      "Olive Seed": new Decimal(75),
 
       "Sunpetal Seed": new Decimal(48),
       "Bloom Seed": new Decimal(24),
@@ -322,11 +343,71 @@ export const TEST_FARM: GameState = {
   trades: {},
   crops: {
     1: {
+      createdAt: Date.now(),
+      crop: { name: "Sunflower", plantedAt: 0, amount: 1 },
+      x: -2,
+      y: 0,
       height: 1,
       width: 1,
-      x: 1,
-      y: 1,
+    },
+    2: {
       createdAt: Date.now(),
+      crop: { name: "Sunflower", plantedAt: 0, amount: 1 },
+      x: -1,
+      y: 0,
+      height: 1,
+      width: 1,
+    },
+    3: {
+      createdAt: Date.now(),
+      crop: { name: "Sunflower", plantedAt: 0, amount: 1 },
+      x: 0,
+      y: 0,
+      height: 1,
+      width: 1,
+    },
+    4: {
+      createdAt: Date.now(),
+      x: -2,
+      y: -1,
+      height: 1,
+      width: 1,
+    },
+    5: {
+      createdAt: Date.now(),
+      x: -1,
+      y: -1,
+      height: 1,
+      width: 1,
+    },
+    6: {
+      createdAt: Date.now(),
+      x: 0,
+      y: -1,
+      height: 1,
+      width: 1,
+    },
+
+    7: {
+      createdAt: Date.now(),
+      x: -2,
+      y: 1,
+      height: 1,
+      width: 1,
+    },
+    8: {
+      createdAt: Date.now(),
+      x: -1,
+      y: 1,
+      height: 1,
+      width: 1,
+    },
+    9: {
+      createdAt: Date.now(),
+      x: 0,
+      y: 1,
+      height: 1,
+      width: 1,
     },
   },
   mysteryPrizes: {},
@@ -413,17 +494,6 @@ export const TEST_FARM: GameState = {
     ],
   },
   bumpkin: INITIAL_BUMPKIN,
-  hayseedHank: {
-    choresCompleted: 0,
-    chore: {
-      activity: "Sunflower Harvested",
-      requirement: 10,
-      reward: {
-        items: { "Solar Flare Ticket": 1 },
-      },
-      description: translate("task.harvestSunflowers"),
-    },
-  },
 
   dailyRewards: { streaks: 0 },
 
@@ -434,17 +504,69 @@ export const TEST_FARM: GameState = {
   },
   gold: {},
   iron: {},
-  stones: {},
+  stones: {
+    1: {
+      stone: {
+        amount: 1,
+        minedAt: 0,
+      },
+      x: 7,
+      y: 3,
+      height: 1,
+      width: 1,
+    },
+    2: {
+      stone: {
+        amount: 1,
+        minedAt: 0,
+      },
+      x: 3,
+      y: 6,
+      height: 1,
+      width: 1,
+    },
+  },
   crimstones: {},
-  oil: {},
-  trees: {},
+  oilReserves: {},
+  trees: {
+    1: {
+      wood: {
+        amount: 2,
+        choppedAt: 0,
+      },
+      x: -3,
+      y: 3,
+      height: 2,
+      width: 2,
+    },
+    2: {
+      wood: {
+        amount: 1,
+        choppedAt: 0,
+      },
+      x: 7,
+      y: 0,
+      height: 2,
+      width: 2,
+    },
+
+    3: {
+      wood: {
+        amount: 2,
+        choppedAt: 0,
+      },
+      x: 7,
+      y: 9,
+      height: 2,
+      width: 2,
+    },
+  },
   sunstones: {},
   mushrooms: {
     spawnedAt: 0,
     mushrooms: {},
   },
   beehives: {},
-  springBlossom: {},
   megastore: {
     available: makeMegaStoreAvailableDates(),
     collectibles: [],
@@ -499,19 +621,7 @@ export const EMPTY: GameState = {
   pumpkinPlaza: {},
   dailyRewards: { streaks: 0 },
   auctioneer: {},
-  hayseedHank: {
-    choresCompleted: 0,
-    dawnBreakerChoresCompleted: 0,
-    dawnBreakerChoresSkipped: 0,
-    chore: {
-      activity: "Sunflower Harvested",
-      requirement: 10,
-      reward: {
-        items: { "Solar Flare Ticket": 1 },
-      },
-      description: translate("task.harvestSunflowers"),
-    },
-  },
+
   trades: {},
   fruitPatches: {},
   beehives: {},
@@ -524,7 +634,7 @@ export const EMPTY: GameState = {
   crops: {},
   stones: {},
   crimstones: {},
-  oil: {},
+  oilReserves: {},
   trees: {},
   sunstones: {},
   farmActivity: {},
@@ -543,7 +653,6 @@ export const EMPTY: GameState = {
     hunger: "Sunflower",
     weeklyCatches: {},
   },
-  springBlossom: {},
   megastore: {
     available: makeMegaStoreAvailableDates(),
     collectibles: [],

@@ -110,6 +110,10 @@ export const getCookingTime = (
     reducedSecs = reducedSecs.mul(0.5);
   }
 
+  if (isCollectibleBuilt({ name: "Desert Gnome", game })) {
+    reducedSecs = reducedSecs.mul(0.9);
+  }
+
   return reducedSecs.toNumber();
 };
 
@@ -177,7 +181,10 @@ export const getFoodExpBoost = (
     boostedExp = boostedExp.mul(1.2);
   }
 
-  if (isCollectibleBuilt({ name: getSeasonalBanner(), game })) {
+  if (
+    isCollectibleBuilt({ name: getSeasonalBanner(), game }) ||
+    isCollectibleBuilt({ name: "Lifetime Farmer Banner", game })
+  ) {
     boostedExp = boostedExp.mul(1.1);
   }
 
