@@ -42,6 +42,9 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   private walkingAnimationKey: string | undefined;
   private direction: "left" | "right" = "right";
 
+  // Recipe Rush
+  // public Item
+
   constructor({
     scene,
     x,

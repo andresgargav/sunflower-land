@@ -41,6 +41,11 @@ export abstract class Preloader extends Phaser.Scene {
       );
 
       this.load.image(
+        "recipe-rush-tileset",
+        "world/recipe-rush-map-extruded18px.png"
+      );
+
+      this.load.image(
         "easter-tileset",
         `${CONFIG.PROTECTED_IMAGE_URL}/world/easter-map-extruded.png`
       );

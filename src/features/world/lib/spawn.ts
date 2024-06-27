@@ -10,6 +10,12 @@ const randomXOffset = Math.random() * 60;
 const randomYOffset = Math.random() * 20;
 
 export const SPAWNS: () => SpawnLocation = () => ({
+  recipe_rush: {
+    default: {
+      x: 240,
+      y: 166,
+    },
+  },
   portal_example: {
     default: {
       x: 400 + randomXOffset,

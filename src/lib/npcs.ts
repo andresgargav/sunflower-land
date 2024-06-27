@@ -87,6 +87,7 @@ export type NPCName =
   | "chef ebon" // nightshade chef
   | "chef maple" // bumpkins chef
   | "chef lumen" // sunflorian chef
+  | "chef neon" // recipe rush chef
   | "glinteye"
   | "solara"
   | "dusk"
@@ -132,6 +133,17 @@ export const NPC_WEARABLES: Record<NPCName, Equipped> = {
     coat: "Chef Apron",
   },
   "chef lumen": {
+    body: "Beige Farmer Potion",
+    hair: "Parlour Hair",
+    hat: "Chef Hat",
+    shirt: "Sunflorian Armor",
+    pants: "Sunflorian Pants",
+    tool: "Parsnip",
+    background: "Farm Background",
+    shoes: "Black Farmer Boots",
+    coat: "Chef Apron",
+  },
+  "chef neon": {
     body: "Beige Farmer Potion",
     hair: "Parlour Hair",
     hat: "Chef Hat",
