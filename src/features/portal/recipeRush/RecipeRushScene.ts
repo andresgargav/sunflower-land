@@ -2,11 +2,17 @@ import mapJson from "assets/map/recipe_rush.json";
 import { SceneId } from "features/world/mmoMachine";
 import { BaseScene, NPCBumpkin } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "./lib/recipeRushMachine";
-import { INGREDIENT_BOXES_POSITIONS } from "./recipeRushConstants";
+import {
+  INGREDIENT_BOXES_CONFIGURATIONS,
+  COUNTERTOPS_CONFIGURATIONS,
+  ITEMS_COUNTERTOPS_CONFIGURATIONS,
+} from "./RecipeRushConstants";
+import { CountertopContainer } from "./containers/CountertopContainer";
+import { IngredientBoxContainer } from "./containers/IngredientBoxContainer";
 
 export const NPCS: NPCBumpkin[] = [
   {
-    x: 344,
+    x: 424,
     y: 117,
     // View NPCModals.tsx for implementation of pop up modal
     npc: "chef neon",
@@ -15,6 +21,7 @@ export const NPCS: NPCBumpkin[] = [
 
 export class RecipeRushScene extends BaseScene {
   sceneId: SceneId = "recipe_rush";
+
   private hasChefHat = false;
 
   constructor() {
@@ -40,6 +47,15 @@ export class RecipeRushScene extends BaseScene {
       frameWidth: 16,
       frameHeight: 16,
     });
+
+    this.load.spritesheet(
+      "countertop_highlights",
+      "world/countertop_highlights.png",
+      {
+        frameWidth: 16,
+        frameHeight: 16,
+      }
+    );
   }
 
   async create() {
@@ -48,6 +64,8 @@ export class RecipeRushScene extends BaseScene {
     });
 
     super.create();
+
+    this.addCountertops();
 
     this.addCropBoxes();
 
@@ -63,37 +81,31 @@ export class RecipeRushScene extends BaseScene {
     super.update();
   }
 
-  private selectIngredient(ingredientIndex: number) {
-    const item = this.add
-      .sprite(0, -14, "ingredients", ingredientIndex)
-      .setOrigin(0.5)
-      .setScale(0.75);
-
-    this.currentPlayer?.add(item);
+  private addCountertops() {
+    COUNTERTOPS_CONFIGURATIONS.forEach(
+      (config) =>
+        new CountertopContainer({
+          x: config.x,
+          y: config.y,
+          frame: config.frame,
+          itemPosition: ITEMS_COUNTERTOPS_CONFIGURATIONS[config.pos],
+          scene: this,
+          player: this.currentPlayer,
+        })
+    );
   }
 
   private addCropBoxes() {
-    const spriteName = "ingredient_boxes";
-
-    INGREDIENT_BOXES_POSITIONS.forEach((ingredientBox) => {
-      const box = this.add
-        .sprite(
-          ingredientBox.x,
-          ingredientBox.y,
-          spriteName,
-          ingredientBox.index
-        )
-        .setOrigin(0)
-        .setDepth(0);
-
-      box.setInteractive({ cursor: "pointer" }).on("pointerdown", () => {
-        if (this.checkDistanceToSprite(box, 40))
-          this.selectIngredient(Number(box.frame.name));
-        // } else {
-        //   this.currentPlayer?.speak(translate("base.iam.far.away"));
-        // }
-      });
-    });
+    INGREDIENT_BOXES_CONFIGURATIONS.forEach(
+      (config) =>
+        new IngredientBoxContainer({
+          x: config.x,
+          y: config.y,
+          frame: config.frame,
+          scene: this,
+          player: this.currentPlayer,
+        })
+    );
   }
 
   private updateHat() {

@@ -12,7 +12,7 @@ const randomYOffset = Math.random() * 20;
 export const SPAWNS: () => SpawnLocation = () => ({
   recipe_rush: {
     default: {
-      x: 240,
+      x: 325,
       y: 166,
     },
   },

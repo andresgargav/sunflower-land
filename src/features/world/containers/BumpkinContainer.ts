@@ -43,7 +43,8 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   private direction: "left" | "right" = "right";
 
   // Recipe Rush
-  // public Item
+  public hasItem = false;
+  public item: Phaser.GameObjects.GameObject | null;
 
   constructor({
     scene,
@@ -533,5 +534,18 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         }
       }
     );
+  }
+
+  public pickUpItem(item: Phaser.GameObjects.GameObject) {
+    this.item = item;
+    this.add(item);
+    this.hasItem = true;
+  }
+
+  public dropItem() {
+    const item = this.item;
+    this.item = null;
+    this.hasItem = false;
+    return item;
   }
 }
