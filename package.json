@@ -134,6 +134,7 @@
     "simple-get": "^2.8.2"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write --ignore-unknown"]
+    "*.{js,jsx,ts,tsx}": "eslint --fix --debug",
+    "*": "prettier --write"
   }
 }
