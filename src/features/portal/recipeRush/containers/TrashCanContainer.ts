@@ -1,7 +1,6 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { Coordinates } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
-import { ITEM_BUMPKIN } from "../RecipeRushConstants";
 import { BaseScene } from "features/world/scenes/BaseScene";
 
 interface Props {
@@ -13,7 +12,7 @@ interface Props {
   player?: BumpkinContainer;
 }
 
-export class CountertopContainer extends Phaser.GameObjects.Container {
+export class TrashCanContainer extends Phaser.GameObjects.Container {
   private itemPosition: Coordinates;
   private player?: BumpkinContainer;
   private item: Phaser.GameObjects.Sprite | null;
@@ -25,44 +24,40 @@ export class CountertopContainer extends Phaser.GameObjects.Container {
     this.player = player;
     this.item = null;
 
-    // Countertop Highlight Sprite
+    // Trash Can Highlight Sprite
     const spriteName = "highlights";
-    const countertop = scene.add
-      .sprite(0, 0, spriteName, frame)
+    const trashCan = scene.add
+      .sprite(-1, 0, spriteName, frame)
       .setVisible(false);
 
     // Events
-    this.on("pointerover", () => countertop.setVisible(true));
-    this.on("pointerout", () => countertop.setVisible(false));
-    this.on("pointerdown", this.handleCountertopClick);
+    this.on("pointerover", () => trashCan.setVisible(true));
+    this.on("pointerout", () => trashCan.setVisible(false));
+    this.on("pointerdown", this.removeObject);
 
-    this.setSize(countertop.width, countertop.height);
+    this.setSize(trashCan.width, trashCan.height);
     this.setInteractive({ cursor: "pointer" });
-    this.add(countertop);
+    this.add(trashCan);
 
     scene.add.existing(this);
   }
 
-  private handleCountertopClick() {
-    if (this.item && !this.player?.hasItem) {
-      // Transfer item from the countertop to the Bumpkin
-      const item = this.item;
-      (item as Phaser.GameObjects.Sprite).setPosition(
-        ITEM_BUMPKIN.x,
-        ITEM_BUMPKIN.y
-      );
-      this.remove(item as Phaser.GameObjects.Sprite);
-      this.item = null;
-      this.player?.pickUpItem(item);
-    } else if (!this.item && this.player?.hasItem) {
-      // Transfer item from the Bumpkin to the countertop
+  private removeObject() {
+    if (!this.item && this.player?.hasItem) {
+      // Transfer item from the Bumpkin to the trash can
       const item = this.player?.dropItem();
       (item as Phaser.GameObjects.Sprite).setPosition(
         this.itemPosition.x,
-        this.itemPosition.y
+        this.itemPosition.y - 2
       );
-      item && this.add(item as Phaser.GameObjects.Sprite);
+      this.add(item as Phaser.GameObjects.Sprite);
       this.item = item;
+
+      setTimeout(() => {
+        this.remove(item as Phaser.GameObjects.Sprite);
+        item?.destroy();
+        this.item = null;
+      }, 500);
     }
   }
 }

@@ -1,13 +1,9 @@
-export type Coordinates = {
+export interface Coordinates {
   x: number;
   y: number;
-};
+}
 
-export type IngredientBoxConfig = { frame: number } & Coordinates;
-
-export type ItemBumpkin = Coordinates & { scale: number };
-
-export type CountertopPosition =
+export type SpritePositions =
   | "MTL"
   | "MT"
   | "MTR"
@@ -21,9 +17,17 @@ export type CountertopPosition =
   | "L"
   | "LB";
 
-export interface CountertopConfig {
-  frame: number;
-  x: number;
-  y: number;
-  pos: CountertopPosition;
-}
+export type CookingStates = "ROASTED" | "FRIED" | "BOILED" | "CHOPPED";
+
+export type SpriteConfig = { frame: number } & Coordinates;
+
+export type SpritePositionConfig = SpriteConfig & { pos: SpritePositions };
+
+export type CookingTool = {
+  spriteName: string;
+  animStart: number;
+  animEnd: number;
+  effect: CookingStates;
+};
+
+export type ItemBumpkin = Coordinates & { scale: number };

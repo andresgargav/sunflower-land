@@ -18,13 +18,11 @@ export class IngredientBoxContainer extends Phaser.GameObjects.Container {
     this.scene = scene;
     this.player = player;
 
+    // Ingredient Box Sprite
     const spriteName = "ingredient_boxes";
     const ingredientBox = scene.add
       .sprite(0, 0, spriteName, frame)
       .setOrigin(0);
-
-    this.add(ingredientBox);
-    this.setSize(ingredientBox.width, ingredientBox.height);
 
     // Events
     ingredientBox
@@ -35,6 +33,9 @@ export class IngredientBoxContainer extends Phaser.GameObjects.Container {
           this.checkDistanceToPlayer(this, 30) &&
           this.selectIngredient(Number(ingredientBox.frame.name))
       );
+
+    this.setSize(ingredientBox.width, ingredientBox.height);
+    this.add(ingredientBox);
 
     scene.add.existing(this);
   }

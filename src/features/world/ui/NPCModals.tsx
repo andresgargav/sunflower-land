@@ -34,6 +34,7 @@ import { FactionKitchenPanel } from "./factions/FactionKitchenPanel";
 import { PortalNPCExample } from "features/portal/example/components/PortalNPCExample";
 import { FlowerShop } from "./flowerShop/FlowerShop";
 import { FactionShop } from "./factionShop/FactionShop";
+import { ChefNeon } from "features/portal/recipeRush/components/npcs/ChefNeon";
 
 class NpcModalManager {
   private listener?: (npc: NPCName, isOpen: boolean) => void;
@@ -94,6 +95,7 @@ export const NPCModals: React.FC<Props> = ({ scene, id }) => {
           </CloseButtonPanel>
         )}
 
+        {npc === "chef neon" && <ChefNeon onClose={closeModal} />}
         {npc === "portaller" && <PortalNPCExample onClose={closeModal} />}
         {npc === "shelly" && <DeliveryPanel npc={npc} onClose={closeModal} />}
         {npc === "poppy" && <FlowerShop onClose={closeModal} />}

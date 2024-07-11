@@ -35,6 +35,8 @@ import { MachineInterpreter } from "features/game/lib/gameMachine";
 import { MachineInterpreter as AuthMachineInterpreter } from "features/auth/lib/authMachine";
 import { capitalize } from "lib/utils/capitalize";
 
+export const WALKING_SPEED = 40;
+
 type SceneTransitionData = {
   previousSceneId: SceneId;
 };
@@ -738,7 +740,7 @@ export abstract class BaseScene extends Phaser.Scene {
     return (Math.atan2(y, x) * 180) / Math.PI;
   }
 
-  public walkingSpeed = 50;
+  public walkingSpeed = WALKING_SPEED;
 
   updatePlayer() {
     if (!this.currentPlayer?.body) {

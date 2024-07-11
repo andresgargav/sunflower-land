@@ -44,7 +44,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
   // Recipe Rush
   public hasItem = false;
-  public item: Phaser.GameObjects.GameObject | null;
+  public item: Phaser.GameObjects.Sprite | null;
 
   constructor({
     scene,
@@ -73,6 +73,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.silhouette = scene.add.sprite(0, 0, "silhouette");
     this.add(this.silhouette);
     this.sprite = this.silhouette;
+    this.item = null;
 
     this.loadSprites(scene);
 
@@ -536,7 +537,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     );
   }
 
-  public pickUpItem(item: Phaser.GameObjects.GameObject) {
+  public pickUpItem(item: Phaser.GameObjects.Sprite) {
     this.item = item;
     this.add(item);
     this.hasItem = true;
