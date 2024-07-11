@@ -294,6 +294,9 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "The Lot": 572,
   "Tofu Scramble": 573,
   Antipasto: 574,
+  Caponata: 575,
+  "Glazed Carrots": 576,
+  Paella: 577,
 
   Wood: 601,
   Stone: 602,
@@ -753,6 +756,18 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Nightshade Faction Rug": 2079,
   "Goblin Faction Rug": 2080,
   "Bumpkin Faction Rug": 2081,
+  "Goblin Gold Champion": 2082,
+  "Goblin Silver Champion": 2083,
+  "Goblin Bronze Champion": 2084,
+  "Bumpkin Bronze Champion": 2085,
+  "Bumpkin Gold Champion": 2086,
+  "Bumpkin Silver Champion": 2087,
+  "Nightshade Bronze Champion": 2088,
+  "Nightshade Gold Champion": 2089,
+  "Nightshade Silver Champion": 2090,
+  "Sunflorian Bronze Champion": 2091,
+  "Sunflorian Gold Champion": 2092,
+  "Sunflorian Silver Champion": 2093,
 };
 
 // The reverse of above

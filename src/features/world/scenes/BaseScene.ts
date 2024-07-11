@@ -585,6 +585,7 @@ export abstract class BaseScene extends Phaser.Scene {
           text: `<${capitalize(faction)}>`,
           color,
         });
+        factionTag.setShadow(1, 1, "#161424", 0, false, true);
 
         // Move name tag down
         nameTagYPosition = 4;
@@ -598,6 +599,7 @@ export abstract class BaseScene extends Phaser.Scene {
         y: nameTagYPosition,
         text: username ? username : `#${farmId}`,
       });
+      nameTag.setShadow(1, 1, "#161424", 0, false, true);
       nameTag.name = "nameTag";
       entity.add(nameTag);
     }
@@ -1020,6 +1022,10 @@ export abstract class BaseScene extends Phaser.Scene {
     if (this.switchToScene) {
       const warpTo = this.switchToScene;
       this.switchToScene = undefined;
+
+      // This will cause a loop
+      // this.registry.get("navigate")(`/world/${warpTo}`);
+
       // this.mmoService?.state.context.server?.send(0, { sceneId: warpTo });
       this.mmoService?.send("SWITCH_SCENE", { sceneId: warpTo });
       this.scene.start(warpTo, { previousSceneId: this.sceneId });

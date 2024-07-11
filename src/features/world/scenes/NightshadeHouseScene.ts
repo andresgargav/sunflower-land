@@ -1,7 +1,8 @@
 import mapJSON from "assets/map/nightshade_house.json";
 
 import { SceneId } from "../mmoMachine";
-import { BaseScene, NPCBumpkin } from "./BaseScene";
+import { NPCBumpkin } from "./BaseScene";
+import { FactionHouseScene } from "./FactionHouseScene";
 
 export const NIGHTSHADE_HOUSE_NPCS: NPCBumpkin[] = [
   {
@@ -24,7 +25,7 @@ export const NIGHTSHADE_HOUSE_NPCS: NPCBumpkin[] = [
   },
 ];
 
-export class NightshadeHouseScene extends BaseScene {
+export class NightshadeHouseScene extends FactionHouseScene {
   sceneId: SceneId = "nightshade_house";
 
   constructor() {
@@ -42,6 +43,11 @@ export class NightshadeHouseScene extends BaseScene {
       frameWidth: 8,
       frameHeight: 12,
     });
+
+    this.load.image("pet_sleeping", "world/nightshades_pet_sleeping.webp");
+    this.load.image("pet_happy", "world/nightshades_pet_happy.webp");
+    this.load.image("pet_hungry", "world/nightshades_pet_hungry.webp");
+    this.load.image("empty_progress_bar", "world/empty_bar.png");
   }
 
   create() {
@@ -65,5 +71,10 @@ export class NightshadeHouseScene extends BaseScene {
     });
     fire.play("fire_anim", true);
     fire2.play("fire_anim", true);
+
+    this.setupPrize({ x: 240, y: 416 });
+    this.setUpPet();
+
+    this.setupNotice({ x: 313, y: 368 });
   }
 }
