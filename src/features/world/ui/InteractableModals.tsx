@@ -7,7 +7,6 @@ import {
   SpeakingText,
 } from "features/game/components/SpeakingModal";
 import { NPC_WEARABLES } from "lib/npcs";
-import { KrakenIntro } from "./npcs/Shelly";
 import { AuctionHouseModal } from "./AuctionHouseModal";
 import { BoatModal } from "./BoatModal";
 import { PlazaBanner } from "./PlazaBanner";
@@ -31,12 +30,19 @@ import { ChickenRescue } from "./portals/ChickenRescue";
 import { InlineDialogue } from "./TypingMessage";
 import { Label } from "components/ui/Label";
 import { FestivalOfColors } from "./portals/FestivalOfColors";
-
-export type FanArtNPC = "fan_npc_1" | "fan_npc_2" | "fan_npc_3" | "fan_npc_4";
+import { FactionWeeklyPrize } from "./factions/weeklyPrize/FactionWeeklyPrize";
+import { FactionWelcome, hasReadFactionIntro } from "./factions/FactionWelcome";
+import { Champions } from "./factions/Champions";
+import { KingdomNoticeboard } from "./kingdom/KingdomNoticeboard";
+import { FactionNoticeboard } from "./factions/FactionNoticeboard";
 
 type InteractableName =
-  | FanArtNPC
+  | "faction_noticeboard"
+  | "kingdom_noticeboard"
+  | "champions"
+  | "faction_intro"
   | "vip_chest"
+  | "weekly_faction_prize"
   | "faction_launch"
   | "donations"
   | "garbage_collector"
@@ -106,7 +112,8 @@ type InteractableName =
   | "kingdom_book_3"
   | "kingdom_book_4"
   | "kingdom_book_5"
-  | "kingdom_knight";
+  | "kingdom_knight"
+  | "fan_art";
 
 class InteractableModalManager {
   private listener?: (name: InteractableName, isOpen: boolean) => void;
@@ -124,13 +131,28 @@ class InteractableModalManager {
 
 export const interactableModalManager = new InteractableModalManager();
 
+function getInitialModal(scene: SceneId): InteractableName | undefined {
+  if (
+    !hasReadFactionIntro() &&
+    (scene === "goblin_house" ||
+      scene === "bumpkin_house" ||
+      scene === "nightshade_house" ||
+      scene === "sunflorian_house")
+  )
+    return "faction_intro";
+
+  return undefined;
+}
+
 interface Props {
   id: number;
   scene: SceneId;
 }
 
 export const InteractableModals: React.FC<Props> = ({ id, scene }) => {
-  const [interactable, setInteractable] = useState<InteractableName>();
+  const [interactable, setInteractable] = useState<
+    InteractableName | undefined
+  >(getInitialModal(scene));
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -147,6 +169,9 @@ export const InteractableModals: React.FC<Props> = ({ id, scene }) => {
 
   return (
     <>
+      <Modal show={interactable === "weekly_faction_prize"} onHide={closeModal}>
+        <FactionWeeklyPrize onClose={closeModal} />
+      </Modal>
       <Modal show={interactable === "vip_chest"} onHide={closeModal}>
         <VIPGift onClose={closeModal} />
       </Modal>
@@ -159,6 +184,18 @@ export const InteractableModals: React.FC<Props> = ({ id, scene }) => {
           isOpen={interactable === "auction_item"}
         />
       )}
+      <Modal show={interactable === "faction_intro"} onHide={closeModal}>
+        <FactionWelcome onClose={closeModal} />
+      </Modal>
+      <Modal show={interactable === "kingdom_noticeboard"} onHide={closeModal}>
+        <KingdomNoticeboard onClose={closeModal} />
+      </Modal>
+      <Modal show={interactable === "faction_noticeboard"} onHide={closeModal}>
+        <FactionNoticeboard onClose={closeModal} />
+      </Modal>
+      <Modal show={interactable === "champions"} onHide={closeModal}>
+        <Champions onClose={closeModal} />
+      </Modal>
       <Modal show={interactable === "donations"} onHide={closeModal}>
         <CloseButtonPanel title={t("enjoying.event")} onClose={closeModal}>
           <CommunityDonations />
@@ -181,9 +218,6 @@ export const InteractableModals: React.FC<Props> = ({ id, scene }) => {
             },
           ]}
         />
-      </Modal>
-      <Modal show={interactable === "kraken"} onHide={closeModal}>
-        <KrakenIntro onClose={closeModal} />
       </Modal>
       <Modal show={interactable === "lazy_bud"} onHide={closeModal}>
         <SpeakingModal
@@ -620,16 +654,8 @@ export const InteractableModals: React.FC<Props> = ({ id, scene }) => {
         </Panel>
       </Modal>
 
-      <Modal
-        show={
-          interactable === "fan_npc_1" ||
-          interactable === "fan_npc_2" ||
-          interactable === "fan_npc_3" ||
-          interactable === "fan_npc_4"
-        }
-        onHide={closeModal}
-      >
-        <FanArt name={interactable as FanArtNPC} onClose={closeModal} />
+      <Modal show={interactable === "fan_art"} onHide={closeModal}>
+        <FanArt onClose={closeModal} />
       </Modal>
 
       <Modal show={interactable === "kingdom_knight"} onHide={closeModal}>
