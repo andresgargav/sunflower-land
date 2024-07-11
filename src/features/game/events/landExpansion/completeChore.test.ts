@@ -424,14 +424,8 @@ describe("chore.completed", () => {
         faction: {
           name: "bumpkins",
           pledgedAt: 0,
+          history: {},
           points: 0,
-          donated: {
-            daily: {
-              sfl: {},
-              resources: {},
-            },
-            totalItems: {},
-          },
         },
         bumpkin: {
           ...INITIAL_BUMPKIN,
@@ -480,14 +474,8 @@ describe("chore.completed", () => {
         faction: {
           name: "bumpkins",
           pledgedAt: 0,
+          history: {},
           points: 0,
-          donated: {
-            daily: {
-              sfl: {},
-              resources: {},
-            },
-            totalItems: {},
-          },
         },
         bumpkin: {
           ...INITIAL_BUMPKIN,
@@ -539,14 +527,8 @@ describe("chore.completed", () => {
         faction: {
           name: "bumpkins",
           pledgedAt: 0,
+          history: {},
           points: 0,
-          donated: {
-            daily: {
-              sfl: {},
-              resources: {},
-            },
-            totalItems: {},
-          },
         },
         bumpkin: {
           ...INITIAL_BUMPKIN,
@@ -597,14 +579,8 @@ describe("chore.completed", () => {
         faction: {
           name: "bumpkins",
           pledgedAt: 0,
+          history: {},
           points: 0,
-          donated: {
-            daily: {
-              sfl: {},
-              resources: {},
-            },
-            totalItems: {},
-          },
         },
         bumpkin: {
           ...INITIAL_BUMPKIN,

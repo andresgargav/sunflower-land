@@ -26,13 +26,7 @@ describe("joinFaction", () => {
             name: "bumpkins",
             pledgedAt: Date.now() - 1000,
             points: 0,
-            donated: {
-              daily: {
-                resources: {},
-                sfl: {},
-              },
-              totalItems: {},
-            },
+            history: {},
           },
         },
         action: {
@@ -56,11 +50,6 @@ describe("joinFaction", () => {
     expect(state.faction?.name).toBe("sunflorians");
     expect(state.faction?.pledgedAt).toBeGreaterThan(0);
     expect(state.faction?.points).toEqual(0);
-    expect(state.faction?.donated).toBeDefined();
-    expect(state.faction?.donated.daily).toBeDefined();
-    expect(state.faction?.donated.daily.resources).toBeDefined();
-    expect(state.faction?.donated.daily.sfl).toBeDefined();
-    expect(state.faction?.donated.totalItems).toBeDefined();
   });
 
   it("adds the faction banner to the players inventory", () => {
