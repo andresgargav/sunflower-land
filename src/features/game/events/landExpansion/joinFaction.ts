@@ -66,13 +66,7 @@ export function joinFaction({
     name: action.faction,
     pledgedAt: createdAt,
     points: 0,
-    donated: {
-      daily: {
-        resources: {},
-        sfl: {},
-      },
-      totalItems: {},
-    },
+    history: {},
   };
 
   stateCopy.balance = state.balance.sub(SFL_COST);
