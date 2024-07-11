@@ -13,13 +13,7 @@ const GAME_STATE: GameState = {
   faction: {
     name: "goblins",
     pledgedAt: 0,
-    donated: {
-      daily: {
-        resources: {},
-        sfl: {},
-      },
-      totalItems: {},
-    },
+    history: {},
     points: 0,
   },
 };
