@@ -5,8 +5,8 @@ import { Button } from "components/ui/Button";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { CloseButtonPanel } from "features/game/components/CloseablePanel";
 
-import tutorial from "src/assets/tutorials/composting.png";
-import powerup from "src/assets/icons/level_up.png";
+import tutorial from "assets/tutorials/composting.png";
+import powerup from "assets/icons/level_up.png";
 
 import compost from "assets/composters/compost.png";
 import basicIdle from "assets/composters/composter_basic.png";
