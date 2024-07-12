@@ -9,6 +9,8 @@ import {
   TRASH_CANS_CONFIGURATIONS,
   CUTTING_BOARD,
   CUTTING_BOARDS_CONFIGURATIONS,
+  ITEM_BUMPKIN,
+  PLAYER_WALKING_SPEED,
 } from "./RecipeRushConstants";
 import { CountertopContainer } from "./containers/CountertopContainer";
 import { IngredientBoxContainer } from "./containers/IngredientBoxContainer";
@@ -81,13 +83,29 @@ export class RecipeRushScene extends BaseScene {
     // Cooking tools
     this.addCuttingBoards();
 
+    this.walkingSpeed = PLAYER_WALKING_SPEED;
+
     this.initialiseNPCs(NPCS);
   }
 
   update() {
-    if (!this.hasChefHat) {
-      this.updateHat();
-      return;
+    if (!this.currentPlayer) return;
+
+    if (this.currentPlayer.isCooking) {
+      this.currentPlayer.cook();
+    } else if (this.currentPlayer.hasItem) {
+      const directionMultiplier =
+        this.currentPlayer.directionFacing === "left" ? -1 : 1;
+
+      this.currentPlayer.item
+        ?.setX(directionMultiplier)
+        .setScale(ITEM_BUMPKIN.scale * directionMultiplier, ITEM_BUMPKIN.scale);
+
+      this.currentPlayer.carry();
+    } else if (this.isMoving) {
+      this.currentPlayer.walk();
+    } else {
+      this.currentPlayer.idle();
     }
 
     super.update();
@@ -151,16 +169,6 @@ export class RecipeRushScene extends BaseScene {
           player: this.currentPlayer,
         })
     );
-  }
-
-  private updateHat() {
-    this.currentPlayer?.changeClothing({
-      ...this.currentPlayer.clothing,
-      hat: "Chef Hat",
-      updatedAt: new Date().getTime(),
-    });
-
-    if (this.currentPlayer?.clothing.hat === "Chef Hat") this.hasChefHat = true;
   }
 
   public get portalService() {

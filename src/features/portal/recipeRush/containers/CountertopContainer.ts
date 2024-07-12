@@ -57,10 +57,9 @@ export class CountertopContainer extends Phaser.GameObjects.Container {
     } else if (!this.item && this.player?.hasItem) {
       // Transfer item from the Bumpkin to the countertop
       const item = this.player?.dropItem();
-      (item as Phaser.GameObjects.Sprite).setPosition(
-        this.itemPosition.x,
-        this.itemPosition.y
-      );
+      (item as Phaser.GameObjects.Sprite)
+        .setPosition(this.itemPosition.x, this.itemPosition.y)
+        .setScale(ITEM_BUMPKIN.scale);
       item && this.add(item as Phaser.GameObjects.Sprite);
       this.item = item;
     }

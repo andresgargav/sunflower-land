@@ -1,9 +1,13 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { Coordinates, CookingStates } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
-import { BaseScene, WALKING_SPEED } from "features/world/scenes/BaseScene";
+import { BaseScene } from "features/world/scenes/BaseScene";
 import { ProgressBar } from "./ProgressBarContainer";
-import { BURNABLE_STATES, ITEM_BUMPKIN } from "../RecipeRushConstants";
+import {
+  BURNABLE_STATES,
+  ITEM_BUMPKIN,
+  PLAYER_WALKING_SPEED,
+} from "../RecipeRushConstants";
 
 interface Props {
   x: number;
@@ -86,16 +90,14 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
       scene: scene,
       duration: 2400,
       onComplete: () => {
-        this.cookingTool.playAfterRepeat(
-          `${this.spriteName}_${this.id}_idle`,
-          0
-        );
+        this.idle();
+        (this.player as BumpkinContainer).isCooking = false;
 
         this.item?.setVisible(true);
 
         this.setInteractive();
 
-        this.scene.walkingSpeed = WALKING_SPEED;
+        this.scene.walkingSpeed = PLAYER_WALKING_SPEED;
       },
     });
 
@@ -110,6 +112,14 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     this.cookingTool.play(`${spriteName}_${id}_idle`, true);
 
     scene.add.existing(this);
+  }
+
+  private idle() {
+    this.cookingTool.playAfterRepeat(`${this.spriteName}_${this.id}_idle`, 0);
+  }
+
+  private action() {
+    this.cookingTool.play(`${this.spriteName}_${this.id}_action`, true);
   }
 
   private performAction() {
@@ -128,19 +138,20 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
 
       // Transfer item from the Bumpkin to the Cooking Tool
       const item = this.player?.dropItem();
-      (item as Phaser.GameObjects.Sprite).setPosition(
-        this.itemPosition.x,
-        this.itemPosition.y - 5
-      );
+      (item as Phaser.GameObjects.Sprite)
+        .setPosition(this.itemPosition.x, this.itemPosition.y - 5)
+        .setScale(ITEM_BUMPKIN.scale);
       item && this.add(item as Phaser.GameObjects.Sprite);
       this.item = item;
 
+      // Actions of Cooking Tools that cannot be picked up
       if (!BURNABLE_STATES[this.effect]) {
         this.scene.walkingSpeed = 0;
         this.item?.setVisible(false);
       }
 
-      this.cookingTool.play(`${this.spriteName}_${this.id}_action`, true);
+      this.action();
+      this.player.isCooking = true;
 
       this.progressBar.start();
     }

@@ -7,6 +7,7 @@ import debounce from "lodash.debounce";
 import { Player } from "../types/Room";
 import { NPCName, acknowledgedNPCs } from "lib/npcs";
 import { ReactionName } from "features/pumpkinPlaza/components/Reactions";
+import { getAnimationUrl } from "../lib/animations";
 
 const NAME_ALIASES: Partial<Record<NPCName, string>> = {
   "pumpkin' pete": "pete",
@@ -38,13 +39,18 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   // Animation Keys
   private idleSpriteKey: string | undefined;
   private walkingSpriteKey: string | undefined;
+  private cookingSpriteKey: string | undefined;
+  private carryingSpriteKey: string | undefined;
   private idleAnimationKey: string | undefined;
   private walkingAnimationKey: string | undefined;
+  private cookingAnimationKey: string | undefined;
+  private carryingAnimationKey: string | undefined;
   private direction: "left" | "right" = "right";
 
   // Recipe Rush
   public hasItem = false;
   public item: Phaser.GameObjects.Sprite | null;
+  private _isCooking = false;
 
   constructor({
     scene,
@@ -134,13 +140,18 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     const keyName = tokenUriBuilder(this.clothing);
     this.idleSpriteKey = `${keyName}-bumpkin-idle-sheet`;
     this.walkingSpriteKey = `${keyName}-bumpkin-walking-sheet`;
+    this.cookingSpriteKey = `${keyName}-bumpkin-cooking-sheet`;
+    this.carryingSpriteKey = `${keyName}-bumpkin-carrying-sheet`;
     this.idleAnimationKey = `${keyName}-bumpkin-idle`;
     this.walkingAnimationKey = `${keyName}-bumpkin-walking`;
+    this.cookingAnimationKey = `${keyName}-bumpkin-cooking`;
+    this.carryingAnimationKey = `${keyName}-bumpkin-carrying`;
 
     const { sheets } = await buildNPCSheets({
       parts: this.clothing,
     });
 
+    // Idle
     if (scene.textures.exists(this.idleSpriteKey)) {
       const idle = scene.add.sprite(0, 0, this.idleSpriteKey).setOrigin(0.5);
       this.add(idle);
@@ -156,14 +167,11 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
       this.ready = true;
     } else {
-      const idleLoader = scene.load.spritesheet(
-        this.idleSpriteKey,
-        sheets.idle,
-        {
-          frameWidth: 20,
-          frameHeight: 19,
-        }
-      );
+      const url = getAnimationUrl(this.clothing, "idle");
+      const idleLoader = scene.load.spritesheet(this.idleSpriteKey, url, {
+        frameWidth: 96,
+        frameHeight: 64,
+      });
 
       idleLoader.addListener(Phaser.Loader.Events.COMPLETE, () => {
         if (
@@ -174,7 +182,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         }
 
         const idle = scene.add
-          .sprite(0, 0, this.idleSpriteKey as string)
+          .sprite(0, 2, this.idleSpriteKey as string)
           .setOrigin(0.5);
         this.add(idle);
         this.sprite = idle;
@@ -193,21 +201,55 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       });
     }
 
+    // Walk
     if (scene.textures.exists(this.walkingSpriteKey)) {
       this.createWalkingAnimation();
     } else {
-      const walkingLoader = scene.load.spritesheet(
-        this.walkingSpriteKey,
-        sheets.walking,
-        {
-          frameWidth: 20,
-          frameHeight: 19,
-        }
-      );
+      const url = getAnimationUrl(this.clothing, "walking");
+      const walkingLoader = scene.load.spritesheet(this.walkingSpriteKey, url, {
+        frameWidth: 96,
+        frameHeight: 64,
+      });
 
       walkingLoader.on(Phaser.Loader.Events.COMPLETE, () => {
         this.createWalkingAnimation();
         walkingLoader.removeAllListeners();
+      });
+    }
+
+    // Cook
+    if (scene.textures.exists(this.cookingSpriteKey)) {
+      this.createCookingAnimation();
+    } else {
+      const url = getAnimationUrl(this.clothing, "doing");
+      const cookingLoader = scene.load.spritesheet(this.cookingSpriteKey, url, {
+        frameWidth: 96,
+        frameHeight: 64,
+      });
+
+      cookingLoader.on(Phaser.Loader.Events.COMPLETE, () => {
+        this.createCookingAnimation();
+        cookingLoader.removeAllListeners();
+      });
+    }
+
+    // Carry
+    if (scene.textures.exists(this.carryingSpriteKey)) {
+      this.createCarryingAnimation();
+    } else {
+      const url = getAnimationUrl(this.clothing, "carry_none");
+      const carryingLoader = scene.load.spritesheet(
+        this.carryingSpriteKey,
+        url,
+        {
+          frameWidth: 96,
+          frameHeight: 64,
+        }
+      );
+
+      carryingLoader.on(Phaser.Loader.Events.COMPLETE, () => {
+        this.createCarryingAnimation();
+        carryingLoader.removeAllListeners();
       });
     }
 
@@ -238,6 +280,40 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       key: this.walkingAnimationKey,
       frames: this.scene.anims.generateFrameNumbers(
         this.walkingSpriteKey as string,
+        {
+          start: 0,
+          end: 7,
+        }
+      ),
+      repeat: -1,
+      frameRate: 10,
+    });
+  }
+
+  private createCookingAnimation() {
+    if (!this.scene || !this.scene.anims) return;
+
+    this.scene.anims.create({
+      key: this.cookingAnimationKey,
+      frames: this.scene.anims.generateFrameNumbers(
+        this.cookingSpriteKey as string,
+        {
+          start: 0,
+          end: 7,
+        }
+      ),
+      repeat: -1,
+      frameRate: 10,
+    });
+  }
+
+  private createCarryingAnimation() {
+    if (!this.scene || !this.scene.anims) return;
+
+    this.scene.anims.create({
+      key: this.carryingAnimationKey,
+      frames: this.scene.anims.generateFrameNumbers(
+        this.carryingSpriteKey as string,
         {
           start: 0,
           end: 7,
@@ -537,6 +613,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     );
   }
 
+  // Recipe Rush
   public pickUpItem(item: Phaser.GameObjects.Sprite) {
     this.item = item;
     this.add(item);
@@ -548,5 +625,43 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.item = null;
     this.hasItem = false;
     return item;
+  }
+
+  public cook() {
+    if (
+      this.sprite?.anims &&
+      this.scene?.anims.exists(this.cookingAnimationKey as string) &&
+      this.sprite?.anims.getName() !== this.cookingAnimationKey
+    ) {
+      try {
+        this.sprite.anims.play(this.cookingAnimationKey as string, true);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log("Bumpkin Container: Error playing cook animation: ", e);
+      }
+    }
+  }
+
+  public carry() {
+    if (
+      this.sprite?.anims &&
+      this.scene?.anims.exists(this.carryingAnimationKey as string) &&
+      this.sprite?.anims.getName() !== this.carryingAnimationKey
+    ) {
+      try {
+        this.sprite.anims.play(this.carryingAnimationKey as string, true);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log("Bumpkin Container: Error playing carry animation: ", e);
+      }
+    }
+  }
+
+  get isCooking(): boolean {
+    return this._isCooking;
+  }
+
+  set isCooking(value: boolean) {
+    this._isCooking = value;
   }
 }

@@ -1,6 +1,7 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { Coordinates } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
+import { ITEM_BUMPKIN } from "../RecipeRushConstants";
 import { BaseScene } from "features/world/scenes/BaseScene";
 
 interface Props {
@@ -46,10 +47,9 @@ export class TrashCanContainer extends Phaser.GameObjects.Container {
     if (!this.item && this.player?.hasItem) {
       // Transfer item from the Bumpkin to the trash can
       const item = this.player?.dropItem();
-      (item as Phaser.GameObjects.Sprite).setPosition(
-        this.itemPosition.x,
-        this.itemPosition.y - 2
-      );
+      (item as Phaser.GameObjects.Sprite)
+        .setPosition(this.itemPosition.x, this.itemPosition.y - 2)
+        .setScale(ITEM_BUMPKIN.scale);
       this.add(item as Phaser.GameObjects.Sprite);
       this.item = item;
 

@@ -10,6 +10,8 @@ import {
 } from "./RecipeRushTypes";
 import { calcYPosition } from "./lib/recipeRushUtils";
 
+export const PLAYER_WALKING_SPEED = 45;
+
 export const BOX_POSITION_Y_OFFSET = 3.75 / 4;
 
 const PROGRESS_BAR_WIDTH_PERCENT = 0.75;
@@ -19,7 +21,7 @@ export const PROGRESS_BAR_X =
 
 export const ITEM_BUMPKIN: ItemBumpkin = {
   x: 0,
-  y: -14,
+  y: -10,
   scale: 0.75,
 };
 

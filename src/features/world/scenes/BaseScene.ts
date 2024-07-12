@@ -145,6 +145,10 @@ export abstract class BaseScene extends Phaser.Scene {
     Phaser.Types.Physics.Arcade.ArcadePhysicsCallback
   > = {};
 
+  get isMoving() {
+    return this.movementAngle !== undefined && this.walkingSpeed !== 0;
+  }
+
   constructor(options: BaseSceneOptions) {
     if (!options.name) {
       throw new Error("Missing name in config");
@@ -214,6 +218,7 @@ export abstract class BaseScene extends Phaser.Scene {
         // gameService
         clothing: {
           ...(this.gameState.bumpkin?.equipped as BumpkinParts),
+          hat: "Chef Hat",
           updatedAt: 0,
         },
         experience: 0,
@@ -795,8 +800,6 @@ export abstract class BaseScene extends Phaser.Scene {
 
     this.sendPositionToServer();
 
-    const isMoving = this.movementAngle !== undefined;
-
     if (this.soundEffects) {
       this.soundEffects.forEach((audio) =>
         audio.setVolumeAndPan(
@@ -810,16 +813,10 @@ export abstract class BaseScene extends Phaser.Scene {
     }
 
     if (this.walkAudioController) {
-      this.walkAudioController.handleWalkSound(isMoving);
+      this.walkAudioController.handleWalkSound(this.isMoving);
     } else {
       // eslint-disable-next-line no-console
       console.error("walkAudioController is undefined");
-    }
-
-    if (isMoving) {
-      this.currentPlayer.walk();
-    } else {
-      this.currentPlayer.idle();
     }
 
     this.currentPlayer.setDepth(Math.floor(this.currentPlayer.y));
