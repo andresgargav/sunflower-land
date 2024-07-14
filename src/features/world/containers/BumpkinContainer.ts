@@ -8,6 +8,7 @@ import { Player } from "../types/Room";
 import { NPCName, acknowledgedNPCs } from "lib/npcs";
 import { ReactionName } from "features/pumpkinPlaza/components/Reactions";
 import { getAnimationUrl } from "../lib/animations";
+import { ItemContainer } from "../../portal/recipeRush/RecipeRushTypes";
 
 const NAME_ALIASES: Partial<Record<NPCName, string>> = {
   "pumpkin' pete": "pete",
@@ -49,7 +50,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
   // Recipe Rush
   public hasItem = false;
-  public item: Phaser.GameObjects.Sprite | null;
+  public item: ItemContainer | null;
   private _isCooking = false;
 
   constructor({
@@ -614,17 +615,12 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   }
 
   // Recipe Rush
-  public pickUpItem(item: Phaser.GameObjects.Sprite) {
-    this.item = item;
-    this.add(item);
-    this.hasItem = true;
+  get isCooking(): boolean {
+    return this._isCooking;
   }
 
-  public dropItem() {
-    const item = this.item;
-    this.item = null;
-    this.hasItem = false;
-    return item;
+  set isCooking(value: boolean) {
+    this._isCooking = value;
   }
 
   public cook() {
@@ -657,11 +653,16 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     }
   }
 
-  get isCooking(): boolean {
-    return this._isCooking;
+  public pickUpItem(item: ItemContainer) {
+    this.item = item;
+    this.add(item);
+    this.hasItem = true;
   }
 
-  set isCooking(value: boolean) {
-    this._isCooking = value;
+  public dropItem() {
+    const item = this.item;
+    this.item = null;
+    this.hasItem = false;
+    return item;
   }
 }

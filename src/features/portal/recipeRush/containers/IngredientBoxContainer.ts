@@ -1,6 +1,7 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { ITEM_BUMPKIN } from "../RecipeRushConstants";
+import { INGREDIENTS, ITEM_BUMPKIN } from "../RecipeRushConstants";
 import { BaseScene } from "features/world/scenes/BaseScene";
+import { IngredientContainer } from "./IngredientContainer";
 
 interface Props {
   x: number;
@@ -12,6 +13,8 @@ interface Props {
 
 export class IngredientBoxContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
+
+  scene: BaseScene;
 
   constructor({ x, y, frame, scene, player }: Props) {
     super(scene, x, y);
@@ -54,13 +57,16 @@ export class IngredientBoxContainer extends Phaser.GameObjects.Container {
   }
 
   private selectIngredient(ingredientFrame: number) {
-    if (!this.player?.hasItem) {
-      const spriteName = "ingredients";
-      const ingredient = this.scene.add
-        .sprite(ITEM_BUMPKIN.x, ITEM_BUMPKIN.y, spriteName, ingredientFrame)
-        .setScale(ITEM_BUMPKIN.scale);
+    if (this.player?.hasItem) return;
 
-      this.player?.pickUpItem(ingredient);
-    }
+    const ingredient = new IngredientContainer({
+      x: ITEM_BUMPKIN.x,
+      y: ITEM_BUMPKIN.y,
+      frame: ingredientFrame,
+      scene: this.scene,
+      name: INGREDIENTS[ingredientFrame],
+    });
+
+    this.player?.pickUpItem(ingredient);
   }
 }

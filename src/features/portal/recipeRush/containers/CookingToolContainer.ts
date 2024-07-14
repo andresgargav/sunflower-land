@@ -1,5 +1,5 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { Coordinates, CookingStates } from "../RecipeRushTypes";
+import { Coordinates, CookingStates, CookingTools } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { BaseScene } from "features/world/scenes/BaseScene";
 import { ProgressBar } from "./ProgressBarContainer";
@@ -8,6 +8,7 @@ import {
   ITEM_BUMPKIN,
   PLAYER_WALKING_SPEED,
 } from "../RecipeRushConstants";
+import { IngredientContainer } from "./IngredientContainer";
 
 interface Props {
   x: number;
@@ -20,6 +21,8 @@ interface Props {
   itemPosition: Coordinates;
   id: number;
   effect: CookingStates;
+  duration: number;
+  name: CookingTools;
   player?: BumpkinContainer;
 }
 
@@ -28,8 +31,10 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   private spriteName: string;
   private itemPosition: Coordinates;
   private effect: CookingStates;
+  private duration: number;
+  private cookingToolName: CookingTools;
   private player?: BumpkinContainer;
-  private item: Phaser.GameObjects.Sprite | null;
+  private ingredient: IngredientContainer | null;
   private cookingTool: Phaser.GameObjects.Sprite;
   private progressBar: ProgressBar;
 
@@ -46,6 +51,8 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     itemPosition,
     id,
     effect,
+    duration,
+    name,
     player,
   }: Props) {
     super(scene, x + SQUARE_WIDTH / 2, y + SQUARE_WIDTH / 2);
@@ -54,8 +61,10 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     this.itemPosition = itemPosition;
     this.id = id;
     this.effect = effect;
+    this.duration = duration;
+    this.cookingToolName = name;
     this.player = player;
-    this.item = null;
+    this.ingredient = null;
 
     // Cooking Tool Sprite
     this.cookingTool = scene.add.sprite(
@@ -88,12 +97,12 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
       x: this.itemPosition.x - SQUARE_WIDTH / 2,
       y: this.itemPosition.y + SQUARE_WIDTH / 2 - 1,
       scene: scene,
-      duration: 2400,
+      duration: this.duration,
       onComplete: () => {
         this.idle();
         (this.player as BumpkinContainer).isCooking = false;
 
-        this.item?.setVisible(true);
+        this.ingredient?.setVisible(true);
 
         this.setInteractive();
 
@@ -115,7 +124,7 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   }
 
   private idle() {
-    this.cookingTool.playAfterRepeat(`${this.spriteName}_${this.id}_idle`, 0);
+    this.cookingTool.play(`${this.spriteName}_${this.id}_idle`, true);
   }
 
   private action() {
@@ -123,31 +132,30 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   }
 
   private performAction() {
-    if (this.item && !this.player?.hasItem) {
-      // Transfer item from the Cooking Tool to the Bumpkin
-      const item = this.item;
-      (item as Phaser.GameObjects.Sprite).setPosition(
-        ITEM_BUMPKIN.x,
-        ITEM_BUMPKIN.y
-      );
-      this.remove(item as Phaser.GameObjects.Sprite);
-      this.item = null;
-      this.player?.pickUpItem(item);
-    } else if (!this.item && this.player?.hasItem) {
+    if (this.ingredient && !this.player?.hasItem) {
+      // Transfer ingredient from the Cooking Tool to the Bumpkin
+      const ingredient = this.ingredient;
+      ingredient?.setPosition(ITEM_BUMPKIN.x, ITEM_BUMPKIN.y);
+      this.remove(ingredient);
+      this.ingredient = null;
+      this.player?.pickUpItem(ingredient);
+    } else if (!this.ingredient && this.player?.hasItem) {
       this.disableInteractive();
 
-      // Transfer item from the Bumpkin to the Cooking Tool
-      const item = this.player?.dropItem();
-      (item as Phaser.GameObjects.Sprite)
-        .setPosition(this.itemPosition.x, this.itemPosition.y - 5)
-        .setScale(ITEM_BUMPKIN.scale);
-      item && this.add(item as Phaser.GameObjects.Sprite);
-      this.item = item;
+      // Transfer ingredient from the Bumpkin to the Cooking Tool
+      const ingredient = this.player?.dropItem();
+      if (ingredient instanceof IngredientContainer) {
+        ingredient
+          ?.setPosition(this.itemPosition.x, this.itemPosition.y - 5)
+          .setScale(ITEM_BUMPKIN.scale);
+        ingredient && this.add(ingredient);
+        this.ingredient = ingredient;
+      }
 
       // Actions of Cooking Tools that cannot be picked up
       if (!BURNABLE_STATES[this.effect]) {
         this.scene.walkingSpeed = 0;
-        this.item?.setVisible(false);
+        this.ingredient?.setVisible(false);
       }
 
       this.action();

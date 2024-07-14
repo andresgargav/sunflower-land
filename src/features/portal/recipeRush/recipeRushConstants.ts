@@ -5,10 +5,13 @@ import {
   SpriteConfig,
   SpritePositions,
   SpritePositionConfig,
-  CookingTool,
+  CookingToolInfo,
   CookingStates,
+  CookingTools,
 } from "./RecipeRushTypes";
 import { calcYPosition } from "./lib/recipeRushUtils";
+import { CropName } from "features/game/types/crops";
+import { FishName } from "features/game/types/fishing";
 
 export const PLAYER_WALKING_SPEED = 45;
 
@@ -23,6 +26,23 @@ export const ITEM_BUMPKIN: ItemBumpkin = {
   x: 0,
   y: -10,
   scale: 0.75,
+};
+
+export const INGREDIENTS: Record<number, CropName | FishName> = {
+  0: "Sunflower",
+  1: "Potato",
+  2: "Pumpkin",
+  3: "Carrot",
+  4: "Cabbage",
+  5: "Beetroot",
+  6: "Cauliflower",
+  7: "Parsnip",
+  8: "Radish",
+  9: "Wheat",
+  10: "Kale",
+  11: "Anchovy",
+  12: "Red Snapper",
+  13: "Tuna",
 };
 
 export const INGREDIENT_BOXES_CONFIGURATIONS: SpriteConfig[] = [
@@ -104,18 +124,48 @@ export const POSITION_CONFIGURATIONS: Record<SpritePositions, Coordinates> = {
 };
 
 export const BURNABLE_STATES: Record<CookingStates, boolean> = {
+  RAW: false,
+  CHOPPED: false,
   ROASTED: true,
   FRIED: true,
   BOILED: true,
-  CHOPPED: false,
 };
 
-export const CUTTING_BOARD: CookingTool = {
-  spriteName: "cutting_board",
-  animStart: 1,
-  animEnd: 5,
-  effect: "CHOPPED",
-};
+export const COOKING_TOOLS_INFORMATION: Record<CookingTools, CookingToolInfo> =
+  {
+    "Cutting Board": {
+      spriteName: "cutting_board",
+      animStart: 1,
+      animEnd: 5,
+      effect: "CHOPPED",
+      duration: 2500,
+      canPickUp: false,
+    },
+    Pot: {
+      spriteName: "pot",
+      animStart: 1,
+      animEnd: 5,
+      effect: "BOILED",
+      duration: 2500,
+      canPickUp: true,
+    },
+    Pan: {
+      spriteName: "pan",
+      animStart: 1,
+      animEnd: 5,
+      effect: "ROASTED",
+      duration: 2500,
+      canPickUp: true,
+    },
+    "Deep Fryer": {
+      spriteName: "deep_fryer",
+      animStart: 1,
+      animEnd: 5,
+      effect: "FRIED",
+      duration: 2500,
+      canPickUp: true,
+    },
+  };
 
 export const CUTTING_BOARDS_CONFIGURATIONS: SpritePositionConfig[] = [
   { frame: 0, x: SQUARE_WIDTH * 17, y: SQUARE_WIDTH * 5, pos: "MT" },

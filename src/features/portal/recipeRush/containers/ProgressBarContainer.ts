@@ -86,7 +86,7 @@ export class ProgressBar extends Phaser.GameObjects.Container {
 
   private updateProgress(value: number) {
     this.progressBar.clear();
-    this.progressBar.fillStyle(0x57b14b);
+    this.progressBar.fillStyle(0x63c74d);
     this.progressBar.fillRect(PROGRESS_BAR_X + 2, -2, value, 1);
   }
 

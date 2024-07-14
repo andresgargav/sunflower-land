@@ -1,5 +1,5 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { Coordinates } from "../RecipeRushTypes";
+import { Coordinates, ItemContainer } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { ITEM_BUMPKIN } from "../RecipeRushConstants";
 import { BaseScene } from "features/world/scenes/BaseScene";
@@ -16,7 +16,9 @@ interface Props {
 export class CountertopContainer extends Phaser.GameObjects.Container {
   private itemPosition: Coordinates;
   private player?: BumpkinContainer;
-  private item: Phaser.GameObjects.Sprite | null;
+  private item: ItemContainer | null;
+
+  scene: BaseScene;
 
   constructor({ x, y, frame, itemPosition, scene, player }: Props) {
     super(scene, x + SQUARE_WIDTH / 2, y + SQUARE_WIDTH / 2);
@@ -47,20 +49,17 @@ export class CountertopContainer extends Phaser.GameObjects.Container {
     if (this.item && !this.player?.hasItem) {
       // Transfer item from the countertop to the Bumpkin
       const item = this.item;
-      (item as Phaser.GameObjects.Sprite).setPosition(
-        ITEM_BUMPKIN.x,
-        ITEM_BUMPKIN.y
-      );
-      this.remove(item as Phaser.GameObjects.Sprite);
+      item.setPosition(ITEM_BUMPKIN.x, ITEM_BUMPKIN.y);
+      this.remove(item);
       this.item = null;
       this.player?.pickUpItem(item);
     } else if (!this.item && this.player?.hasItem) {
       // Transfer item from the Bumpkin to the countertop
       const item = this.player?.dropItem();
-      (item as Phaser.GameObjects.Sprite)
-        .setPosition(this.itemPosition.x, this.itemPosition.y)
+      item
+        ?.setPosition(this.itemPosition.x, this.itemPosition.y)
         .setScale(ITEM_BUMPKIN.scale);
-      item && this.add(item as Phaser.GameObjects.Sprite);
+      item && this.add(item);
       this.item = item;
     }
   }

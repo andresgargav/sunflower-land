@@ -3,6 +3,8 @@ import { Coordinates } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { ITEM_BUMPKIN } from "../RecipeRushConstants";
 import { BaseScene } from "features/world/scenes/BaseScene";
+import { IngredientContainer } from "./IngredientContainer";
+import { RecipeContainer } from "./RecipeContainer";
 
 interface Props {
   x: number;
@@ -16,7 +18,9 @@ interface Props {
 export class TrashCanContainer extends Phaser.GameObjects.Container {
   private itemPosition: Coordinates;
   private player?: BumpkinContainer;
-  private item: Phaser.GameObjects.Sprite | null;
+  private item: IngredientContainer | RecipeContainer | null;
+
+  scene: BaseScene;
 
   constructor({ x, y, frame, itemPosition, scene, player }: Props) {
     super(scene, x + SQUARE_WIDTH / 2, y + SQUARE_WIDTH / 2);
@@ -47,17 +51,22 @@ export class TrashCanContainer extends Phaser.GameObjects.Container {
     if (!this.item && this.player?.hasItem) {
       // Transfer item from the Bumpkin to the trash can
       const item = this.player?.dropItem();
-      (item as Phaser.GameObjects.Sprite)
-        .setPosition(this.itemPosition.x, this.itemPosition.y - 2)
-        .setScale(ITEM_BUMPKIN.scale);
-      this.add(item as Phaser.GameObjects.Sprite);
-      this.item = item;
+      if (
+        item instanceof IngredientContainer ||
+        item instanceof RecipeContainer
+      ) {
+        item
+          ?.setPosition(this.itemPosition.x, this.itemPosition.y - 2)
+          .setScale(ITEM_BUMPKIN.scale);
+        item && this.add(item);
+        this.item = item;
 
-      setTimeout(() => {
-        this.remove(item as Phaser.GameObjects.Sprite);
-        item?.destroy();
-        this.item = null;
-      }, 500);
+        setTimeout(() => {
+          item && this.remove(item);
+          item?.destroy();
+          this.item = null;
+        }, 500);
+      }
     }
   }
 }

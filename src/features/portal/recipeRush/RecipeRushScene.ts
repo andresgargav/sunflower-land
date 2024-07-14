@@ -7,7 +7,7 @@ import {
   COUNTERTOPS_CONFIGURATIONS,
   POSITION_CONFIGURATIONS,
   TRASH_CANS_CONFIGURATIONS,
-  CUTTING_BOARD,
+  COOKING_TOOLS_INFORMATION,
   CUTTING_BOARDS_CONFIGURATIONS,
   ITEM_BUMPKIN,
   PLAYER_WALKING_SPEED,
@@ -16,6 +16,7 @@ import { CountertopContainer } from "./containers/CountertopContainer";
 import { IngredientBoxContainer } from "./containers/IngredientBoxContainer";
 import { TrashCanContainer } from "./containers/TrashCanContainer";
 import { CookingToolContainer } from "./containers/CookingToolContainer";
+import { CookingTools } from "./RecipeRushTypes";
 
 export const NPCS: NPCBumpkin[] = [
   {
@@ -80,7 +81,7 @@ export class RecipeRushScene extends BaseScene {
 
     this.addCropBoxes();
 
-    // Cooking tools
+    // Cooking Tools
     this.addCuttingBoards();
 
     this.walkingSpeed = PLAYER_WALKING_SPEED;
@@ -153,20 +154,20 @@ export class RecipeRushScene extends BaseScene {
   }
 
   private addCuttingBoards() {
+    const cookingToolName: CookingTools = "Cutting Board";
+
     CUTTING_BOARDS_CONFIGURATIONS.forEach(
       (config, id) =>
         new CookingToolContainer({
           x: config.x,
           y: config.y,
           frame: config.frame,
-          animStart: CUTTING_BOARD.animStart,
-          animEnd: CUTTING_BOARD.animEnd,
-          id: id,
-          spriteName: CUTTING_BOARD.spriteName,
-          itemPosition: POSITION_CONFIGURATIONS[config.pos],
           scene: this,
-          effect: CUTTING_BOARD.effect,
+          itemPosition: POSITION_CONFIGURATIONS[config.pos],
+          id: id,
+          name: cookingToolName,
           player: this.currentPlayer,
+          ...COOKING_TOOLS_INFORMATION[cookingToolName],
         })
     );
   }

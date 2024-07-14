@@ -1,3 +1,7 @@
+import { CookingToolContainer } from "./containers/CookingToolContainer";
+import { IngredientContainer } from "./containers/IngredientContainer";
+import { RecipeContainer } from "./containers/RecipeContainer";
+
 export interface Coordinates {
   x: number;
   y: number;
@@ -17,17 +21,26 @@ export type SpritePositions =
   | "L"
   | "LB";
 
-export type CookingStates = "ROASTED" | "FRIED" | "BOILED" | "CHOPPED";
+export type CookingTools = "Cutting Board" | "Pot" | "Pan" | "Deep Fryer";
+
+export type CookingStates = "RAW" | "CHOPPED" | "ROASTED" | "FRIED" | "BOILED";
 
 export type SpriteConfig = { frame: number } & Coordinates;
 
 export type SpritePositionConfig = SpriteConfig & { pos: SpritePositions };
 
-export type CookingTool = {
+export type CookingToolInfo = {
   spriteName: string;
   animStart: number;
   animEnd: number;
   effect: CookingStates;
+  duration: number;
+  canPickUp: boolean;
 };
 
 export type ItemBumpkin = Coordinates & { scale: number };
+
+export type ItemContainer =
+  | IngredientContainer
+  | CookingToolContainer
+  | RecipeContainer;
