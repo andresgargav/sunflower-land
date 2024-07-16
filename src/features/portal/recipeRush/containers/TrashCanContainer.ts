@@ -31,23 +31,21 @@ export class TrashCanContainer extends Phaser.GameObjects.Container {
 
     // Trash Can Highlight Sprite
     const spriteName = "highlights";
-    const trashCan = scene.add
-      .sprite(-1, 0, spriteName, frame)
-      .setVisible(false);
+    const sprite = scene.add.sprite(-1, 0, spriteName, frame).setVisible(false);
 
     // Events
-    this.on("pointerover", () => trashCan.setVisible(true));
-    this.on("pointerout", () => trashCan.setVisible(false));
-    this.on("pointerdown", this.removeObject);
+    this.on("pointerover", () => sprite.setVisible(true));
+    this.on("pointerout", () => sprite.setVisible(false));
+    this.on("pointerdown", this.removeItem);
 
-    this.setSize(trashCan.width, trashCan.height);
+    this.setSize(sprite.width, sprite.height);
     this.setInteractive({ cursor: "pointer" });
-    this.add(trashCan);
+    this.add(sprite);
 
     scene.add.existing(this);
   }
 
-  private removeObject() {
+  private removeItem() {
     if (!this.item && this.player?.hasItem) {
       // Transfer item from the Bumpkin to the trash can
       const item = this.player?.dropItem();

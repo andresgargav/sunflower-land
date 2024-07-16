@@ -9,7 +9,6 @@ import {
   TRASH_CANS_CONFIGURATIONS,
   COOKING_TOOLS_INFORMATION,
   CUTTING_BOARDS_CONFIGURATIONS,
-  ITEM_BUMPKIN,
   PLAYER_WALKING_SPEED,
 } from "./RecipeRushConstants";
 import { CountertopContainer } from "./containers/CountertopContainer";
@@ -17,6 +16,8 @@ import { IngredientBoxContainer } from "./containers/IngredientBoxContainer";
 import { TrashCanContainer } from "./containers/TrashCanContainer";
 import { CookingToolContainer } from "./containers/CookingToolContainer";
 import { CookingTools } from "./RecipeRushTypes";
+import { OutlineWhitePipeline } from "./shaders/OutlineWhiteShader";
+import { IngredientContainer } from "./containers/IngredientContainer";
 
 export const NPCS: NPCBumpkin[] = [
   {
@@ -47,8 +48,8 @@ export class RecipeRushScene extends BaseScene {
     super.preload();
 
     this.load.spritesheet("ingredients", "world/ingredients.png", {
-      frameWidth: 16,
-      frameHeight: 16,
+      frameWidth: 18,
+      frameHeight: 18,
     });
 
     this.load.spritesheet("ingredient_boxes", "world/ingredient_boxes.png", {
@@ -75,6 +76,8 @@ export class RecipeRushScene extends BaseScene {
 
     super.create();
 
+    this.initialiseShaders();
+
     this.addCountertops();
 
     this.addTrashCans();
@@ -95,13 +98,7 @@ export class RecipeRushScene extends BaseScene {
     if (this.currentPlayer.isCooking) {
       this.currentPlayer.cook();
     } else if (this.currentPlayer.hasItem) {
-      const directionMultiplier =
-        this.currentPlayer.directionFacing === "left" ? -1 : 1;
-
-      this.currentPlayer.item
-        ?.setX(directionMultiplier)
-        .setScale(ITEM_BUMPKIN.scale * directionMultiplier, ITEM_BUMPKIN.scale);
-
+      (this.currentPlayer.item as IngredientContainer).adjustWithPlayer();
       this.currentPlayer.carry();
     } else if (this.isMoving) {
       this.currentPlayer.walk();
@@ -110,6 +107,19 @@ export class RecipeRushScene extends BaseScene {
     }
 
     super.update();
+  }
+
+  private initialiseShaders() {
+    if (
+      !(
+        this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer
+      ).pipelines.has("WhitenPipeline")
+    ) {
+      (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).pipelines.add(
+        "WhitenPipeline",
+        new OutlineWhitePipeline(this.game)
+      );
+    }
   }
 
   private addCountertops() {

@@ -2,6 +2,7 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { INGREDIENTS, ITEM_BUMPKIN } from "../RecipeRushConstants";
 import { BaseScene } from "features/world/scenes/BaseScene";
 import { IngredientContainer } from "./IngredientContainer";
+import { checkDistance } from "../lib/recipeRushUtils";
 
 interface Props {
   x: number;
@@ -13,6 +14,7 @@ interface Props {
 
 export class IngredientBoxContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
+  private sprite: Phaser.GameObjects.Sprite;
 
   scene: BaseScene;
 
@@ -23,37 +25,22 @@ export class IngredientBoxContainer extends Phaser.GameObjects.Container {
 
     // Ingredient Box Sprite
     const spriteName = "ingredient_boxes";
-    const ingredientBox = scene.add
-      .sprite(0, 0, spriteName, frame)
-      .setOrigin(0);
+    this.sprite = scene.add.sprite(0, 0, spriteName, frame).setOrigin(0);
 
     // Events
-    ingredientBox
+    this.sprite
       .setInteractive({ cursor: "pointer" })
-      .on(
-        "pointerdown",
-        () =>
-          this.checkDistanceToPlayer(this, 30) &&
-          this.selectIngredient(Number(ingredientBox.frame.name))
-      );
+      .on("pointerdown", this.handleClick.bind(this));
 
-    this.setSize(ingredientBox.width, ingredientBox.height);
-    this.add(ingredientBox);
+    this.setSize(this.sprite.width, this.sprite.height);
+    this.add(this.sprite);
 
     scene.add.existing(this);
   }
 
-  private checkDistanceToPlayer(
-    container: Phaser.GameObjects.Container,
-    maxDistance: number
-  ) {
-    const distance = Phaser.Math.Distance.BetweenPoints(
-      container,
-      this.player as BumpkinContainer
-    );
-
-    if (distance > maxDistance) return false;
-    return true;
+  private handleClick() {
+    checkDistance(this, this.player as BumpkinContainer, 30) &&
+      this.selectIngredient(Number(this.sprite.frame.name));
   }
 
   private selectIngredient(ingredientFrame: number) {
@@ -65,6 +52,7 @@ export class IngredientBoxContainer extends Phaser.GameObjects.Container {
       frame: ingredientFrame,
       scene: this.scene,
       name: INGREDIENTS[ingredientFrame],
+      player: this.player,
     });
 
     this.player?.pickUpItem(ingredient);

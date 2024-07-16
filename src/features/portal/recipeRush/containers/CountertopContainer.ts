@@ -29,38 +29,46 @@ export class CountertopContainer extends Phaser.GameObjects.Container {
 
     // Countertop Highlight Sprite
     const spriteName = "highlights";
-    const countertop = scene.add
-      .sprite(0, 0, spriteName, frame)
-      .setVisible(false);
+    const sprite = scene.add.sprite(0, 0, spriteName, frame).setVisible(false);
 
     // Events
-    this.on("pointerover", () => countertop.setVisible(true));
-    this.on("pointerout", () => countertop.setVisible(false));
-    this.on("pointerdown", this.handleCountertopClick);
+    this.on("pointerover", () => sprite.setVisible(true));
+    this.on("pointerout", () => sprite.setVisible(false));
+    this.on("pointerdown", this.handleClick);
 
-    this.setSize(countertop.width, countertop.height);
+    this.setSize(sprite.width, sprite.height);
     this.setInteractive({ cursor: "pointer" });
-    this.add(countertop);
+    this.add(sprite);
 
     scene.add.existing(this);
   }
 
-  private handleCountertopClick() {
+  private handleClick() {
     if (this.item && !this.player?.hasItem) {
       // Transfer item from the countertop to the Bumpkin
-      const item = this.item;
-      item.setPosition(ITEM_BUMPKIN.x, ITEM_BUMPKIN.y);
-      this.remove(item);
-      this.item = null;
-      this.player?.pickUpItem(item);
+      this.moveItemToPlayer();
     } else if (!this.item && this.player?.hasItem) {
       // Transfer item from the Bumpkin to the countertop
-      const item = this.player?.dropItem();
-      item
-        ?.setPosition(this.itemPosition.x, this.itemPosition.y)
-        .setScale(ITEM_BUMPKIN.scale);
-      item && this.add(item);
-      this.item = item;
+      this.moveItemToCountertop();
     }
+  }
+
+  private moveItemToPlayer() {
+    if (!this.item) return;
+
+    const item = this.item;
+    item.setPosition(ITEM_BUMPKIN.x, ITEM_BUMPKIN.y);
+    this.remove(item);
+    this.item = null;
+    this.player?.pickUpItem(item);
+  }
+
+  private moveItemToCountertop() {
+    const item = this.player?.dropItem();
+    item
+      ?.setPosition(this.itemPosition.x, this.itemPosition.y)
+      .setScale(ITEM_BUMPKIN.scale);
+    item && this.add(item);
+    this.item = item as ItemContainer;
   }
 }
