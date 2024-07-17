@@ -1,6 +1,5 @@
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { SpeechBubble } from "./SpeechBubble";
-import { buildNPCSheets } from "features/bumpkins/actions/buildNPCSheets";
 import { tokenUriBuilder } from "lib/utils/tokenUriBuilder";
 import { Label } from "./Label";
 import debounce from "lodash.debounce";
@@ -42,10 +41,12 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   private walkingSpriteKey: string | undefined;
   private cookingSpriteKey: string | undefined;
   private carryingSpriteKey: string | undefined;
+  private carryingIdleSpriteKey: string | undefined;
   private idleAnimationKey: string | undefined;
   private walkingAnimationKey: string | undefined;
   private cookingAnimationKey: string | undefined;
   private carryingAnimationKey: string | undefined;
+  private carryingIdleAnimationKey: string | undefined;
   private direction: "left" | "right" = "right";
 
   // Recipe Rush
@@ -147,10 +148,12 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.walkingSpriteKey = `${keyName}-bumpkin-walking-sheet`;
     this.cookingSpriteKey = `${keyName}-bumpkin-cooking-sheet`;
     this.carryingSpriteKey = `${keyName}-bumpkin-carrying-sheet`;
+    this.carryingIdleSpriteKey = `${keyName}-bumpkin-carrying-idle-sheet`;
     this.idleAnimationKey = `${keyName}-bumpkin-idle`;
     this.walkingAnimationKey = `${keyName}-bumpkin-walking`;
     this.cookingAnimationKey = `${keyName}-bumpkin-cooking`;
     this.carryingAnimationKey = `${keyName}-bumpkin-carrying`;
+    this.carryingIdleAnimationKey = `${keyName}-bumpkin-carrying-idle`;
 
     // const { sheets } = await buildNPCSheets({
     //   parts: this.clothing,
@@ -262,6 +265,26 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       });
     }
 
+    // Carry idle
+    if (scene.textures.exists(this.carryingIdleSpriteKey)) {
+      this.createCarryingIdleAnimation();
+    } else {
+      const url = getAnimationUrl(this.clothing, "carry_none");
+      const carryingIdleLoader = scene.load.spritesheet(
+        this.carryingIdleSpriteKey,
+        url,
+        {
+          frameWidth: 96,
+          frameHeight: 64,
+        }
+      );
+
+      carryingIdleLoader.on(Phaser.Loader.Events.COMPLETE, () => {
+        this.createCarryingIdleAnimation();
+        carryingIdleLoader.removeAllListeners();
+      });
+    }
+
     scene.load.start();
   }
 
@@ -330,6 +353,23 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       ),
       repeat: -1,
       frameRate: 10,
+    });
+  }
+
+  private createCarryingIdleAnimation() {
+    if (!this.scene || !this.scene.anims) return;
+
+    this.scene.anims.create({
+      key: this.carryingIdleAnimationKey,
+      frames: this.scene.anims.generateFrameNumbers(
+        this.carryingIdleSpriteKey as string,
+        {
+          start: 0,
+          end: 1,
+        }
+      ),
+      repeat: -1,
+      frameRate: 3,
     });
   }
 
@@ -667,6 +707,24 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log("Bumpkin Container: Error playing carry animation: ", e);
+      }
+    }
+  }
+
+  public carryIdle() {
+    if (
+      this.sprite?.anims &&
+      this.scene?.anims.exists(this.carryingIdleAnimationKey as string) &&
+      this.sprite?.anims.getName() !== this.carryingIdleAnimationKey
+    ) {
+      try {
+        this.sprite.anims.play(this.carryingIdleAnimationKey as string, true);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(
+          "Bumpkin Container: Error playing carry idle animation: ",
+          e
+        );
       }
     }
   }

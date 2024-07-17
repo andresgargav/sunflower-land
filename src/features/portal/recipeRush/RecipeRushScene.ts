@@ -101,7 +101,9 @@ export class RecipeRushScene extends BaseScene {
       this.currentPlayer.cook();
     } else if (this.currentPlayer.hasItem) {
       (this.currentPlayer.item as IngredientContainer).adjustWithPlayer();
-      this.currentPlayer.carry();
+      this.isMoving
+        ? this.currentPlayer.carry()
+        : this.currentPlayer.carryIdle();
     } else if (this.isMoving) {
       this.currentPlayer.walk();
     } else {
