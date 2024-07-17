@@ -22,6 +22,11 @@ export const PROGRESS_BAR_WIDTH = SQUARE_WIDTH * PROGRESS_BAR_WIDTH_PERCENT;
 export const PROGRESS_BAR_X =
   (SQUARE_WIDTH * (1 - PROGRESS_BAR_WIDTH_PERCENT)) / 2;
 
+export const EXPRESSION_ITEM: Coordinates = {
+  x: 0,
+  y: -14,
+};
+
 export const ITEM_BUMPKIN: ItemBumpkin = {
   x: 0,
   y: -10,
@@ -121,6 +126,14 @@ export const POSITION_CONFIGURATIONS: Record<SpritePositions, Coordinates> = {
   LT: { x: 2, y: 1 }, // Left - Top
   L: { x: 2, y: -1 }, // Left
   LB: { x: 2, y: -2 }, // Left - Bottom
+};
+
+export const ALLOWED_TRANSITIONS: Record<CookingStates, CookingStates[]> = {
+  RAW: ["CHOPPED"],
+  CHOPPED: ["FRIED", "BOILED", "ROASTED"],
+  FRIED: [], // Final state
+  BOILED: [], // Final state
+  ROASTED: [], // Final state
 };
 
 export const BURNABLE_STATES: Record<CookingStates, boolean> = {

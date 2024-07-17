@@ -3,7 +3,11 @@ import { Coordinates, CookingStates, CookingTools } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { BaseScene } from "features/world/scenes/BaseScene";
 import { ProgressBar } from "./ProgressBarContainer";
-import { ITEM_BUMPKIN, PLAYER_WALKING_SPEED } from "../RecipeRushConstants";
+import {
+  ALLOWED_TRANSITIONS,
+  ITEM_BUMPKIN,
+  PLAYER_WALKING_SPEED,
+} from "../RecipeRushConstants";
 import { IngredientContainer } from "./IngredientContainer";
 
 interface Props {
@@ -116,6 +120,7 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   private onProgressComplete() {
     this.playIdle();
     (this.player as BumpkinContainer).isCooking = false;
+    this.ingredient?.applyHighlight();
     this.ingredient?.setVisible(true);
     this.setInteractive();
     this.scene.walkingSpeed = PLAYER_WALKING_SPEED;
@@ -136,7 +141,6 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     } else if (!this.ingredient && this.player?.hasItem) {
       // Transfer ingredient from the Bumpkin to the Cooking Tool
       this.moveItemToTool();
-      this.handleActions();
     }
   }
 
@@ -145,12 +149,20 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     if (!ingredient) return;
 
     ingredient.setPosition(ITEM_BUMPKIN.x, ITEM_BUMPKIN.y);
+    ingredient.removeHighlight();
     this.remove(ingredient);
     this.ingredient = null;
     this.player?.pickUpItem(ingredient);
   }
 
   private moveItemToTool() {
+    const playerItem = this.player?.item as IngredientContainer;
+    if (
+      !ALLOWED_TRANSITIONS[playerItem.ingredientState].includes(this.effect)
+    ) {
+      return;
+    }
+
     const ingredient = this.player?.dropItem();
     if (ingredient instanceof IngredientContainer) {
       ingredient
@@ -158,6 +170,8 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
         .setScale(ITEM_BUMPKIN.scale);
       this.add(ingredient);
       this.ingredient = ingredient;
+
+      this.handleActions();
     }
   }
 

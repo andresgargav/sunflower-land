@@ -1,7 +1,8 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { CookingStates } from "../RecipeRushTypes";
 import { BaseScene } from "features/world/scenes/BaseScene";
-import { ITEM_BUMPKIN } from "../RecipeRushConstants";
+import { EXPRESSION_ITEM, ITEM_BUMPKIN } from "../RecipeRushConstants";
+import { AlertContainer } from "./AlertContainer";
 
 interface Props {
   x: number;
@@ -15,11 +16,11 @@ interface Props {
 export class IngredientContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   private ingredientName: string;
-  private ingredientState: CookingStates;
-  private border = false;
+  private alert: AlertContainer;
 
   scene: BaseScene;
   sprite: Phaser.GameObjects.Sprite;
+  ingredientState: CookingStates;
 
   constructor({ x, y, frame, scene, name, player }: Props) {
     super(scene, x, y);
@@ -32,16 +33,27 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
     const spriteName = "ingredients";
     this.sprite = scene.add.sprite(0, 0, spriteName, frame);
 
+    // Alert
+    this.alert = new AlertContainer({
+      x: EXPRESSION_ITEM.x,
+      y: EXPRESSION_ITEM.y,
+      scene: scene,
+    });
+
     this.setSize(this.sprite.width, this.sprite.height);
     this.add(this.sprite);
   }
 
-  applyOutline() {
+  applyHighlight() {
     this.sprite.setPipeline("WhitenPipeline");
+    this.alert.createBuzzTween();
+    this.add(this.alert);
   }
 
-  removeOutline() {
+  removeHighlight() {
     this.sprite.resetPipeline();
+    this.alert.destroyBuzzTween();
+    this.remove(this.alert);
   }
 
   adjustWithPlayer() {

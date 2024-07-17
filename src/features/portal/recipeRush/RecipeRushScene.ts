@@ -62,6 +62,8 @@ export class RecipeRushScene extends BaseScene {
       frameHeight: 16,
     });
 
+    this.load.image("expression_alerted", "world/expression_alerted.png");
+
     // Cooking tools and its actions
     this.load.spritesheet("cutting_board", "world/cutting_board.png", {
       frameWidth: 16,
