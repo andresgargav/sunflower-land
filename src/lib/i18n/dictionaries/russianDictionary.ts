@@ -2179,6 +2179,8 @@ const factions: Record<Factions, string> = {
   "faction.pet.newRequests": ENGLISH_TERMS["faction.pet.newRequests"],
   "faction.pet.streak": ENGLISH_TERMS["faction.pet.streak"],
   "faction.pet.wakes.in": ENGLISH_TERMS["faction.pet.wakes.in"],
+  "faction.pet.contributingMember":
+    ENGLISH_TERMS["faction.pet.contributingMember"],
 };
 
 const factionShopDescription: Record<FactionShopDescription, string> = {
@@ -2879,6 +2881,13 @@ const guideFactionPet: Record<GuideFactionPet, string> = {
     "Once the faction reaches a streak of 3 or more weeks, an XP bonus will be given to each contributing faction member when their bumpkin eats!",
   "guide.factionPet.five":
     "You will be awared marks for each food delivered. Every time you deliver the reward will reduce by 2. These rewards will reset daily. Players with an emblem bonus will get an additional bonus based on their faction bonus rank.",
+  "guide.factionPet.six": ENGLISH_TERMS["guide.factionPet.six"],
+  "guide.streak.beyond": ENGLISH_TERMS["guide.streak.beyond"],
+  "guide.streak.one": ENGLISH_TERMS["guide.streak.one"],
+  "guide.streak.two": ENGLISH_TERMS["guide.streak.two"],
+  "guide.streak.three": ENGLISH_TERMS["guide.streak.three"],
+  "guide.streak.four": ENGLISH_TERMS["guide.streak.four"],
+  "guide.streak.furtherInfo": ENGLISH_TERMS["guide.streak.furtherInfo"],
 };
 
 const guideTerms: Record<GuideTerms, string> = {
@@ -5165,13 +5174,14 @@ const world: Record<World, string> = {
     "To interact with a Bumpkin or an object, walk near it and click it",
   "world.intro.seven":
     "No harrasment, swearing or bullying. Thank you for respecting others.",
-  "world.plaza": "Plaza",
-  "world.beach": "Beach",
-  "world.woodlands": "Woodlands",
-  "world.retreat": "Retreat",
-  "world.home": "Home",
-  "world.kingdom": "Kingdom",
-  "world.travelTo": "Travel to {{location}}",
+  "world.plaza": ENGLISH_TERMS["world.plaza"],
+  "world.beach": ENGLISH_TERMS["world.beach"],
+  "world.retreat": ENGLISH_TERMS["world.retreat"],
+  "world.woodlands": ENGLISH_TERMS["world.woodlands"],
+  "world.home": ENGLISH_TERMS["world.home"],
+  "world.kingdom": ENGLISH_TERMS["world.kingdom"],
+  "world.faction": ENGLISH_TERMS["world.faction"],
+  "world.travelTo": ENGLISH_TERMS["world.travelTo"],
 };
 
 const wornDescription: Record<WornDescription, string> = {

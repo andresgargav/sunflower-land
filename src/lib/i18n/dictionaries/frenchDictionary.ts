@@ -2296,6 +2296,8 @@ const factions: Record<Factions, string> = {
   "faction.pet.sleeping": ENGLISH_TERMS["faction.pet.sleeping"],
   "faction.pet.streak": ENGLISH_TERMS["faction.pet.streak"],
   "faction.pet.wakes.in": ENGLISH_TERMS["faction.pet.wakes.in"],
+  "faction.pet.contributingMember":
+    ENGLISH_TERMS["faction.pet.contributingMember"],
 };
 
 const factionShopDescription: Record<FactionShopDescription, string> = {
@@ -2550,6 +2552,13 @@ const guideFactionPet: Record<GuideFactionPet, string> = {
   "guide.factionPet.three": ENGLISH_TERMS["guide.factionPet.three"],
   "guide.factionPet.four": ENGLISH_TERMS["guide.factionPet.four"],
   "guide.factionPet.five": ENGLISH_TERMS["guide.factionPet.five"],
+  "guide.factionPet.six": ENGLISH_TERMS["guide.factionPet.six"],
+  "guide.streak.beyond": ENGLISH_TERMS["guide.streak.beyond"],
+  "guide.streak.one": ENGLISH_TERMS["guide.streak.one"],
+  "guide.streak.two": ENGLISH_TERMS["guide.streak.two"],
+  "guide.streak.three": ENGLISH_TERMS["guide.streak.three"],
+  "guide.streak.four": ENGLISH_TERMS["guide.streak.four"],
+  "guide.streak.furtherInfo": ENGLISH_TERMS["guide.streak.furtherInfo"],
 };
 
 const fishermanModal: Record<FishermanModal, string> = {
@@ -5378,12 +5387,13 @@ const world: Record<World, string> = {
     "Pour interagir avec un Bumpkin ou un objet, approchez-vous et cliquez dessus.",
   "world.intro.seven":
     "Aucun harcèlement, injure ou intimidation. Merci de respecter les autres.",
-  "world.plaza": "Plaza",
-  "world.beach": "Beach",
-  "world.retreat": "Retreat",
+  "world.plaza": ENGLISH_TERMS["world.plaza"],
+  "world.beach": ENGLISH_TERMS["world.beach"],
+  "world.retreat": ENGLISH_TERMS["world.retreat"],
   "world.woodlands": ENGLISH_TERMS["world.woodlands"],
-  "world.home": "Home",
-  "world.kingdom": "Kingdom",
+  "world.home": ENGLISH_TERMS["world.home"],
+  "world.kingdom": ENGLISH_TERMS["world.kingdom"],
+  "world.faction": ENGLISH_TERMS["world.faction"],
   "world.travelTo": ENGLISH_TERMS["world.travelTo"],
 };
 
