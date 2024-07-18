@@ -269,7 +269,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     if (scene.textures.exists(this.carryingIdleSpriteKey)) {
       this.createCarryingIdleAnimation();
     } else {
-      const url = getAnimationUrl(this.clothing, "carry_none");
+      const url = getAnimationUrl(this.clothing, "carry_none_idle");
       const carryingIdleLoader = scene.load.spritesheet(
         this.carryingIdleSpriteKey,
         url,
@@ -365,11 +365,11 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         this.carryingIdleSpriteKey as string,
         {
           start: 0,
-          end: 1,
+          end: 7,
         }
       ),
       repeat: -1,
-      frameRate: 3,
+      frameRate: 10,
     });
   }
 
