@@ -1,12 +1,12 @@
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import {
-  ItemBumpkin,
+  Item,
   Coordinates,
   SpriteConfig,
   SpritePositions,
   SpritePositionConfig,
   CookingToolInfo,
-  CookingStates,
+  IngredientStates,
   CookingTools,
 } from "./RecipeRushTypes";
 import { calcYPosition } from "./lib/recipeRushUtils";
@@ -27,7 +27,13 @@ export const EXPRESSION_ITEM: Coordinates = {
   y: -14,
 };
 
-export const ITEM_BUMPKIN: ItemBumpkin = {
+export const INGREDIENT_STATE: Item = {
+  x: -6,
+  y: -6,
+  scale: 0.75,
+};
+
+export const ITEM_BUMPKIN: Item = {
   x: 0,
   y: -10,
   scale: 0.75,
@@ -48,6 +54,14 @@ export const INGREDIENTS: Record<number, CropName | FishName> = {
   11: "Anchovy",
   12: "Red Snapper",
   13: "Tuna",
+};
+
+export const INGREDIENT_STATES: Record<number, IngredientStates> = {
+  0: "RAW",
+  1: "CHOPPED",
+  2: "BOILED",
+  3: "ROASTED",
+  4: "FRIED",
 };
 
 export const INGREDIENT_BOXES_CONFIGURATIONS: SpriteConfig[] = [
@@ -128,15 +142,16 @@ export const POSITION_CONFIGURATIONS: Record<SpritePositions, Coordinates> = {
   LB: { x: 2, y: -2 }, // Left - Bottom
 };
 
-export const ALLOWED_TRANSITIONS: Record<CookingStates, CookingStates[]> = {
-  RAW: ["CHOPPED"],
-  CHOPPED: ["FRIED", "BOILED", "ROASTED"],
-  FRIED: [], // Final state
-  BOILED: [], // Final state
-  ROASTED: [], // Final state
-};
+export const ALLOWED_TRANSITIONS: Record<IngredientStates, IngredientStates[]> =
+  {
+    RAW: ["CHOPPED"],
+    CHOPPED: ["FRIED", "BOILED", "ROASTED"],
+    FRIED: [], // Final state
+    BOILED: [], // Final state
+    ROASTED: [], // Final state
+  };
 
-export const BURNABLE_STATES: Record<CookingStates, boolean> = {
+export const BURNABLE_STATES: Record<IngredientStates, boolean> = {
   RAW: false,
   CHOPPED: false,
   ROASTED: true,

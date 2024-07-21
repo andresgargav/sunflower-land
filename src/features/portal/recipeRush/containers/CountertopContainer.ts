@@ -65,9 +65,7 @@ export class CountertopContainer extends Phaser.GameObjects.Container {
 
   private moveItemToCountertop() {
     const item = this.player?.dropItem();
-    item
-      ?.setPosition(this.itemPosition.x, this.itemPosition.y)
-      .setScale(ITEM_BUMPKIN.scale);
+    item?.adjustDefault(this.itemPosition.x, this.itemPosition.y);
     item && this.add(item);
     this.item = item as ItemContainer;
   }

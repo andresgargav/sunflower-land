@@ -17,7 +17,6 @@ import { TrashCanContainer } from "./containers/TrashCanContainer";
 import { CookingToolContainer } from "./containers/CookingToolContainer";
 import { CookingTools } from "./RecipeRushTypes";
 import { OutlineWhitePipeline } from "./shaders/OutlineWhiteShader";
-import { IngredientContainer } from "./containers/IngredientContainer";
 
 export const NPCS: NPCBumpkin[] = [
   {
@@ -64,6 +63,12 @@ export class RecipeRushScene extends BaseScene {
 
     this.load.image("expression_alerted", "world/expression_alerted.png");
 
+    // States
+    this.load.spritesheet("ingredient_states", "world/ingredient_states.png", {
+      frameWidth: 18,
+      frameHeight: 18,
+    });
+
     // Cooking tools and its actions
     this.load.spritesheet("cutting_board", "world/cutting_board.png", {
       frameWidth: 16,
@@ -100,7 +105,7 @@ export class RecipeRushScene extends BaseScene {
     if (this.currentPlayer.isCooking) {
       this.currentPlayer.cook();
     } else if (this.currentPlayer.hasItem) {
-      (this.currentPlayer.item as IngredientContainer).adjustWithPlayer();
+      this.currentPlayer.item?.adjustWithPlayer();
       this.isMoving
         ? this.currentPlayer.carry()
         : this.currentPlayer.carryIdle();

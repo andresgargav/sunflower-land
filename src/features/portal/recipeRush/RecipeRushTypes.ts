@@ -23,7 +23,12 @@ export type SpritePositions =
 
 export type CookingTools = "Cutting Board" | "Pot" | "Pan" | "Deep Fryer";
 
-export type CookingStates = "RAW" | "CHOPPED" | "ROASTED" | "FRIED" | "BOILED";
+export type IngredientStates =
+  | "RAW"
+  | "CHOPPED"
+  | "ROASTED"
+  | "FRIED"
+  | "BOILED";
 
 export type SpriteConfig = { frame: number } & Coordinates;
 
@@ -33,12 +38,12 @@ export type CookingToolInfo = {
   spriteName: string;
   animStart: number;
   animEnd: number;
-  effect: CookingStates;
+  effect: IngredientStates;
   duration: number;
   canPickUp: boolean;
 };
 
-export type ItemBumpkin = Coordinates & { scale: number };
+export type Item = Coordinates & { scale: number };
 
 export type ItemContainer =
   | IngredientContainer

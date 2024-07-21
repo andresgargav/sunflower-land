@@ -1,8 +1,13 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { CookingStates } from "../RecipeRushTypes";
+import { IngredientStates } from "../RecipeRushTypes";
 import { BaseScene } from "features/world/scenes/BaseScene";
-import { EXPRESSION_ITEM, ITEM_BUMPKIN } from "../RecipeRushConstants";
+import {
+  EXPRESSION_ITEM,
+  INGREDIENT_STATE,
+  ITEM_BUMPKIN,
+} from "../RecipeRushConstants";
 import { AlertContainer } from "./AlertContainer";
+import { IngredientStateContainer } from "./IngredientStateContainer";
 
 interface Props {
   x: number;
@@ -17,17 +22,16 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   private ingredientName: string;
   private alert: AlertContainer;
+  private ingredientState: IngredientStateContainer;
 
   scene: BaseScene;
   sprite: Phaser.GameObjects.Sprite;
-  ingredientState: CookingStates;
 
   constructor({ x, y, frame, scene, name, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
     this.ingredientName = name;
-    this.ingredientState = "RAW";
 
     // Ingredient Sprite
     const spriteName = "ingredients";
@@ -40,8 +44,16 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
       scene: scene,
     });
 
+    // State
+    this.ingredientState = new IngredientStateContainer({
+      x: INGREDIENT_STATE.x,
+      y: INGREDIENT_STATE.y,
+      scene: scene,
+      stateName: "RAW",
+    });
+
     this.setSize(this.sprite.width, this.sprite.height);
-    this.add(this.sprite);
+    this.add([this.sprite, this.ingredientState]);
   }
 
   applyHighlight() {
@@ -57,11 +69,32 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
   }
 
   adjustWithPlayer() {
-    const directionMultiplier =
-      this.player?.directionFacing === "left" ? -1 : 1;
+    const [directionMultiplier, ingredientStateX] =
+      this.player?.directionFacing === "left"
+        ? [-1, this.width + INGREDIENT_STATE.x * 2 - 1]
+        : [1, INGREDIENT_STATE.x];
 
-    this.player?.item
-      ?.setX(directionMultiplier)
-      .setScale(ITEM_BUMPKIN.scale * directionMultiplier, ITEM_BUMPKIN.scale);
+    const scaledItem = ITEM_BUMPKIN.scale * directionMultiplier;
+    const scaledIngredientState = INGREDIENT_STATE.scale * directionMultiplier;
+
+    this.setX(directionMultiplier).setScale(scaledItem, ITEM_BUMPKIN.scale);
+    this.ingredientState
+      .setX(ingredientStateX)
+      .setScale(scaledIngredientState, INGREDIENT_STATE.scale);
+  }
+
+  adjustDefault(x: number, y: number) {
+    this.setPosition(x, y).setScale(ITEM_BUMPKIN.scale);
+    this.ingredientState
+      .setX(INGREDIENT_STATE.x)
+      .setScale(INGREDIENT_STATE.scale);
+  }
+
+  changeState(stateName: IngredientStates) {
+    this.ingredientState?.changeState(stateName);
+  }
+
+  getState() {
+    return this.ingredientState.getState();
   }
 }

@@ -1,5 +1,9 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { Coordinates, CookingStates, CookingTools } from "../RecipeRushTypes";
+import {
+  Coordinates,
+  IngredientStates,
+  CookingTools,
+} from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { BaseScene } from "features/world/scenes/BaseScene";
 import { ProgressBar } from "./ProgressBarContainer";
@@ -20,7 +24,7 @@ interface Props {
   scene: BaseScene;
   itemPosition: Coordinates;
   id: number;
-  effect: CookingStates;
+  effect: IngredientStates;
   duration: number;
   canPickUp: boolean;
   name: CookingTools;
@@ -31,7 +35,7 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   private id: number;
   private spriteName: string;
   private itemPosition: Coordinates;
-  private effect: CookingStates;
+  private effect: IngredientStates;
   private duration: number;
   private canPickUp: boolean;
   private cookingToolName: CookingTools;
@@ -156,23 +160,23 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   }
 
   private moveItemToTool() {
-    const playerItem = this.player?.item as IngredientContainer;
-    if (
-      !ALLOWED_TRANSITIONS[playerItem.ingredientState].includes(this.effect)
-    ) {
+    if (!this.player) return;
+
+    const playerItem = this.player.item;
+    if (!(playerItem instanceof IngredientContainer)) return;
+
+    if (!ALLOWED_TRANSITIONS[playerItem.getState()].includes(this.effect)) {
       return;
     }
 
-    const ingredient = this.player?.dropItem();
-    if (ingredient instanceof IngredientContainer) {
-      ingredient
-        .setPosition(this.itemPosition.x, this.itemPosition.y - 5)
-        .setScale(ITEM_BUMPKIN.scale);
-      this.add(ingredient);
-      this.ingredient = ingredient;
+    const ingredient = this.player.dropItem() as IngredientContainer;
+    if (!ingredient) return;
 
-      this.handleActions();
-    }
+    ingredient.adjustDefault(this.itemPosition.x, this.itemPosition.y - 5);
+    this.add(ingredient);
+    this.ingredient = ingredient;
+
+    this.handleActions();
   }
 
   private handleActions() {
@@ -185,7 +189,33 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
 
     this.disableInteractive();
     this.playAction();
+    this.ingredient?.changeState(this.effect);
     this.player.isCooking = true;
     this.progressBar.start();
+  }
+
+  adjustWithPlayer() {
+    // const directionMultiplier =
+    //   this.player?.directionFacing === "left" ? -1 : 1;
+    // this.setX(directionMultiplier).setScale(
+    //   ITEM_BUMPKIN.scale * directionMultiplier,
+    //   ITEM_BUMPKIN.scale
+    // );
+    // directionMultiplier === -1
+    //   ? this.ingredientState.setX(this.width + INGREDIENT_STATE.x * 2 - 1)
+    //   : this.ingredientState.setX(INGREDIENT_STATE.x);
+    // directionMultiplier === -1
+    //   ? this.ingredientState.setScale(
+    //       INGREDIENT_STATE.scale * -1,
+    //       INGREDIENT_STATE.scale
+    //     )
+    //   : this.ingredientState.setScale(INGREDIENT_STATE.scale);
+  }
+
+  adjustDefault(x: number, y: number) {
+    // this.setPosition(x, y).setScale(ITEM_BUMPKIN.scale);
+    // this.ingredientState
+    //   .setX(INGREDIENT_STATE.x)
+    //   .setScale(INGREDIENT_STATE.scale);
   }
 }

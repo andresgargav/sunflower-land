@@ -16,3 +16,12 @@ export const checkDistance = (
   if (distance > maxDistance) return false;
   return true;
 };
+
+export const findKeyByValue = (
+  object: Record<number, string>,
+  value: string
+): number | undefined => {
+  const entry = Object.entries(object).find(([, v]) => v === value);
+
+  return entry ? Number(entry[0]) : undefined;
+};
