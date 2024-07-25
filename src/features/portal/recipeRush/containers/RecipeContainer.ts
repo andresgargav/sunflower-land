@@ -7,6 +7,8 @@ interface Props {
 }
 
 export class RecipeContainer extends Phaser.GameObjects.Container {
+  private verticalMove: Phaser.Tweens.TweenChain | null;
+
   constructor({ x, y, scene }: Props) {
     super(scene, x, y);
     this.scene = scene;
@@ -35,5 +37,44 @@ export class RecipeContainer extends Phaser.GameObjects.Container {
     // this.ingredientState
     //   .setX(INGREDIENT_STATE.x)
     //   .setScale(INGREDIENT_STATE.scale);
+  }
+
+  playVerticalMove() {
+    this.verticalMove = this.scene.tweens.chain({
+      targets: this,
+      tweens: [
+        {
+          y: this.y,
+          duration: 300,
+          ease: "Linear",
+        },
+        {
+          y: this.y + 1,
+          duration: 100,
+          ease: "Linear",
+        },
+        {
+          y: this.y + 2,
+          duration: 200,
+          ease: "Linear",
+        },
+        {
+          y: this.y + 1,
+          duration: 200,
+          ease: "Linear",
+        },
+        {
+          y: this.y,
+          duration: 100,
+          ease: "Linear",
+        },
+      ],
+      repeat: -1,
+    });
+  }
+
+  removeVerticalMove() {
+    this.verticalMove?.destroy();
+    this.verticalMove = null;
   }
 }

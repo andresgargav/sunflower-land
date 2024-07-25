@@ -3,6 +3,7 @@ import {
   Coordinates,
   IngredientStates,
   CookingTools,
+  AnimationConfig,
 } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { BaseScene } from "features/world/scenes/BaseScene";
@@ -18,8 +19,7 @@ interface Props {
   x: number;
   y: number;
   frame: number;
-  animStart: number;
-  animEnd: number;
+  animation: AnimationConfig;
   spriteName: string;
   scene: BaseScene;
   itemPosition: Coordinates;
@@ -27,6 +27,8 @@ interface Props {
   effect: IngredientStates;
   duration: number;
   canPickUp: boolean;
+  burnable: boolean;
+  ingredientYOffset: number;
   name: CookingTools;
   player?: BumpkinContainer;
 }
@@ -38,20 +40,24 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   private effect: IngredientStates;
   private duration: number;
   private canPickUp: boolean;
+  private burnable: boolean;
+  private ingredientYOffset: number;
   private cookingToolName: CookingTools;
   private player?: BumpkinContainer;
   private ingredient: IngredientContainer | null;
   private sprite: Phaser.GameObjects.Sprite;
   private progressBar: ProgressBar;
+  private verticalMove: Phaser.Tweens.TweenChain | null;
 
   scene: BaseScene;
+  defaultX: number;
+  defaultY: number;
 
   constructor({
     x,
     y,
     frame,
-    animStart,
-    animEnd,
+    animation,
     spriteName,
     scene,
     itemPosition,
@@ -59,10 +65,14 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     effect,
     duration,
     canPickUp,
+    burnable,
+    ingredientYOffset,
     name,
     player,
   }: Props) {
     super(scene, x + SQUARE_WIDTH / 2, y + SQUARE_WIDTH / 2);
+    this.defaultX = x + SQUARE_WIDTH / 2;
+    this.defaultY = y + SQUARE_WIDTH / 2;
     this.spriteName = spriteName;
     this.scene = scene;
     this.itemPosition = itemPosition;
@@ -70,9 +80,12 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     this.effect = effect;
     this.duration = duration;
     this.canPickUp = canPickUp;
+    this.burnable = burnable;
+    this.ingredientYOffset = ingredientYOffset;
     this.cookingToolName = name;
     this.player = player;
     this.ingredient = null;
+    this.verticalMove = null;
 
     // Cooking Tool Sprite
     this.sprite = scene.add.sprite(
@@ -83,6 +96,15 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     );
 
     // Animations
+    if (canPickUp) {
+      scene.anims.create({
+        key: `${spriteName}_${id}_final_idle`,
+        frames: [{ key: spriteName, frame: animation.end + 1 }],
+        repeat: -1,
+        frameRate: 10,
+      });
+    }
+
     scene.anims.create({
       key: `${spriteName}_${id}_idle`,
       frames: [{ key: spriteName, frame: frame }],
@@ -93,11 +115,11 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     scene.anims.create({
       key: `${spriteName}_${id}_action`,
       frames: scene.anims.generateFrameNumbers(spriteName, {
-        start: frame + animStart,
-        end: frame + animEnd,
+        start: frame + animation.start,
+        end: frame + animation.end,
       }),
       repeat: -1,
-      frameRate: 10,
+      frameRate: animation.frameRate,
     });
 
     // Progress Bar
@@ -122,12 +144,20 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   }
 
   private onProgressComplete() {
-    this.playIdle();
-    (this.player as BumpkinContainer).isCooking = false;
+    this.canPickUp ? this.playFinalIdle() : this.playIdle();
+
+    this.ingredient?.changeState(this.effect);
     this.ingredient?.applyHighlight();
-    this.ingredient?.setVisible(true);
     this.setInteractive();
+
+    if (this.canPickUp) return;
+    (this.player as BumpkinContainer).isCooking = false;
+    this.ingredient?.setVisible(true);
     this.scene.walkingSpeed = PLAYER_WALKING_SPEED;
+  }
+
+  private playFinalIdle() {
+    this.sprite.play(`${this.spriteName}_${this.id}_final_idle`, true);
   }
 
   private playIdle() {
@@ -149,14 +179,18 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   }
 
   private moveItemToPlayer() {
-    const ingredient = this.ingredient;
-    if (!ingredient) return;
+    this.ingredient?.removeHighlight();
 
-    ingredient.setPosition(ITEM_BUMPKIN.x, ITEM_BUMPKIN.y);
-    ingredient.removeHighlight();
-    this.remove(ingredient);
-    this.ingredient = null;
-    this.player?.pickUpItem(ingredient);
+    const item = this.canPickUp ? this : this.ingredient;
+    if (!item) return;
+
+    if (!this.canPickUp) {
+      this.remove(item);
+      this.ingredient = null;
+    }
+
+    item.setPosition(ITEM_BUMPKIN.x, ITEM_BUMPKIN.y);
+    this.player?.pickUpItem(item);
   }
 
   private moveItemToTool() {
@@ -172,7 +206,10 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     const ingredient = this.player.dropItem() as IngredientContainer;
     if (!ingredient) return;
 
-    ingredient.adjustDefault(this.itemPosition.x, this.itemPosition.y - 5);
+    ingredient.adjustDefault(
+      this.itemPosition.x,
+      this.itemPosition.y + this.ingredientYOffset
+    );
     this.add(ingredient);
     this.ingredient = ingredient;
 
@@ -185,37 +222,66 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     if (!this.canPickUp) {
       this.scene.walkingSpeed = 0;
       this.ingredient?.setVisible(false);
+      this.player.isCooking = true;
     }
 
     this.disableInteractive();
     this.playAction();
-    this.ingredient?.changeState(this.effect);
-    this.player.isCooking = true;
     this.progressBar.start();
   }
 
   adjustWithPlayer() {
-    // const directionMultiplier =
-    //   this.player?.directionFacing === "left" ? -1 : 1;
-    // this.setX(directionMultiplier).setScale(
-    //   ITEM_BUMPKIN.scale * directionMultiplier,
-    //   ITEM_BUMPKIN.scale
-    // );
-    // directionMultiplier === -1
-    //   ? this.ingredientState.setX(this.width + INGREDIENT_STATE.x * 2 - 1)
-    //   : this.ingredientState.setX(INGREDIENT_STATE.x);
-    // directionMultiplier === -1
-    //   ? this.ingredientState.setScale(
-    //       INGREDIENT_STATE.scale * -1,
-    //       INGREDIENT_STATE.scale
-    //     )
-    //   : this.ingredientState.setScale(INGREDIENT_STATE.scale);
+    const directionMultiplier =
+      this.player?.directionFacing === "left" ? -1 : 1;
+
+    this.setX(directionMultiplier).setScale(directionMultiplier, 1);
+    this.ingredient?.adjustWithPlayer(true);
   }
 
   adjustDefault(x: number, y: number) {
-    // this.setPosition(x, y).setScale(ITEM_BUMPKIN.scale);
-    // this.ingredientState
-    //   .setX(INGREDIENT_STATE.x)
-    //   .setScale(INGREDIENT_STATE.scale);
+    this.setPosition(x, y).setScale(1);
+    this.ingredient?.adjustDefault(
+      this.itemPosition.x,
+      this.itemPosition.y + this.ingredientYOffset
+    );
+  }
+
+  playVerticalMove() {
+    this.verticalMove = this.scene.tweens.chain({
+      targets: this,
+      tweens: [
+        {
+          y: this.y,
+          duration: 300,
+          ease: "Linear",
+        },
+        {
+          y: this.y + 1,
+          duration: 100,
+          ease: "Linear",
+        },
+        {
+          y: this.y + 2,
+          duration: 200,
+          ease: "Linear",
+        },
+        {
+          y: this.y + 1,
+          duration: 200,
+          ease: "Linear",
+        },
+        {
+          y: this.y,
+          duration: 100,
+          ease: "Linear",
+        },
+      ],
+      repeat: -1,
+    });
+  }
+
+  removeVerticalMove() {
+    this.verticalMove?.destroy();
+    this.verticalMove = null;
   }
 }

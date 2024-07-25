@@ -90,8 +90,8 @@ export const INGREDIENT_BOXES_CONFIGURATIONS: SpriteConfig[] = [
 export const COUNTERTOPS_CONFIGURATIONS: SpritePositionConfig[] = [
   // Middle - Top
   { frame: 0, x: SQUARE_WIDTH * 16, y: SQUARE_WIDTH * 5, pos: "MTL" },
-  { frame: 1, x: SQUARE_WIDTH * 17, y: SQUARE_WIDTH * 5, pos: "MT" },
-  { frame: 1, x: SQUARE_WIDTH * 18, y: SQUARE_WIDTH * 5, pos: "MT" },
+  // { frame: 1, x: SQUARE_WIDTH * 17, y: SQUARE_WIDTH * 5, pos: "MT" },
+  // { frame: 1, x: SQUARE_WIDTH * 18, y: SQUARE_WIDTH * 5, pos: "MT" },
   { frame: 1, x: SQUARE_WIDTH * 19, y: SQUARE_WIDTH * 5, pos: "MT" },
   { frame: 1, x: SQUARE_WIDTH * 20, y: SQUARE_WIDTH * 5, pos: "MT" },
   { frame: 1, x: SQUARE_WIDTH * 21, y: SQUARE_WIDTH * 5, pos: "MT" },
@@ -151,47 +151,59 @@ export const ALLOWED_TRANSITIONS: Record<IngredientStates, IngredientStates[]> =
     ROASTED: [], // Final state
   };
 
-export const BURNABLE_STATES: Record<IngredientStates, boolean> = {
-  RAW: false,
-  CHOPPED: false,
-  ROASTED: true,
-  FRIED: true,
-  BOILED: true,
-};
-
 export const COOKING_TOOLS_INFORMATION: Record<CookingTools, CookingToolInfo> =
   {
     "Cutting Board": {
       spriteName: "cutting_board",
-      animStart: 1,
-      animEnd: 5,
+      animation: {
+        start: 1,
+        end: 5,
+        frameRate: 10,
+      },
       effect: "CHOPPED",
       duration: 2500,
       canPickUp: false,
+      burnable: false,
+      ingredientYOffset: -5,
     },
     Pot: {
       spriteName: "pot",
-      animStart: 1,
-      animEnd: 5,
+      animation: {
+        start: 1,
+        end: 5,
+        frameRate: 7,
+      },
       effect: "BOILED",
       duration: 2500,
       canPickUp: true,
+      burnable: false,
+      ingredientYOffset: -8,
     },
     Pan: {
       spriteName: "pan",
-      animStart: 1,
-      animEnd: 5,
+      animation: {
+        start: 1,
+        end: 5,
+        frameRate: 10,
+      },
       effect: "ROASTED",
       duration: 2500,
       canPickUp: true,
+      burnable: false,
+      ingredientYOffset: -5,
     },
     "Deep Fryer": {
       spriteName: "deep_fryer",
-      animStart: 1,
-      animEnd: 5,
+      animation: {
+        start: 1,
+        end: 5,
+        frameRate: 10,
+      },
       effect: "FRIED",
       duration: 2500,
       canPickUp: true,
+      burnable: false,
+      ingredientYOffset: -5,
     },
   };
 
@@ -201,3 +213,25 @@ export const CUTTING_BOARDS_CONFIGURATIONS: SpritePositionConfig[] = [
   { frame: 6, x: SQUARE_WIDTH * 22, y: SQUARE_WIDTH * 15, pos: "MB" },
   { frame: 12, x: SQUARE_WIDTH * 15, y: SQUARE_WIDTH * 12, pos: "LT" },
 ];
+
+export const POTS_CONFIGURATIONS: SpritePositionConfig[] = [
+  { frame: 0, x: SQUARE_WIDTH * 18, y: SQUARE_WIDTH * 5, pos: "MT" },
+];
+
+export const PANS_CONFIGURATIONS: SpritePositionConfig[] = [
+  { frame: 0, x: SQUARE_WIDTH * 19, y: SQUARE_WIDTH * 5, pos: "MT" },
+];
+
+export const DEEP_FRYERS_CONFIGURATIONS: SpritePositionConfig[] = [
+  { frame: 0, x: SQUARE_WIDTH * 20, y: SQUARE_WIDTH * 5, pos: "MT" },
+];
+
+export const COOKING_TOOLS_CONFIGURATIONS: Record<
+  CookingTools,
+  SpritePositionConfig[]
+> = {
+  "Cutting Board": CUTTING_BOARDS_CONFIGURATIONS,
+  Pot: POTS_CONFIGURATIONS,
+  Pan: PANS_CONFIGURATIONS,
+  "Deep Fryer": DEEP_FRYERS_CONFIGURATIONS,
+};

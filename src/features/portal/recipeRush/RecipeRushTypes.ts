@@ -34,13 +34,20 @@ export type SpriteConfig = { frame: number } & Coordinates;
 
 export type SpritePositionConfig = SpriteConfig & { pos: SpritePositions };
 
+export interface AnimationConfig {
+  start: number;
+  end: number;
+  frameRate: number;
+}
+
 export type CookingToolInfo = {
   spriteName: string;
-  animStart: number;
-  animEnd: number;
+  animation: AnimationConfig;
   effect: IngredientStates;
   duration: number;
   canPickUp: boolean;
+  burnable: boolean;
+  ingredientYOffset: number;
 };
 
 export type Item = Coordinates & { scale: number };

@@ -732,11 +732,13 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   public pickUpItem(item: ItemContainer) {
     this.item = item;
     this.add(item);
+    item.playVerticalMove();
     this.hasItem = true;
   }
 
   public dropItem() {
     const item = this.item;
+    item?.removeVerticalMove();
     this.item = null;
     this.hasItem = false;
     return item;

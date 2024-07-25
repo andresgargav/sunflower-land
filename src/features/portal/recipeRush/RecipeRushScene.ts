@@ -8,8 +8,8 @@ import {
   POSITION_CONFIGURATIONS,
   TRASH_CANS_CONFIGURATIONS,
   COOKING_TOOLS_INFORMATION,
-  CUTTING_BOARDS_CONFIGURATIONS,
   PLAYER_WALKING_SPEED,
+  COOKING_TOOLS_CONFIGURATIONS,
 } from "./RecipeRushConstants";
 import { CountertopContainer } from "./containers/CountertopContainer";
 import { IngredientBoxContainer } from "./containers/IngredientBoxContainer";
@@ -74,6 +74,10 @@ export class RecipeRushScene extends BaseScene {
       frameWidth: 16,
       frameHeight: 16,
     });
+    this.load.spritesheet("pot", "world/pot.png", {
+      frameWidth: 16,
+      frameHeight: 16,
+    });
   }
 
   async create() {
@@ -92,7 +96,7 @@ export class RecipeRushScene extends BaseScene {
     this.addCropBoxes();
 
     // Cooking Tools
-    this.addCuttingBoards();
+    this.addCookingTools();
 
     this.walkingSpeed = PLAYER_WALKING_SPEED;
 
@@ -172,23 +176,25 @@ export class RecipeRushScene extends BaseScene {
     );
   }
 
-  private addCuttingBoards() {
-    const cookingToolName: CookingTools = "Cutting Board";
+  private addCookingTools() {
+    Object.keys(COOKING_TOOLS_CONFIGURATIONS).forEach((value) => {
+      const cookingToolName = value as CookingTools;
 
-    CUTTING_BOARDS_CONFIGURATIONS.forEach(
-      (config, id) =>
-        new CookingToolContainer({
-          x: config.x,
-          y: config.y,
-          frame: config.frame,
-          scene: this,
-          itemPosition: POSITION_CONFIGURATIONS[config.pos],
-          id: id,
-          name: cookingToolName,
-          player: this.currentPlayer,
-          ...COOKING_TOOLS_INFORMATION[cookingToolName],
-        })
-    );
+      COOKING_TOOLS_CONFIGURATIONS[cookingToolName].forEach(
+        (config, id) =>
+          new CookingToolContainer({
+            x: config.x,
+            y: config.y,
+            frame: config.frame,
+            scene: this,
+            itemPosition: POSITION_CONFIGURATIONS[config.pos],
+            id: id,
+            name: cookingToolName,
+            player: this.currentPlayer,
+            ...COOKING_TOOLS_INFORMATION[cookingToolName],
+          })
+      );
+    });
   }
 
   public get portalService() {

@@ -23,6 +23,7 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
   private ingredientName: string;
   private alert: AlertContainer;
   private ingredientState: IngredientStateContainer;
+  private verticalMove: Phaser.Tweens.TweenChain | null;
 
   scene: BaseScene;
   sprite: Phaser.GameObjects.Sprite;
@@ -32,6 +33,7 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
     this.scene = scene;
     this.player = player;
     this.ingredientName = name;
+    this.verticalMove = null;
 
     // Ingredient Sprite
     const spriteName = "ingredients";
@@ -56,6 +58,45 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
     this.add([this.sprite, this.ingredientState]);
   }
 
+  playVerticalMove() {
+    this.verticalMove = this.scene.tweens.chain({
+      targets: this,
+      tweens: [
+        {
+          y: this.y,
+          duration: 300,
+          ease: "Linear",
+        },
+        {
+          y: this.y + 1,
+          duration: 100,
+          ease: "Linear",
+        },
+        {
+          y: this.y + 2,
+          duration: 200,
+          ease: "Linear",
+        },
+        {
+          y: this.y + 1,
+          duration: 200,
+          ease: "Linear",
+        },
+        {
+          y: this.y,
+          duration: 100,
+          ease: "Linear",
+        },
+      ],
+      repeat: -1,
+    });
+  }
+
+  removeVerticalMove() {
+    this.verticalMove?.destroy();
+    this.verticalMove = null;
+  }
+
   applyHighlight() {
     this.sprite.setPipeline("WhitenPipeline");
     this.alert.createBuzzTween();
@@ -68,7 +109,7 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
     this.remove(this.alert);
   }
 
-  adjustWithPlayer() {
+  adjustWithPlayer(isInCookingTool = false) {
     const [directionMultiplier, ingredientStateX] =
       this.player?.directionFacing === "left"
         ? [-1, this.width + INGREDIENT_STATE.x * 2 - 1]
@@ -77,7 +118,9 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
     const scaledItem = ITEM_BUMPKIN.scale * directionMultiplier;
     const scaledIngredientState = INGREDIENT_STATE.scale * directionMultiplier;
 
-    this.setX(directionMultiplier).setScale(scaledItem, ITEM_BUMPKIN.scale);
+    !isInCookingTool &&
+      this.setX(directionMultiplier).setScale(scaledItem, ITEM_BUMPKIN.scale);
+
     this.ingredientState
       .setX(ingredientStateX)
       .setScale(scaledIngredientState, INGREDIENT_STATE.scale);
