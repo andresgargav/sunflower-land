@@ -239,7 +239,7 @@ export const FactionPetPanel: React.FC<Props> = ({ onClose }) => {
   ).toNumber();
 
   const isContributingMemberForThisWeek = pet.requests.every(
-    (request) => getKeys(request.dailyFulfilled).length > 0,
+    (request) => getKeys(request.dailyFulfilled).length > 0
   );
 
   const lastWeek = getFactionWeek({
@@ -302,7 +302,7 @@ export const FactionPetPanel: React.FC<Props> = ({ onClose }) => {
               </Label>
               {streak > 0 && (
                 <Label
-                  type={streak >= 3 ? "success" : "default"}
+                  type={streak >= 2 ? "success" : "default"}
                   icon={isStreakWeek ? powerup : ""}
                   secondaryIcon={
                     isStreakWeek && pet.qualifiesForBoost
@@ -409,7 +409,9 @@ export const FactionPetPanel: React.FC<Props> = ({ onClose }) => {
                       </div>
                       {collectivePet.streak > 0 && (
                         <div className="flex items-center space-x-1">
-                          <p className="text-xs pb-1">{`${t("faction.pet.contributingMember")}: `}</p>
+                          <p className="text-xs pb-1">{`${t(
+                            "faction.pet.contributingMember"
+                          )}: `}</p>
                           <img
                             className="w-3"
                             src={

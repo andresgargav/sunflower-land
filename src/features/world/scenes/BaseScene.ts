@@ -100,6 +100,8 @@ export abstract class BaseScene extends Phaser.Scene {
 
   public map: Phaser.Tilemaps.Tilemap = {} as Phaser.Tilemaps.Tilemap;
 
+  npcs: Partial<Record<NPCName, BumpkinContainer>> = {};
+
   currentPlayer: BumpkinContainer | undefined;
   isFacingLeft = false;
   movementAngle: number | undefined;
@@ -425,9 +427,12 @@ export abstract class BaseScene extends Phaser.Scene {
       }
 
       if (this.playerEntities[reaction.sessionId]) {
-        this.playerEntities[reaction.sessionId].react(reaction.reaction);
+        this.playerEntities[reaction.sessionId].react(
+          reaction.reaction,
+          reaction.quantity
+        );
       } else if (reaction.sessionId === server.sessionId) {
-        this.currentPlayer?.react(reaction.reaction);
+        this.currentPlayer?.react(reaction.reaction, reaction.quantity);
       }
     });
 
@@ -518,6 +523,14 @@ export abstract class BaseScene extends Phaser.Scene {
 
   public get username() {
     return this.gameState.username;
+  }
+
+  public get selectedItem() {
+    return this.registry.get("selectedItem");
+  }
+
+  public get shortcutItem() {
+    return this.registry.get("shortcutItem");
   }
 
   createPlayer({
@@ -1079,6 +1092,7 @@ export abstract class BaseScene extends Phaser.Scene {
       this.physics.world.enable(container);
       this.colliders?.add(container);
       this.triggerColliders?.add(container);
+      this.npcs[bumpkin.npc] = container;
     });
   }
 
