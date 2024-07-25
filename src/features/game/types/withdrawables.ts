@@ -45,6 +45,7 @@ import {
   PotionHouseItemName,
   PurchasableItems,
   SoldOutCollectibleName,
+  TreasureCollectibleItem,
 } from "./collectibles";
 import { CommodityName, ResourceName } from "./resources";
 import { Flag } from "./flags";
@@ -77,7 +78,7 @@ import {
   OldFishName,
 } from "./fishing";
 import { canWithdrawBoostedWearable } from "./wearableValidation";
-import { FlowerName, FlowerSeedName } from "./flowers";
+import { FlowerName, FlowerSeedName, MutantFlowerName } from "./flowers";
 import { FactionShopCollectibleName, FactionShopFoodName } from "./factionShop";
 
 const canWithdrawTimebasedItem = (availableAt: Date) => {
@@ -243,7 +244,6 @@ const factionBanners = {
 
 const heliosBlacksmith: Record<HeliosBlacksmithItem, () => boolean> = {
   "Immortal Pear": () => false,
-  "Treasure Map": () => false,
   "Basic Scarecrow": () => false,
   Bale: () => false,
   "Scary Mike": () => false,
@@ -254,6 +254,10 @@ const heliosBlacksmith: Record<HeliosBlacksmithItem, () => boolean> = {
   Nana: () => true,
   "Soil Krabby": () => true,
   "Skill Shrimpy": () => true,
+};
+
+const treasureCollectible: Record<TreasureCollectibleItem, () => boolean> = {
+  "Treasure Map": () => false,
 };
 
 const commodities: Record<CommodityName, () => boolean> = {
@@ -808,6 +812,12 @@ const beachBounty: Record<BeachBountyTreasure, () => boolean> = {
   "Iron Compass": () => false,
   "Old Bottle": () => false,
   "Emerald Compass": () => false,
+  "Camel Bone": () => false,
+  "Cockle Shell": () => false,
+  Hieroglyph: () => false,
+  Sand: () => false,
+  Scarab: () => false,
+  Vase: () => false,
 };
 
 const eventDecoration: Record<EventDecorationName, () => boolean> = {
@@ -966,6 +976,22 @@ const megastore: Record<MegaStoreCollectibleName, () => boolean> = {
   Cluckapult: () => canWithdrawTimebasedItem(new Date("2024-08-01")),
   "Bullseye Board": () => canWithdrawTimebasedItem(new Date("2024-08-01")),
   "Twister Rug": () => canWithdrawTimebasedItem(new Date("2024-08-01")),
+
+  "Hapy Jar": () => canWithdrawTimebasedItem(new Date("2024-09-01")),
+  "Duamutef Jar": () => canWithdrawTimebasedItem(new Date("2024-10-01")),
+  "Qebehsenuef Jar": () => canWithdrawTimebasedItem(new Date("2024-11-01")),
+  "Imsety Jar": () => canWithdrawTimebasedItem(new Date("2024-09-01")),
+  "Tomato Core": () => canWithdrawTimebasedItem(new Date("2024-09-01")),
+  Sarcophagus: () => canWithdrawTimebasedItem(new Date("2024-09-01")),
+  "Clay Tablet": () => canWithdrawTimebasedItem(new Date("2024-10-01")),
+  "Snake in Jar": () => canWithdrawTimebasedItem(new Date("2024-10-01")),
+  "Reveling Lemon": () => canWithdrawTimebasedItem(new Date("2024-10-01")),
+  "Anubis Jackal": () => canWithdrawTimebasedItem(new Date("2024-10-01")),
+  Sundial: () => canWithdrawTimebasedItem(new Date("2024-11-01")),
+  "Sand Golem": () => canWithdrawTimebasedItem(new Date("2024-11-01")),
+  "Cactus King": () => canWithdrawTimebasedItem(new Date("2024-11-01")),
+  "Lemon Frog": () => canWithdrawTimebasedItem(new Date("2024-11-01")),
+  "Scarab Beetle": () => canWithdrawTimebasedItem(new Date("2024-11-01")),
 };
 
 const greenHouseFruitSeed: Record<GreenHouseFruitSeedName, () => boolean> = {
@@ -1039,6 +1065,10 @@ const factionShopFood: Record<FactionShopFoodName, () => boolean> = {
   Paella: () => false,
 };
 
+const mutantFlowers: Record<MutantFlowerName, () => boolean> = {
+  "Desert Rose": () => false,
+};
+
 export const WITHDRAWABLES: Record<InventoryItemName, () => boolean> = {
   ...greenHouseCrop,
   ...greenHouseCropSeed,
@@ -1064,12 +1094,14 @@ export const WITHDRAWABLES: Record<InventoryItemName, () => boolean> = {
   ...flags,
   ...easterEggs,
   ...mutantCrop,
+  ...mutantFlowers,
   ...specialEvents,
   ...points,
   ...goblinBlacksmith,
   ...soldOut,
   ...travelingSalesmanItems,
   ...blacksmithItems,
+  ...treasureCollectible,
   ...barnItems,
   ...animals,
   ...achievementDecoration,
@@ -1345,7 +1377,7 @@ export const BUMPKIN_WITHDRAWABLES: Record<
   Trident: () => false,
   "Bucket O' Worms": () => false,
   "Coconut Mask": () => false,
-  "Crab Trap": () => false,
+  "Crab Trap": () => canWithdrawTimebasedItem(new Date("2024-09-01")),
   "Seaside Tank Top": () => true,
   "Fish Trap": () => false,
   "Fishing Pants": () => true,
@@ -1491,14 +1523,23 @@ export const BUMPKIN_WITHDRAWABLES: Record<
   "Camel Onesie": (state) =>
     canWithdrawTimebasedItem(new Date("2024-10-01")) &&
     canWithdrawBoostedWearable("Camel Onesie", state),
-  "Explorer Shirt": () => false,
-  "Explorer Shorts": () => false,
+  "Explorer Shirt": () => canWithdrawTimebasedItem(new Date("2024-09-01")),
+  "Explorer Shorts": () => canWithdrawTimebasedItem(new Date("2024-10-01")),
   "Oil Overalls": () => false,
   "Dev Wrench": () => false,
-  "Rock Hammer": () => false,
-  "Explorer Hat": () => false,
+  "Rock Hammer": () => canWithdrawTimebasedItem(new Date("2024-11-01")),
+  "Explorer Hat": () => canWithdrawTimebasedItem(new Date("2024-10-01")),
   "Oil Protection Hat": () => false,
-  "Amber Amulet": () => false,
+  "Amber Amulet": () => canWithdrawTimebasedItem(new Date("2024-09-01")),
   "Sun Scarab Amulet": () => false,
   "Desert Background": () => false,
+  "Desert Merchant Turban": () => false,
+  "Desert Merchant Shoes": () => false,
+  "Desert Merchant Suit": () => false,
+  "Desert Camel Background": () =>
+    canWithdrawTimebasedItem(new Date("2024-11-01")),
+  "Water Gourd": () => canWithdrawTimebasedItem(new Date("2024-09-01")),
+  "Rocket Onesie": () => false,
+  "Coin Aura": () => false,
+  "Ankh Shirt": () => canWithdrawTimebasedItem(new Date("2024-10-01")),
 };

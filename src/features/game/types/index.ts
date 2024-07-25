@@ -638,6 +638,14 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Warty Goblin Pumpkin": 1406,
   "White Carrot": 1407,
 
+  // Digging Site
+  "Camel Bone": 1408,
+  "Cockle Shell": 1409,
+  Hieroglyph: 1410,
+  Sand: 1411,
+  Scarab: 1412,
+  Vase: 1413,
+
   // Fish
   Anchovy: 1501,
   Butterflyfish: 1502,
@@ -774,6 +782,25 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Sunflorian Bronze Champion": 2091,
   "Sunflorian Gold Champion": 2092,
   "Sunflorian Silver Champion": 2093,
+
+  // Mutant Flowers
+  "Desert Rose": 2100,
+  // Pharaoh's Treasure
+  "Hapy Jar": 2101,
+  "Duamutef Jar": 2102,
+  "Qebehsenuef Jar": 2103,
+  "Imsety Jar": 2104,
+  "Tomato Core": 2105,
+  Sarcophagus: 2106,
+  "Clay Tablet": 2107,
+  "Snake in Jar": 2108,
+  "Reveling Lemon": 2109,
+  "Anubis Jackal": 2110,
+  Sundial: 2111,
+  "Sand Golem": 2112,
+  "Cactus King": 2113,
+  "Lemon Frog": 2114,
+  "Scarab Beetle": 2115,
 };
 
 // The reverse of above

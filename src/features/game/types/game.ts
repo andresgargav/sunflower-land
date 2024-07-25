@@ -35,6 +35,7 @@ import {
   PotionHouseItemName,
   PurchasableItems,
   SoldOutCollectibleName,
+  TreasureCollectibleItem,
 } from "./collectibles";
 import { TreasureToolName, WorkbenchToolName } from "./tools";
 import { ConversationName } from "./announcements";
@@ -58,12 +59,18 @@ import {
 } from "./fishing";
 import { Coordinates } from "../expansion/components/MapPlacement";
 import { MinigameName } from "./minigames";
-import { FlowerCrossBreedName, FlowerName, FlowerSeedName } from "./flowers";
+import {
+  FlowerCrossBreedName,
+  FlowerName,
+  FlowerSeedName,
+  MutantFlowerName,
+} from "./flowers";
 import { translate } from "lib/i18n/translate";
 import { SpecialEvents } from "./specialEvents";
 import { TradeableName } from "../actions/sellMarketResource";
 import { MinigameCurrency } from "../events/minigames/purchaseMinigameItem";
 import { FactionShopCollectibleName, FactionShopFoodName } from "./factionShop";
+import { DiggingFormationName } from "./desert";
 
 export type Reward = {
   coins?: number;
@@ -373,6 +380,7 @@ export type InventoryItemName =
   | GoblinPirateItemName
   | PurchasableItems
   | TreasureToolName
+  | TreasureCollectibleItem
   | LanternName
   | ExoticCropName
   | PotionHouseItemName
@@ -387,7 +395,8 @@ export type InventoryItemName =
   | FactionBanner
   | WorkbenchToolName
   | FactionShopCollectibleName
-  | FactionShopFoodName;
+  | FactionShopFoodName
+  | MutantFlowerName;
 
 export type Inventory = Partial<Record<InventoryItemName, Decimal>>;
 
@@ -666,6 +675,21 @@ export type Mushroom = {
   amount: number;
   x: number;
   y: number;
+};
+
+export type DugHole = {
+  x: number;
+  y: number;
+  dugAt: number;
+  items: Partial<Record<InventoryItemName, number>>;
+  tool: "Sand Shovel" | "Sand Drill";
+};
+
+export type Desert = {
+  digging: {
+    patterns: DiggingFormationName[];
+    grid: (DugHole | DugHole[])[];
+  };
 };
 
 export type Mushrooms = {
@@ -976,6 +1000,7 @@ export type PlantedFlower = {
   amount: number;
   crossbreed?: FlowerCrossBreedName;
   dirty?: boolean;
+  reward?: Reward;
 };
 
 export type FlowerBed = {
@@ -1229,6 +1254,7 @@ export interface GameState {
     resource: DonationItemName;
     amount: Decimal;
   };
+  desert: Desert;
 }
 
 export interface Context {

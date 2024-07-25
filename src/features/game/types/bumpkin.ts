@@ -14,7 +14,8 @@ export type BumpkinBackground =
   | "Northern Lights Background"
   | "Valentine's Field Background"
   | "Festival of Colors Background"
-  | "Desert Background";
+  | "Desert Background"
+  | "Desert Camel Background";
 
 export type BumpkinBody =
   | "Beige Farmer Potion"
@@ -121,7 +122,8 @@ export type BumpkinShirt =
   | "Nightshade Armor"
   | "Bumpkin Armor"
   | "Sunflorian Armor"
-  | "Explorer Shirt";
+  | "Explorer Shirt"
+  | "Ankh Shirt";
 
 export type BumpkinCoat =
   | "Chef Apron"
@@ -171,7 +173,8 @@ export type BumpkinTool =
   | "Bumpkin Sword"
   | "Sunflorian Sword"
   | "Dev Wrench"
-  | "Rock Hammer";
+  | "Rock Hammer"
+  | "Water Gourd";
 
 export type BumpkinShoe =
   | "Black Farmer Boots"
@@ -191,7 +194,8 @@ export type BumpkinShoe =
   | "Goblin Sabatons"
   | "Nightshade Sabatons"
   | "Sunflorian Sabatons"
-  | "Bumpkin Sabatons";
+  | "Bumpkin Sabatons"
+  | "Desert Merchant Shoes";
 
 export type BumpkinNecklace =
   | "Sunflower Amulet"
@@ -279,7 +283,8 @@ export type BumpkinHat =
   | "Sunflorian Helmet"
   | "Pharaoh Headdress"
   | "Explorer Hat"
-  | "Oil Protection Hat";
+  | "Oil Protection Hat"
+  | "Desert Merchant Turban";
 
 export type BumpkinPant =
   | "Farmer Overalls"
@@ -328,7 +333,8 @@ export type BumpkinDress =
   | "Blue Rose Dress"
   | "Blue Monarch Dress"
   | "Green Monarch Dress"
-  | "Orange Monarch Dress";
+  | "Orange Monarch Dress"
+  | "Desert Merchant Suit";
 
 export type BumpkinSecondaryTool =
   | "Sunflower Shield"
@@ -357,7 +363,8 @@ export type BumpkinOnesie =
   | "Stockeye Salmon Onesie"
   | "Banana Onesie"
   | "Soybean Onesie"
-  | "Camel Onesie";
+  | "Camel Onesie"
+  | "Rocket Onesie";
 
 // Goes over clothes
 export type BumpkinSuit =
@@ -384,6 +391,8 @@ export type BumpkinWings =
 
 export type BumpkinBeard = "Wise Beard" | "Hoary Chin" | "Santa Beard";
 
+export type BumpkinAura = "Coin Aura";
+
 export type BumpkinItem =
   | BumpkinBody
   | BumpkinHair
@@ -400,7 +409,8 @@ export type BumpkinItem =
   | BumpkinOnesie
   | BumpkinSuit
   | BumpkinWings
-  | BumpkinBeard;
+  | BumpkinBeard
+  | BumpkinAura;
 
 export const ITEM_IDS: Record<BumpkinItem, number> = {
   "Beige Farmer Potion": 1,
@@ -747,7 +757,7 @@ export const ITEM_IDS: Record<BumpkinItem, number> = {
   "Painter's Cap": 347,
   "Festival of Colors Background": 348,
 
-  // Ancient Season
+  // Pharaoh's Treasure Season
   "Pharaoh Headdress": 349,
   "Camel Onesie": 350,
   "Amber Amulet": 351,
@@ -760,6 +770,14 @@ export const ITEM_IDS: Record<BumpkinItem, number> = {
   "Oil Protection Hat": 358,
   "Explorer Shorts": 359,
   "Oil Overalls": 360,
+  "Desert Merchant Turban": 361,
+  "Desert Merchant Shoes": 362,
+  "Desert Merchant Suit": 363,
+  "Desert Camel Background": 364,
+  "Water Gourd": 365,
+  "Rocket Onesie": 366,
+  "Coin Aura": 367,
+  "Ankh Shirt": 368,
 };
 
 // The reverse of above
@@ -788,6 +806,7 @@ export type Wallet = {
   wings: BumpkinWings[];
   dress?: BumpkinDress[];
   beard?: BumpkinBeard[];
+  aura?: BumpkinAura[];
 };
 
 export type Equipped = {
@@ -807,6 +826,7 @@ export type Equipped = {
   wings?: BumpkinWings;
   dress?: BumpkinDress;
   beard?: BumpkinBeard;
+  aura?: BumpkinAura;
 };
 
 export type BumpkinPart = keyof Equipped;
@@ -1179,4 +1199,12 @@ export const BUMPKIN_ITEM_PART: Record<BumpkinItem, keyof Wallet> = {
   "Oil Protection Hat": "hat",
   "Explorer Shorts": "pants",
   "Oil Overalls": "pants",
+  "Desert Merchant Turban": "hat",
+  "Desert Merchant Shoes": "shoes",
+  "Desert Merchant Suit": "dress",
+  "Desert Camel Background": "background",
+  "Water Gourd": "tool",
+  "Rocket Onesie": "onesie",
+  "Coin Aura": "aura",
+  "Ankh Shirt": "shirt",
 };

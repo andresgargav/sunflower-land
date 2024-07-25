@@ -753,6 +753,18 @@ import sunflorianGoldChampion from "assets/sfts/sunflorian_gold_champion.png";
 import sunflorianSilverChampion from "assets/sfts/sunflorian_silver_champion.png";
 import sunflorianBronzeChampion from "assets/sfts/sunflorian_bronze_champion.png";
 
+import desertRose from "assets/sfts/desert_rose.webp";
+import sarcophagus from "src/assets/sfts/sarcophagus.webp";
+import anubisJackal from "src/assets/sfts/anubis_jackal.webp";
+import snakeInJar from "src/assets/sfts/snake_in_jar.webp";
+
+import scarab from "assets/resources/scarab.webp";
+import sand from "assets/resources/sand.webp";
+import hieroglyph from "assets/resources/hieroglyph.webp";
+import camelBone from "assets/resources/camel_bone.webp";
+import cockleShell from "assets/resources/cockle_shell.webp";
+import vase from "assets/resources/vase.webp";
+
 import { InventoryItemName } from "./game";
 
 import { CROPS, CROP_SEEDS } from "./crops";
@@ -8825,6 +8837,138 @@ export const ITEM_DETAILS: Items = {
     image: paella,
     description: {
       en: "A classic Spanish dish, brimming with flavor.",
+    },
+  },
+  "Desert Rose": {
+    image: desertRose,
+    description: {
+      en: "A mutant flower that can be found during the Pharaoh's Treasure season.",
+    },
+  },
+  "Camel Bone": {
+    image: camelBone,
+    description: {
+      en: "Bones of an ancient camel, rumoured to transport artefacts",
+    },
+  },
+  "Cockle Shell": {
+    image: cockleShell,
+    description: {
+      en: "A beautiful shell.",
+    },
+  },
+  Hieroglyph: {
+    image: hieroglyph,
+    description: {
+      en: "Unlock the secrets of the hieroglyphs.",
+    },
+  },
+  Sand: {
+    image: sand,
+    description: {
+      en: "It get's everywhere",
+    },
+  },
+  Scarab: {
+    image: scarab,
+    description: {
+      en: "Pharaoh's lost artefact.",
+    },
+  },
+  Vase: {
+    image: vase,
+    description: {
+      en: "A beautiful vase.",
+    },
+  },
+  "Hapy Jar": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Imsety Jar": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Tomato Core": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  Sarcophagus: {
+    image: sarcophagus,
+    description: {
+      en: "",
+    },
+  },
+  "Duamutef Jar": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Qebehsenuef Jar": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Clay Tablet": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Snake in Jar": {
+    image: snakeInJar,
+    description: {
+      en: "",
+    },
+  },
+  "Reveling Lemon": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Anubis Jackal": {
+    image: anubisJackal,
+    description: {
+      en: "",
+    },
+  },
+  Sundial: {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Sand Golem": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Cactus King": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Lemon Frog": {
+    image: "",
+    description: {
+      en: "",
+    },
+  },
+  "Scarab Beetle": {
+    image: "",
+    description: {
+      en: "",
     },
   },
 };
