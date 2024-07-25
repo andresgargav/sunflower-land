@@ -534,6 +534,12 @@ export const INITIAL_FARM: GameState = {
     choresCompleted: 0,
     choresSkipped: 0,
   },
+  desert: {
+    digging: {
+      grid: [],
+      patterns: [],
+    },
+  },
 };
 
 export const TEST_FARM: GameState = {
@@ -821,6 +827,13 @@ export const TEST_FARM: GameState = {
   goblinMarket: {
     resources: {},
   },
+  desert: {
+    digging: {
+      patterns: [],
+
+      grid: [],
+    },
+  },
 };
 
 export const EMPTY: GameState = {
@@ -915,5 +928,11 @@ export const EMPTY: GameState = {
   },
   goblinMarket: {
     resources: {},
+  },
+  desert: {
+    digging: {
+      patterns: [],
+      grid: [],
+    },
   },
 };
