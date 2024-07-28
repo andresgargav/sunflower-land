@@ -28,9 +28,10 @@ export const NPCS: NPCBumpkin[] = [
 ];
 
 export class RecipeRushScene extends BaseScene {
-  sceneId: SceneId = "recipe_rush";
+  private firstIdle = true;
+  private firstMove = true;
 
-  private hasChefHat = false;
+  sceneId: SceneId = "recipe_rush";
 
   constructor() {
     super({
@@ -110,16 +111,36 @@ export class RecipeRushScene extends BaseScene {
       this.currentPlayer.cook();
     } else if (this.currentPlayer.hasItem) {
       this.currentPlayer.item?.adjustWithPlayer();
-      this.isMoving
-        ? this.currentPlayer.carry()
-        : this.currentPlayer.carryIdle();
-    } else if (this.isMoving) {
-      this.currentPlayer.walk();
+      this.currentPlayer.item?.playVerticalMove();
+      this.handleItemMovement();
     } else {
-      this.currentPlayer.idle();
+      this.handlePlayerMovement();
     }
 
     super.update();
+  }
+
+  private handleItemMovement() {
+    if (this.isMoving) {
+      this.updateFirstFlags(false, true);
+      this.currentPlayer?.carry();
+    } else {
+      this.updateFirstFlags(true, false);
+      this.currentPlayer?.carryIdle();
+    }
+  }
+
+  private handlePlayerMovement() {
+    this.updateFirstFlags(true, true);
+    this.isMoving ? this.currentPlayer?.walk() : this.currentPlayer?.idle();
+  }
+
+  private updateFirstFlags(firstMove: boolean, firstIdle: boolean) {
+    if (this.firstMove !== firstMove || this.firstIdle !== firstIdle) {
+      this.currentPlayer?.item?.removeVerticalMove();
+      this.firstMove = firstMove;
+      this.firstIdle = firstIdle;
+    }
   }
 
   private initialiseShaders() {

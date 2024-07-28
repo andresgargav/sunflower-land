@@ -39,6 +39,26 @@ export const ITEM_BUMPKIN: Item = {
   scale: 0.75,
 };
 
+const FRAME_RATE = 10;
+const FRAME_DURATION = 1000 / FRAME_RATE;
+
+export const ITEM_IDLE_ANIMATION = [
+  { duration: FRAME_DURATION * 3, y: ITEM_BUMPKIN.y },
+  { duration: FRAME_DURATION * 1, y: ITEM_BUMPKIN.y + 1 },
+  { duration: FRAME_DURATION * 2, y: ITEM_BUMPKIN.y + 2 },
+  { duration: FRAME_DURATION * 2, y: ITEM_BUMPKIN.y + 1 },
+];
+
+export const ITEM_WALK_ANIMATION = [
+  { duration: FRAME_DURATION * 1, y: ITEM_BUMPKIN.y },
+  { duration: FRAME_DURATION * 1, y: ITEM_BUMPKIN.y + 1 },
+  { duration: FRAME_DURATION * 1, y: ITEM_BUMPKIN.y },
+  { duration: FRAME_DURATION * 1, y: ITEM_BUMPKIN.y - 1 },
+  { duration: FRAME_DURATION * 1, y: ITEM_BUMPKIN.y },
+  { duration: FRAME_DURATION * 2, y: ITEM_BUMPKIN.y + 1 },
+  { duration: FRAME_DURATION * 1, y: ITEM_BUMPKIN.y - 1 },
+];
+
 export const INGREDIENTS: Record<number, CropName | FishName> = {
   0: "Sunflower",
   1: "Potato",

@@ -5,6 +5,8 @@ import {
   EXPRESSION_ITEM,
   INGREDIENT_STATE,
   ITEM_BUMPKIN,
+  ITEM_IDLE_ANIMATION,
+  ITEM_WALK_ANIMATION,
 } from "../RecipeRushConstants";
 import { AlertContainer } from "./AlertContainer";
 import { IngredientStateContainer } from "./IngredientStateContainer";
@@ -23,7 +25,10 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
   private ingredientName: string;
   private alert: AlertContainer;
   private ingredientState: IngredientStateContainer;
-  private verticalMove: Phaser.Tweens.TweenChain | null;
+  private verticalMove: Phaser.Tweens.Tween | null;
+
+  private startTime = 0;
+  private endTime = 0;
 
   scene: BaseScene;
   sprite: Phaser.GameObjects.Sprite;
@@ -58,42 +63,59 @@ export class IngredientContainer extends Phaser.GameObjects.Container {
     this.add([this.sprite, this.ingredientState]);
   }
 
+  private getFramePosition = (
+    elapsed: number,
+    frames: Record<string, number>[]
+  ) => {
+    let accumulatedDuration = 0;
+    for (const frame of frames) {
+      if (elapsed <= accumulatedDuration + frame.duration) {
+        return frame.y;
+      }
+      accumulatedDuration += frame.duration;
+    }
+    return frames[frames.length - 1].y;
+  };
+
   playVerticalMove() {
-    this.verticalMove = this.scene.tweens.chain({
-      targets: this,
-      tweens: [
-        {
-          y: this.y,
-          duration: 300,
-          ease: "Linear",
+    if (this.verticalMove) return;
+
+    let startTime = 0;
+
+    const getTotalDuration = (animation: { duration: number }[]) => {
+      return animation.reduce((sum, frame) => sum + frame.duration, 0);
+    };
+
+    const createTween = (animation: { duration: number; y: number }[]) => {
+      const totalDuration = getTotalDuration(animation);
+
+      return this.scene.tweens.add({
+        targets: this,
+        repeat: -1,
+        y: this.y + 3,
+        yoyo: true,
+        duration: totalDuration / 2,
+        onStart: () => (startTime = this.scene.time.now),
+        onUpdate: () => {
+          const elapsed = this.scene.time.now - startTime;
+          this.setY(this.getFramePosition(elapsed, animation));
         },
-        {
-          y: this.y + 1,
-          duration: 100,
-          ease: "Linear",
-        },
-        {
-          y: this.y + 2,
-          duration: 200,
-          ease: "Linear",
-        },
-        {
-          y: this.y + 1,
-          duration: 200,
-          ease: "Linear",
-        },
-        {
-          y: this.y,
-          duration: 100,
-          ease: "Linear",
-        },
-      ],
-      repeat: -1,
-    });
+        onRepeat: () => (startTime = this.scene.time.now),
+      });
+    };
+
+    const animation = this.scene.isMoving
+      ? ITEM_WALK_ANIMATION
+      : ITEM_IDLE_ANIMATION;
+    this.verticalMove = createTween(animation);
   }
 
   removeVerticalMove() {
-    this.verticalMove?.destroy();
+    if (!this.verticalMove) return;
+
+    this.verticalMove.stop();
+    this.setY(ITEM_BUMPKIN.y);
+    this.verticalMove.destroy();
     this.verticalMove = null;
   }
 
