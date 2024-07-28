@@ -14,7 +14,7 @@ type Metadata = {
   attributes: Attribute[];
   external_url: string;
   image: string;
-  name?: string;
+  name?: InventoryItemName | BumpkinItem;
 };
 
 export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
@@ -151,7 +151,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     ],
   },
   "Corn Seed": {
-    name: "Cord Seed",
+    name: "Corn Seed",
     description:
       "A seed used to grow corn.\n\nYou can buy corn seeds in game at the market.",
     decimals: 18,
@@ -6412,6 +6412,21 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Tradable", value: "Yes" },
     ],
   },
+  "Pharaoh Chicken": {
+    description: "A strong and noble chicken boosting your oil yield.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2116.gif",
+    attributes: [
+      { trait_type: "Boost", value: "Other" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase daily digs",
+        value: 20,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+  },
 
   "Skill Shrimpy": {
     description:
@@ -7361,7 +7376,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     ],
   },
   Baozi: {
-    name: "Bazoi",
+    name: "Baozi",
     description:
       "A delicious steamed bun. A special event item from Lunar New Year 2024.",
     decimals: 0,
@@ -7424,7 +7439,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     ],
   },
   "Nightshade Faction Banner": {
-    name: "Nightshades Faction Banner",
+    name: "Nightshade Faction Banner",
     description:
       "A banner that shows your allegiance to the Nightshade Faction.",
     decimals: 0,
@@ -8703,6 +8718,41 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/question_mark.png",
     name: "Scarab Beetle",
+  },
+  "Adrift Ark": {
+    description:
+      "A sandcastle on the shore intricately crafted to resemble a capsized boat, complete with shell portholes and seaweed flags fluttering atop its sculpted hull.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Adrift Ark",
+  },
+  Castellan: {
+    description:
+      "Castellan is a charming sandcastle figure adorned with colorful accessories, symbolizing playful spirit and creativity.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Castellan",
+  },
+  "Sunlit Citadel": {
+    description: "A Castle to show your pride",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Sunlit Citadel",
   },
 };
 

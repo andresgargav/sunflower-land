@@ -801,6 +801,10 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Cactus King": 2113,
   "Lemon Frog": 2114,
   "Scarab Beetle": 2115,
+  "Pharaoh Chicken": 2116,
+  "Adrift Ark": 2117,
+  Castellan: 2118,
+  "Sunlit Citadel": 2119,
 };
 
 // The reverse of above
