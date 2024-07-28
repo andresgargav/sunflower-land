@@ -1,7 +1,3 @@
-import { CookingToolContainer } from "./containers/CookingToolContainer";
-import { IngredientContainer } from "./containers/IngredientContainer";
-import { RecipeContainer } from "./containers/RecipeContainer";
-
 export interface Coordinates {
   x: number;
   y: number;
@@ -51,8 +47,3 @@ export type CookingToolInfo = {
 };
 
 export type Item = Coordinates & { scale: number };
-
-export type ItemContainer =
-  | IngredientContainer
-  | CookingToolContainer
-  | RecipeContainer;

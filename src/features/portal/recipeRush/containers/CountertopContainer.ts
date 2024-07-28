@@ -1,8 +1,9 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { Coordinates, ItemContainer } from "../RecipeRushTypes";
+import { Coordinates } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { ITEM_BUMPKIN } from "../RecipeRushConstants";
 import { BaseScene } from "features/world/scenes/BaseScene";
+import { ItemContainer } from "./ItemContainer";
 
 interface Props {
   x: number;

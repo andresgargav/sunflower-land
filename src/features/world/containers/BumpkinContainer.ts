@@ -9,7 +9,7 @@ import { ReactionName } from "features/pumpkinPlaza/components/Reactions";
 import { getAnimationUrl } from "../lib/animations";
 import { InventoryItemName } from "features/game/types/game";
 import { ITEM_DETAILS } from "features/game/types/images";
-import { ItemContainer } from "features/portal/recipeRush/RecipeRushTypes";
+import { ItemContainer } from "features/portal/recipeRush/containers/ItemContainer";
 
 const NAME_ALIASES: Partial<Record<NPCName, string>> = {
   "pumpkin' pete": "pete",

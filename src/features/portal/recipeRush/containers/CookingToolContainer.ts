@@ -14,6 +14,7 @@ import {
   PLAYER_WALKING_SPEED,
 } from "../RecipeRushConstants";
 import { IngredientContainer } from "./IngredientContainer";
+import { ItemContainer } from "./ItemContainer";
 
 interface Props {
   x: number;
@@ -33,7 +34,7 @@ interface Props {
   player?: BumpkinContainer;
 }
 
-export class CookingToolContainer extends Phaser.GameObjects.Container {
+export class CookingToolContainer extends ItemContainer {
   private id: number;
   private spriteName: string;
   private itemPosition: Coordinates;
@@ -47,7 +48,6 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
   private ingredient: IngredientContainer | null;
   private sprite: Phaser.GameObjects.Sprite;
   private progressBar: ProgressBar;
-  private verticalMove: Phaser.Tweens.TweenChain | null;
 
   scene: BaseScene;
   defaultX: number;
@@ -85,7 +85,6 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
     this.cookingToolName = name;
     this.player = player;
     this.ingredient = null;
-    this.verticalMove = null;
 
     // Cooking Tool Sprite
     this.sprite = scene.add.sprite(
@@ -244,44 +243,5 @@ export class CookingToolContainer extends Phaser.GameObjects.Container {
       this.itemPosition.x,
       this.itemPosition.y + this.ingredientYOffset
     );
-  }
-
-  playVerticalMove() {
-    this.verticalMove = this.scene.tweens.chain({
-      targets: this,
-      tweens: [
-        {
-          y: this.y,
-          duration: 300,
-          ease: "Linear",
-        },
-        {
-          y: this.y + 1,
-          duration: 100,
-          ease: "Linear",
-        },
-        {
-          y: this.y + 2,
-          duration: 200,
-          ease: "Linear",
-        },
-        {
-          y: this.y + 1,
-          duration: 200,
-          ease: "Linear",
-        },
-        {
-          y: this.y,
-          duration: 100,
-          ease: "Linear",
-        },
-      ],
-      repeat: -1,
-    });
-  }
-
-  removeVerticalMove() {
-    this.verticalMove?.destroy();
-    this.verticalMove = null;
   }
 }
