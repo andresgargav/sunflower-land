@@ -26,7 +26,7 @@ const _specialEvents = (state: MachineState) =>
   Object.entries(state.context.state.specialEvents.current)
     .filter(([, specialEvent]) => !!specialEvent?.isEligible)
     .filter(
-      ([, specialEvent]) => (specialEvent?.endAt ?? Infinity) > Date.now()
+      ([, specialEvent]) => (specialEvent?.endAt ?? Infinity) > Date.now(),
     )
     .filter(([, specialEvent]) => (specialEvent?.startAt ?? 0) < Date.now());
 
@@ -35,8 +35,8 @@ const hasSoldCropsBefore = (bumpkin?: Bumpkin) => {
 
   const { activity = {} } = bumpkin;
 
-  return !!getKeys(CROPS()).find((crop) =>
-    getKeys(activity).includes(`${crop} Sold`)
+  return !!getKeys(CROPS).find((crop) =>
+    getKeys(activity).includes(`${crop} Sold`),
   );
 };
 
@@ -45,8 +45,8 @@ const hasBoughtCropsBefore = (bumpkin?: Bumpkin) => {
 
   const { activity = {} } = bumpkin;
 
-  return !!getKeys(CROPS()).find((crop) =>
-    getKeys(activity).includes(`${crop} Seed Bought`)
+  return !!getKeys(CROPS).find((crop) =>
+    getKeys(activity).includes(`${crop} Seed Bought`),
   );
 };
 

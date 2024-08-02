@@ -9,22 +9,22 @@ describe("boosts", () => {
   it("applies crop shortage price", () => {
     expect(
       getSellPrice({
-        item: CROPS().Sunflower,
+        item: CROPS.Sunflower,
         game: {
           ...TEST_FARM,
           inventory: { "Basic Land": new Decimal(3) },
           createdAt: Date.now() - 1 * 60 * 60 * 1000,
         },
         now: new Date(),
-      })
-    ).toEqual(CROPS().Sunflower.sellPrice * 2);
+      }),
+    ).toEqual(CROPS.Sunflower.sellPrice * 2);
   });
 
   it("removes crop shortage price after 2 hours", () => {
     const now = new Date();
     expect(
       getSellPrice({
-        item: CROPS().Sunflower,
+        item: CROPS.Sunflower,
         game: {
           ...TEST_FARM,
           inventory: { "Basic Land": new Decimal(3) },
@@ -32,8 +32,8 @@ describe("boosts", () => {
           createdAt: now.getTime() - 2 * 60 * 60 * 1000 - 1,
         },
         now,
-      })
-    ).toEqual(CROPS().Sunflower.sellPrice);
+      }),
+    ).toEqual(CROPS.Sunflower.sellPrice);
   });
 
   it("applies special event pricing", () => {
@@ -59,7 +59,7 @@ describe("boosts", () => {
             history: {},
           },
         },
-      })
+      }),
     ).toEqual(FRUIT().Tomato.sellPrice * 1.05);
   });
 
@@ -86,7 +86,7 @@ describe("boosts", () => {
             history: {},
           },
         },
-      })
+      }),
     ).toEqual(FRUIT().Tomato.sellPrice);
   });
 });

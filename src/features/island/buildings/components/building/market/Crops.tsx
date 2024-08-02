@@ -30,14 +30,14 @@ import { BulkSellModal } from "components/ui/BulkSellModal";
 import { SUNNYSIDE } from "assets/sunnyside";
 
 export const isExoticCrop = (
-  item: Crop | Fruit | ExoticCrop
+  item: Crop | Fruit | ExoticCrop,
 ): item is ExoticCrop => {
   return item.name in EXOTIC_CROPS;
 };
 
 export const Crops: React.FC = () => {
   const [selected, setSelected] = useState<Crop | Fruit | ExoticCrop>(
-    CROPS().Sunflower
+    CROPS.Sunflower,
   );
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
@@ -85,9 +85,9 @@ export const Crops: React.FC = () => {
   const cropAmount = setPrecision(new Decimal(inventory[selected.name] || 0));
   const coinAmount = setPrecision(
     new Decimal(displaySellPrice(selected)).mul(
-      state.island.type !== "basic" ? new Decimal(customAmount) : cropAmount
+      state.island.type !== "basic" ? new Decimal(customAmount) : cropAmount,
     ),
-    2
+    2,
   );
 
   const handleSell = (amount: Decimal) => {
@@ -124,15 +124,15 @@ export const Crops: React.FC = () => {
       {} as Record<
         ExoticCropName,
         ExoticCrop & { disabled: false; bumpkinLevel: 0 }
-      >
+      >,
     );
 
   const cropsAndFruits = Object.values({
-    ...CROPS(),
+    ...CROPS,
     ...FRUIT(),
     ...exotics,
     ...GREENHOUSE_FRUIT(),
-    ...GREENHOUSE_CROPS(),
+    ...GREENHOUSE_CROPS,
   }) as Crop[];
 
   return (
@@ -163,7 +163,7 @@ export const Crops: React.FC = () => {
                             handleSell(
                               cropAmount.greaterThan(10)
                                 ? new Decimal(10)
-                                : cropAmount
+                                : cropAmount,
                             )
                           }
                         >
@@ -171,7 +171,7 @@ export const Crops: React.FC = () => {
                             cropAmount.greaterThan(10)
                               ? "sell.ten"
                               : "sell.amount",
-                            { amount: cropAmount }
+                            { amount: cropAmount },
                           )}
                         </Button>
                       )}
@@ -188,7 +188,7 @@ export const Crops: React.FC = () => {
                           {t(
                             state.island.type !== "basic"
                               ? "sell.inBulk"
-                              : "sell.all"
+                              : "sell.all",
                           )}
                         </Button>
                       )}
@@ -217,7 +217,7 @@ export const Crops: React.FC = () => {
             </div>
             <div className="flex flex-wrap mb-2">
               {cropsAndFruits
-                .filter((crop) => !!crop.sellPrice && crop.name in CROPS())
+                .filter((crop) => !!crop.sellPrice && crop.name in CROPS)
                 .map((item) => (
                   <Box
                     isSelected={selected.name === item.name}
@@ -301,8 +301,8 @@ export const Crops: React.FC = () => {
                   .filter(
                     (crop) =>
                       !!crop.sellPrice &&
-                      (crop.name in GREENHOUSE_CROPS() ||
-                        crop.name in GREENHOUSE_FRUIT())
+                      (crop.name in GREENHOUSE_CROPS ||
+                        crop.name in GREENHOUSE_FRUIT()),
                   )
                   .map((item) => (
                     <Box
@@ -341,7 +341,7 @@ export const Crops: React.FC = () => {
           handleSell(
             state.island.type !== "basic"
               ? new Decimal(customAmount)
-              : cropAmount
+              : cropAmount,
           )
         }
         confirmButtonLabel={

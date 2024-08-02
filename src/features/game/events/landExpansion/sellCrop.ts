@@ -22,9 +22,9 @@ export type SellCropAction = {
 };
 
 export const SELLABLE = {
-  ...CROPS(),
+  ...CROPS,
   ...FRUIT(),
-  ...GREENHOUSE_CROPS(),
+  ...GREENHOUSE_CROPS,
   ...GREENHOUSE_FRUIT(),
 };
 
@@ -74,12 +74,12 @@ export function sellCrop({
   bumpkin.activity = trackActivity(
     "Coins Earned",
     bumpkin.activity,
-    new Decimal(coinsEarned)
+    new Decimal(coinsEarned),
   );
   bumpkin.activity = trackActivity(
     `${action.crop} Sold`,
     bumpkin?.activity,
-    new Decimal(amount)
+    new Decimal(amount),
   );
 
   game.coins = game.coins + coinsEarned;

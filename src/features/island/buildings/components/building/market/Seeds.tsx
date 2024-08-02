@@ -188,7 +188,7 @@ export const Seeds: React.FC<Props> = ({ onClose }) => {
           messages={[
             t("confirmation.buyCrops", {
               coinAmount: setPrecision(
-                new Decimal(price).mul(bulkSeedBuyAmount)
+                new Decimal(price).mul(bulkSeedBuyAmount),
               ).toNumber(),
               seedNo: bulkSeedBuyAmount,
               seedName: selectedName,
@@ -218,11 +218,11 @@ export const Seeds: React.FC<Props> = ({ onClose }) => {
       return getFruitPatchTime(
         selectedName as FruitSeedName,
         state,
-        (state.bumpkin as Bumpkin)?.equipped ?? {}
+        (state.bumpkin as Bumpkin)?.equipped ?? {},
       );
 
     if (
-      selectedName in GREENHOUSE_SEEDS() ||
+      selectedName in GREENHOUSE_SEEDS ||
       selectedName in GREENHOUSE_FRUIT_SEEDS()
     ) {
       const plant = SEED_TO_PLANT[selectedName as GreenHouseCropSeedName];
@@ -290,7 +290,7 @@ export const Seeds: React.FC<Props> = ({ onClose }) => {
           </Label>
           <div className="flex flex-wrap mb-2">
             {seeds
-              .filter((name) => name in CROP_SEEDS())
+              .filter((name) => name in CROP_SEEDS)
               .map((name: SeedName) => (
                 <Box
                   isSelected={selectedName === name}
@@ -316,8 +316,8 @@ export const Seeds: React.FC<Props> = ({ onClose }) => {
                   (name !== "Tomato Seed" && name !== "Lemon Seed") ||
                   hasFeatureAccess(
                     gameService.state.context.state,
-                    "NEW_FRUITS"
-                  )
+                    "NEW_FRUITS",
+                  ),
               )
               .map((name: SeedName) => (
                 <Box
@@ -371,8 +371,8 @@ export const Seeds: React.FC<Props> = ({ onClose }) => {
                 {seeds
                   .filter(
                     (name) =>
-                      name in GREENHOUSE_SEEDS() ||
-                      name in GREENHOUSE_FRUIT_SEEDS()
+                      name in GREENHOUSE_SEEDS ||
+                      name in GREENHOUSE_FRUIT_SEEDS(),
                   )
                   .map((name: SeedName) => (
                     <Box

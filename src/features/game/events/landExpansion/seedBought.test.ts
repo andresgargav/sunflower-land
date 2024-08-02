@@ -21,7 +21,7 @@ describe("seedBought", () => {
           item: "Goblin Key" as CropSeedName,
           amount: 1,
         },
-      })
+      }),
     ).toThrow("This item is not a seed");
   });
 
@@ -40,7 +40,7 @@ describe("seedBought", () => {
           item: "Pumpkin Seed",
           amount: 1,
         },
-      })
+      }),
     ).toThrow("Inadequate level");
   });
 
@@ -56,7 +56,7 @@ describe("seedBought", () => {
           item: "Sunflower Seed",
           amount: 0.2,
         },
-      })
+      }),
     ).toThrow("Invalid amount");
   });
 
@@ -74,7 +74,7 @@ describe("seedBought", () => {
           item: "Sunflower Seed",
           amount: 1,
         },
-      })
+      }),
     ).toThrow("Not enough stock");
   });
 
@@ -90,7 +90,7 @@ describe("seedBought", () => {
           item: "Sunflower Seed",
           amount: 1,
         },
-      })
+      }),
     ).toThrow("Insufficient tokens");
   });
 
@@ -111,7 +111,7 @@ describe("seedBought", () => {
     });
 
     expect(state.balance).toEqual(balance);
-    expect(state.coins).toEqual(coins - CROP_SEEDS()["Sunflower Seed"].price);
+    expect(state.coins).toEqual(coins - CROP_SEEDS["Sunflower Seed"].price);
   });
 
   it("adds the newly bought seed to a players inventory", () => {
@@ -157,7 +157,7 @@ describe("seedBought", () => {
 
     const oldAmount = GAME_STATE.inventory[item] ?? new Decimal(0);
 
-    expect(state.coins).toEqual(coins - CROP_SEEDS()[item].price);
+    expect(state.coins).toEqual(coins - CROP_SEEDS[item].price);
     expect(state.inventory[item]).toEqual(oldAmount.add(amount));
   });
 
@@ -183,7 +183,7 @@ describe("seedBought", () => {
 
     const oldAmount = GAME_STATE.inventory[item] ?? new Decimal(0);
 
-    expect(state.coins).toEqual(coins - CROP_SEEDS()[item].price * amount);
+    expect(state.coins).toEqual(coins - CROP_SEEDS[item].price * amount);
     expect(state.inventory[item]).toEqual(oldAmount.add(amount));
   });
 
@@ -199,7 +199,7 @@ describe("seedBought", () => {
           item: "Sunflower Seed",
           amount: 1,
         },
-      })
+      }),
     ).toThrow("Bumpkin not found");
   });
 
@@ -216,7 +216,7 @@ describe("seedBought", () => {
       },
     });
     expect(state.bumpkin?.activity?.["Coins Spent"]).toEqual(
-      CROP_SEEDS()["Sunflower Seed"].price
+      CROP_SEEDS["Sunflower Seed"].price,
     );
   });
 
@@ -403,7 +403,7 @@ describe("seedBought", () => {
           item: "Lily Seed",
           amount: 1,
         },
-      })
+      }),
     ).toThrow("You do not have the planting spot needed to plant this seed");
 
     expect(() =>
@@ -421,7 +421,7 @@ describe("seedBought", () => {
           item: "Lily Seed",
           amount: 1,
         },
-      })
+      }),
     ).not.toThrow();
   });
 
@@ -441,7 +441,7 @@ describe("seedBought", () => {
           item: "Rice Seed",
           amount: 1,
         },
-      })
+      }),
     ).toThrow("You do not have the planting spot needed to plant this seed");
 
     expect(() =>
@@ -459,7 +459,7 @@ describe("seedBought", () => {
           item: "Rice Seed",
           amount: 1,
         },
-      })
+      }),
     ).not.toThrow();
   });
 
@@ -479,7 +479,7 @@ describe("seedBought", () => {
           item: "Grape Seed",
           amount: 1,
         },
-      })
+      }),
     ).toThrow("You do not have the planting spot needed to plant this seed");
 
     expect(() =>
@@ -497,7 +497,7 @@ describe("seedBought", () => {
           item: "Grape Seed",
           amount: 1,
         },
-      })
+      }),
     ).not.toThrow();
   });
   it("requires Fruit Patch to buy a fruit seed", () => {
@@ -516,7 +516,7 @@ describe("seedBought", () => {
           item: "Apple Seed",
           amount: 1,
         },
-      })
+      }),
     ).toThrow("You do not have the planting spot needed to plant this seed");
 
     expect(() =>
@@ -534,7 +534,7 @@ describe("seedBought", () => {
           item: "Apple Seed",
           amount: 1,
         },
-      })
+      }),
     ).not.toThrow();
   });
   it("requires Fruit Patch to buy a fruit seed", () => {
@@ -553,7 +553,7 @@ describe("seedBought", () => {
           item: "Apple Seed",
           amount: 1,
         },
-      })
+      }),
     ).toThrow("You do not have the planting spot needed to plant this seed");
 
     expect(() =>
@@ -571,7 +571,7 @@ describe("seedBought", () => {
           item: "Apple Seed",
           amount: 1,
         },
-      })
+      }),
     ).not.toThrow();
   });
 });
