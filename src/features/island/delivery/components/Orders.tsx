@@ -4,14 +4,10 @@ import React, { useContext, useEffect, useState } from "react";
 import classNames from "classnames";
 import Decimal from "decimal.js-light";
 
-import selectBoxTL from "assets/ui/select/selectbox_tl.png";
-import selectBoxTR from "assets/ui/select/selectbox_tr.png";
-import sflIcon from "assets/icons/sfl.webp";
-import coinsImg from "assets/icons/coins.webp";
 import worldIcon from "assets/icons/world_small.png";
-import heartBg from "assets/ui/heart_bg.png";
+import token from "assets/icons/sfl.webp";
 import chest from "assets/icons/chest.png";
-import lockIcon from "assets/icons/lock.png";
+import lock from "assets/icons/lock.png";
 
 import { DynamicNFT } from "features/bumpkins/components/DynamicNFT";
 import { Context } from "features/game/GameProvider";
@@ -61,6 +57,8 @@ export const BEACH_BUMPKINS: NPCName[] = [
   "finn",
   "finley",
   "miranda",
+  "old salty",
+  "pharaoh",
 ];
 
 export const KINGDOM_BUMPKINS: NPCName[] = ["victoria", "jester", "gambit"];
@@ -171,9 +169,9 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                 let img: string;
 
                 if (name === "coins") {
-                  img = coinsImg;
+                  img = SUNNYSIDE.ui.coinsImg;
                 } else if (name === "sfl") {
-                  img = sflIcon;
+                  img = token;
                 } else {
                   img = ITEM_DETAILS[name].image;
                 }
@@ -199,7 +197,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <Label
             type="warning"
             iconWidth={8}
-            icon={sflIcon}
+            icon={token}
             className={"absolute -bottom-2 text-center p-1 "}
             style={{
               left: `${PIXEL_SCALE * -3}px`,
@@ -214,7 +212,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         {!order.completedAt && order.reward.coins !== undefined && (
           <Label
             type="warning"
-            icon={coinsImg}
+            icon={SUNNYSIDE.ui.coinsImg}
             className={"absolute -bottom-2 text-center p-1 "}
             style={{
               left: `${PIXEL_SCALE * -3}px`,
@@ -246,7 +244,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <div id="select-box" className="hidden md:block">
             <img
               className="absolute pointer-events-none"
-              src={selectBoxTL}
+              src={SUNNYSIDE.ui.selectBoxTL}
               style={{
                 top: `${PIXEL_SCALE * -3}px`,
                 left: `${PIXEL_SCALE * -3}px`,
@@ -255,7 +253,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             />
             <img
               className="absolute pointer-events-none"
-              src={selectBoxTR}
+              src={SUNNYSIDE.ui.selectBoxTR}
               style={{
                 top: `${PIXEL_SCALE * -3}px`,
                 right: `${PIXEL_SCALE * -3}px`,
@@ -295,7 +293,7 @@ export const LockedOrderCard: React.FC<{ npc: NPCName }> = ({ npc }) => {
 
         <Label
           type="formula"
-          icon={lockIcon}
+          icon={SUNNYSIDE.icons.lock}
           className={"absolute -bottom-2 text-center p-1 "}
           style={{
             left: `${PIXEL_SCALE * -3}px`,
@@ -389,10 +387,10 @@ export const DeliveryOrders: React.FC<Props> = ({
   }
 
   const {
-    ticketTasksAreClosing,
     tasksStartAt,
     tasksCloseAt,
     ticketTasksAreFrozen,
+    ticketTasksAreClosing,
   } = getSeasonChangeover({ id: gameService.state.context.farmId });
 
   const level = getBumpkinLevel(gameState.bumpkin?.experience ?? 0);
@@ -431,48 +429,15 @@ export const DeliveryOrders: React.FC<Props> = ({
         <div className="p-1">
           <div className="flex justify-between gap-1">
             <Label type="default">{t("deliveries")}</Label>
-            {!ticketTasksAreFrozen && (
-              <Label type="info" icon={SUNNYSIDE.icons.stopwatch}>
-                {t("new.delivery.in", {
-                  timeLeft: secondsToString(secondsTillReset(), {
-                    length: "medium",
-                    removeTrailingZeros: true,
-                  }),
-                })}
-              </Label>
-            )}
           </div>
           <p className="my-2 ml-1 text-xs">{t("deliveries.intro")}</p>
         </div>
-        {
-          // Give 24 hours heads up before tasks close
-          ticketTasksAreClosing && (
-            <div className="flex flex-col mx-2 mb-1 space-y-1.5">
-              <p className="text-xs">{t("orderhelp.New.Season")}</p>
-              <Label type="info" icon={SUNNYSIDE.icons.timer} className="mt-1">
-                {secondsToString((tasksCloseAt - Date.now()) / 1000, {
-                  length: "full",
-                })}
-              </Label>
-            </div>
-          )
-        }
-        {ticketTasksAreFrozen && (
-          <div className="flex flex-col mx-2 mb-1 space-y-1.5">
-            <p className="text-xs">{t("orderhelp.New.Season.arrival")}</p>
-            <Label
-              type="info"
-              icon={SUNNYSIDE.icons.stopwatch}
-              className="mt-1"
-            >
-              {secondsToString((tasksStartAt - Date.now()) / 1000, {
-                length: "full",
-              })}
-            </Label>
-          </div>
-        )}
 
-        <Label type="default" className="ml-2 mb-2" icon={coinsImg}>
+        <Label
+          type="default"
+          className="ml-2 mb-2"
+          icon={SUNNYSIDE.ui.coinsImg}
+        >
           {`Coins`}
         </Label>
         <div className="grid grid-cols-3 sm:grid-cols-4 w-full ">
@@ -491,17 +456,36 @@ export const DeliveryOrders: React.FC<Props> = ({
         </div>
 
         <div className="px-2 mt-2">
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <Label
               type="default"
               icon={ITEM_DETAILS[getSeasonalTicket()].image}
             >
               {`${getSeasonalTicket()}s`}
             </Label>
+            {ticketTasksAreFrozen && (
+              <Label type="formula" icon={lock} className="mt-1">
+                {secondsToString((tasksStartAt - Date.now()) / 1000, {
+                  length: "medium",
+                })}
+              </Label>
+            )}
+            {ticketTasksAreClosing && (
+              <Label type="danger" icon={lock} className="mt-1">
+                {`${secondsToString((tasksCloseAt - Date.now()) / 1000, {
+                  length: "medium",
+                })} left`}
+              </Label>
+            )}
           </div>
           {level <= 8 && (
             <span className="text-xs mb-2">
               {t("bumpkin.delivery.earnScrolls")}
+            </span>
+          )}
+          {ticketTasksAreFrozen && (
+            <span className="text-xs mb-2">
+              {t("orderhelp.New.Season.arrival")}
             </span>
           )}
         </div>
@@ -522,7 +506,7 @@ export const DeliveryOrders: React.FC<Props> = ({
 
         <div className="px-2 mt-2">
           <div className="flex justify-between">
-            <Label type="default" icon={sflIcon}>
+            <Label type="default" icon={token}>
               {`SFL`}
             </Label>
           </div>
@@ -625,7 +609,7 @@ export const DeliveryOrders: React.FC<Props> = ({
               className="absolute -inset-2 bg-repeat"
               style={{
                 height: `${PIXEL_SCALE * 50}px`,
-                backgroundImage: `url(${heartBg})`,
+                backgroundImage: `url(${SUNNYSIDE.ui.heartBg})`,
                 backgroundSize: `${32 * PIXEL_SCALE}px`,
               }}
             />
@@ -756,9 +740,9 @@ export const DeliveryOrders: React.FC<Props> = ({
                   <SquareIcon
                     icon={
                       previewOrder.reward.coins
-                        ? coinsImg
+                        ? SUNNYSIDE.ui.coinsImg
                         : previewOrder.reward.sfl
-                        ? sflIcon
+                        ? token
                         : ITEM_DETAILS[getSeasonalTicket()].image
                     }
                     width={7}
