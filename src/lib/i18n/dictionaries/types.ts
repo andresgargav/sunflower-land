@@ -596,6 +596,7 @@ export type BoostEffectDescriptions =
   | "description.rock.golem.boost"
   | "description.crimson.carp.boost"
   | "description.battle.fish.boost"
+  | "description.lemon.shark.boost"
   | "description.crim.peckster.boost"
   | "description.knight.chicken.boost"
   | "description.pharaoh.chicken.boost"
@@ -637,7 +638,15 @@ export type BoostEffectDescriptions =
   | "description.blossom.hourglass.boost"
   | "description.hourglass.expired"
   | "description.hourglass.running"
-  | "description.desert.rose.boost";
+  | "description.desert.rose.boost"
+  | "description.pharaoh.gnome.boost"
+  | "description.lemon.tea.bath.boost"
+  | "description.tomato.clown.boost"
+  | "description.cannonball.boost"
+  | "description.tomato.bombard.boost"
+  | "description.camel.boost"
+  | "description.reveling.lemon.boost"
+  | "description.lemon.frog.boost";
 
 export type BountyDescription =
   | "description.clam.shell"
@@ -742,7 +751,14 @@ export type BumpkinItemBuff =
   | "bumpkinItemBuff.bumpkin.sword"
   | "bumpkinItemBuff.bumpkin.pants"
   | "bumpkinItemBuff.bumpkin.sabatons"
-  | "bumpkinItemBuff.crab.trap";
+  | "bumpkinItemBuff.crab.trap"
+  | "bumpkinItemBuff.bionic.drill"
+  | "bumpkinItemBuff.infernal.drill.boost"
+  | "bumpkinItemBuff.lemon.shield.boost"
+  | "bumpkinItemBuff.dev.wrench.boost"
+  | "bumpkinItemBuff.oil.overalls.boost"
+  | "bumpkinItemBuff.ancient.shovel.boost"
+  | "bumpkinItemBuff.grape.pants";
 
 export type BumpkinPart =
   | "equip.background"
@@ -934,7 +950,9 @@ export type ConfirmSkill = "confirm.skillClaim";
 export type ConfirmationTerms =
   | "confirmation.sellCrops"
   | "confirmation.buyCrops"
-  | "confirmation.enterAmount";
+  | "confirmation.enterAmount"
+  | "confirmation.sellSeasonalArtefact"
+  | "confirmation.valuableTreasure";
 
 export type Conversations =
   | "hank-intro.headline"
@@ -1090,6 +1108,12 @@ export type CropMachine =
   | "cropMachine.stopped"
   | "cropMachine.idle"
   | "cropMachine.name";
+
+export type CropsAndChickensMessages =
+  | "crops-and-chickens.portal.title"
+  | "crops-and-chickens.portal.description"
+  | "crops-and-chickens.portal.missionObjectives"
+  | "crops-and-chickens.portal.rewardMessage";
 
 export type DeliveryItem =
   | "deliveryitem.inventory"
@@ -1434,7 +1458,8 @@ export type Donation =
   | "donation.rioGrandeDoSul.two"
   | "donation.matic"
   | "donation.minimum"
-  | "donation.airdrop";
+  | "donation.airdrop"
+  | "donation.toPortal";
 
 export type ErrorAndAccess =
   | "errorAndAccess.blocked.betaTestersOnly"
@@ -3589,6 +3614,7 @@ export type WornDescription =
   | "worm.redWiggler";
 
 export type World =
+  | "world.newArea"
   | "world.intro.one"
   | "world.intro.two"
   | "world.intro.missingDelivery"
@@ -3794,9 +3820,21 @@ export type DesertKeys =
   | "desert.notice.two"
   | "desert.notice.three"
   | "desert.notice.four"
+  | "desert.notice.five"
   | "digby.noShovels"
   | "digby.noDrills"
-  | "digby.noDigsLeft";
+  | "digby.noDigsLeft"
+  | "digby.moreDigsIntro"
+  | "digby.buyMoreDigs"
+  | "digby.streak"
+  | "digby.streakReward"
+  | "digby.claimPrize"
+  | "desert.hud.digsLeft"
+  | "desert.hud.noDigsLeft"
+  | "desert.hud.newSite"
+  | "desert.extraDigs"
+  | "desert.digs"
+  | "desert.buyDigs.confirmation";
 
 export type TranslationKeys =
   | AchievementsTerms
@@ -3833,6 +3871,7 @@ export type TranslationKeys =
   | CropBoomMessages
   | CropFruitDescriptions
   | CropMachine
+  | CropsAndChickensMessages
   | DeliveryItem
   | DefaultDialogue
   | DecorationDescriptions

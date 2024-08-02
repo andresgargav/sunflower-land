@@ -32,6 +32,7 @@ import {
   CropBoomMessages,
   CropMachine,
   CropFruitDescriptions,
+  CropsAndChickensMessages,
   DeliveryItem,
   DefaultDialogue,
   DecorationDescriptions,
@@ -604,7 +605,7 @@ const auction: Record<Auction, string> = {
   "auction.start": "Starting Time",
   "auction.period": "Auction Period",
   "auction.closed": "Auction closed",
-  "auction.const": "Under construction!",
+  "auction.const": "A new seasonal collection is coming...",
   "auction.const.soon": "This feature is coming soon.",
 };
 
@@ -832,7 +833,7 @@ const boostEffectDescriptions: Record<BoostEffectDescriptions, string> = {
   "description.iron.idol.boost": "+1 Iron",
   "description.emerald.turtle.boost": "+0.5 Stone, Iron, Gold (AOE 3x3)",
   "description.tin.turtle.boost": "+0.1 Stone (AOE 3x3)",
-  "description.heart.of.davy.jones.boost": "+20 Daily Digging Limit",
+  "description.heart.of.davy.jones.boost": "+20 Desert Digs",
   "description.Karkinos.boost": "+0.1 Cabbage (Inactive with Cabbage Boy)",
   "description.mushroom.house.boost": "+0.2 Wild Mushroom",
   "description.boost.gilded.swordfish": "+0.1 Gold",
@@ -888,9 +889,10 @@ const boostEffectDescriptions: Record<BoostEffectDescriptions, string> = {
   "description.rock.golem.boost": "10% Chance of +2 Stone",
   "description.crimson.carp.boost": "+0.05 Crimstone",
   "description.battle.fish.boost": "+0.05 Oil",
+  "description.lemon.shark.boost": "+0.2 Lemons",
   "description.crim.peckster.boost": "+0.1 Crimstone",
   "description.knight.chicken.boost": "+0.1 Oil",
-  "description.pharaoh.chicken.boost": "+1 Dig",
+  "description.pharaoh.chicken.boost": "+1 Desert Dig",
   "description.queen.bee.boost": "+1 Honey Production Speed",
   "description.beekeeper.hat.boost": "+0.2 Honey Production Speed",
   "description.flower.fox.boost": "-10% Flower Growth Time",
@@ -936,6 +938,14 @@ const boostEffectDescriptions: Record<BoostEffectDescriptions, string> = {
   "description.hourglass.expired":
     "Your {{hourglass}} has expired. Time to grab another one!",
   "description.desert.rose.boost": "10% Chance for +1 Flower",
+  "description.pharaoh.gnome.boost": "+2 Greenhouse Plants",
+  "description.lemon.tea.bath.boost": "-50% Lemon Growth Time",
+  "description.tomato.clown.boost": "-50% Tomato Growth Time",
+  "description.cannonball.boost": "-25% Tomato Growth Time",
+  "description.tomato.bombard.boost": "+1 Tomato",
+  "description.camel.boost": "+1 Sand and +30% Artefact Shop Bounty Sell Price",
+  "description.reveling.lemon.boost": "+0.25 Lemon",
+  "description.lemon.frog.boost": "-25% Lemon Growth Time",
 };
 
 const bountyDescription: Record<BountyDescription, string> = {
@@ -1059,6 +1069,13 @@ const bumpkinItemBuff: Record<BumpkinItemBuff, string> = {
   "bumpkinItemBuff.bumpkin.pants": "+5% Marks",
   "bumpkinItemBuff.bumpkin.sabatons": "+5% Marks",
   "bumpkinItemBuff.crab.trap": "+1 Crab when digging or drilling",
+  "bumpkinItemBuff.bionic.drill": "+5 Desert Digs",
+  "bumpkinItemBuff.infernal.drill.boost": "Drill Oil without Oil Drill",
+  "bumpkinItemBuff.lemon.shield.boost": "+1 Lemon",
+  "bumpkinItemBuff.dev.wrench.boost": "-50% Oil Regeneration Time",
+  "bumpkinItemBuff.oil.overalls.boost": "+10 Oil",
+  "bumpkinItemBuff.ancient.shovel.boost": "Dig treasure without Sand Shovel",
+  "bumpkinItemBuff.grape.pants": "+0.2 Grapes",
 };
 
 const bumpkinPart: Record<BumpkinPart, string> = {
@@ -1299,6 +1316,10 @@ const confirmationTerms: Record<ConfirmationTerms, string> = {
   "confirmation.buyCrops":
     "Are you sure you want to spend {{coinAmount}} Coins to buy {{seedNo}} {{seedName}}s?",
   "confirmation.enterAmount": "Enter Amount to Sell:",
+  "confirmation.sellSeasonalArtefact":
+    "This bounty is a seasonal artefact! Are you sure you want to sell it?",
+  "confirmation.valuableTreasure":
+    "This bounty is very valuable! Are you sure you want to sell it?",
 };
 
 const confirmSkill: Record<ConfirmSkill, string> = {
@@ -1518,6 +1539,15 @@ const cropMachine: Record<CropMachine, string> = {
   "cropMachine.stopped": "Crop Machine has stopped",
   "cropMachine.idle": "Crop Machine is idle",
   "cropMachine.name": "Crop Machine",
+};
+
+const cropsAndChickens: Record<CropsAndChickensMessages, string> = {
+  "crops-and-chickens.portal.title": "Minigame - Crops & Chickens",
+  "crops-and-chickens.portal.description": "Can you help me collect the crops?",
+  "crops-and-chickens.portal.missionObjectives":
+    "Mission: Deposit {{targetScore}} points worth of crops",
+  "crops-and-chickens.portal.rewardMessage":
+    "Congratulations, you completed the mission! Here is your reward.",
 };
 
 const decorationDescriptions: Record<DecorationDescriptions, string> = {
@@ -1981,6 +2011,8 @@ const donation: Record<Donation, string> = {
   "donation.minimum": "Minimum 1 MATIC",
   "donation.airdrop": "Decorations will be airdropped after donations close.",
   "donation.specialEvent": "Special Donation Event",
+  "donation.toPortal":
+    "Would you like to donate {{amount}} MATIC to {{portalName}}?",
 };
 
 const draftBid: Record<DraftBid, string> = {
@@ -4628,7 +4660,7 @@ const orderhelp: Record<OrderHelp, string> = {
   "orderhelp.Skip.hour": "You're only able to skip an order after 24 hours!",
   "orderhelp.New.Season":
     "A new season approaches, ticket deliveries will temporarily close.",
-  "orderhelp.New.Season.arrival": "New seasonal deliveries opening soon.",
+  "orderhelp.New.Season.arrival": "Seasonal deliveries opening soon...",
   "orderhelp.Wisely": "Choose wisely!",
   "orderhelp.SkipIn": "Skip in",
   "orderhelp.NoRight": "Not Right Now",
@@ -5365,6 +5397,7 @@ const withdraw: Record<Withdraw, string> = {
 };
 
 const world: Record<World, string> = {
+  "world.newArea": "New",
   "world.intro.one":
     "Howdy Bumpkin, welcome to the Pumpkin Plaza. Here Bumpkins from far and wide come together to trade, complete deliveries and play mini-games.",
   "world.intro.two":
@@ -5581,11 +5614,16 @@ export const easterEggTerms: Record<EasterEggKeys, string> = {
 };
 
 export const desertTerms: Record<DesertKeys, string> = {
+  "digby.streakReward":
+    "Discover all the items above for a bonus prize. Unlock daily streaks for extra rewards.",
+  "digby.streak": "Digging Streak",
+  "digby.claimPrize":
+    "Well done Bumpkin! Don't forget to claim your bonus prize!",
   "digby.noShovels":
     "Hey, you need a sand shovel to dig here! Speak to Jafar..",
   "digby.noDrills":
     "Looks like you don't have any sand drills! Speak to Jafar..",
-  "digby.noDigsLeft": "You have no more digs left! Come back tomorrow..",
+  "digby.noDigsLeft": "You have no more digs left! Maybe I can help..",
   "digby.puzzle": "Digging puzzle",
   "digby.patterns": "Patterns",
   "digby.today":
@@ -5593,16 +5631,27 @@ export const desertTerms: Record<DesertKeys, string> = {
   "digby.guide.one":
     "You can find items by digging in the archaelogical site. Learn the ancient clues, to find what you seek in the desert.",
   "digby.guide.two": "Crabs are always located next to treasure.",
-  "digby.guide.three":
-    "If you discover sand, you are out of luck. Dig elsewhere.",
+  "digby.guide.three": "If you discover sand, there is no treasure nearby.",
   "digby.guide.four":
     "Each day a desert storm resets the puzzle with new patterns and resources.",
   "desert.notice.one":
     "Welcome to the Desert. Can you solve the Pharaoh's puzzle and find the hidden treasures?",
-  "desert.notice.two": "Discover artefacts & exchange them for seasonal gifts.",
-  "desert.notice.three": "Sell resources at the shop for coins.",
-  "desert.notice.four":
+  "desert.notice.two":
+    "Discover {{ticket}}s & exchange them for rewards before time runs out.",
+  "desert.notice.three": "Use hieroglyphs to upgrade your digging.",
+  "desert.notice.four": "Sell resources at the shop for coins.",
+  "desert.notice.five":
     "Gather items for NPC deliveries in exchange for rewards.",
+  "digby.moreDigsIntro":
+    "Ahhh you're looking for more digs? No worries! There are multiple ways to get more. Check out the options below!",
+  "digby.buyMoreDigs": "Buy 5 more digs for 1",
+  "desert.hud.digsLeft": "{{digsLeft}} digs left",
+  "desert.hud.noDigsLeft": "No digs left...",
+  "desert.hud.newSite": "New dig site!",
+  "desert.extraDigs": "Extra digs",
+  "desert.digs": "{{amount}} digs",
+  "desert.buyDigs.confirmation":
+    "Are you sure you want to buy 5 digs for 1 Block Buck?",
 };
 
 export const ENGLISH_TERMS: Record<TranslationKeys, string> = {
@@ -5640,6 +5689,7 @@ export const ENGLISH_TERMS: Record<TranslationKeys, string> = {
   ...cropBoomMessages,
   ...cropFruitDescriptions,
   ...cropMachine,
+  ...cropsAndChickens,
   ...decorationDescriptions,
   ...defaultDialogue,
   ...delivery,

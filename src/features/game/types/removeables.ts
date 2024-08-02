@@ -390,6 +390,10 @@ export const REMOVAL_RESTRICTIONS: Partial<
   "Lady Bug": (game) => areFruitsGrowing(game, "Apple"),
   Nana: (game) => areFruitsGrowing(game, "Banana"),
   "Immortal Pear": (game) => areAnyFruitsGrowing(game),
+  "Lemon Tea Bath": (game) => areFruitsGrowing(game, "Lemon"),
+  "Tomato Clown": (game) => areFruitsGrowing(game, "Tomato"),
+  "Tomato Bombard": (game) => areFruitsGrowing(game, "Tomato"),
+  Cannonball: (game) => areFruitsGrowing(game, "Tomato"),
 
   // Composter boosts
   "Soil Krabby": (game) => areAnyComposting(game),
@@ -420,6 +424,7 @@ export const REMOVAL_RESTRICTIONS: Partial<
   "Radical Radish": (game) => cropIsGrowing({ item: "Radish", game }),
 
   "Heart of Davy Jones": (game) => areBonusTreasureHolesDug(game),
+
   "Maneki Neko": (game) => hasShakenManeki(game),
   "Festive Tree": (game) => hasShakenTree(game),
 
@@ -445,6 +450,7 @@ export const REMOVAL_RESTRICTIONS: Partial<
   "Battle Fish": (game) => areAnyOilReservesDrilled(game),
   "Turbo Sprout": (game) => areAnyGreenhouseCropGrowing(game),
   Greenhouse: (game) => areAnyGreenhouseCropGrowing(game),
+  "Pharaoh Gnome": (game) => areAnyGreenhouseCropGrowing(game),
   Vinny: (game) => greenhouseCropIsGrowing({ crop: "Grape", game }),
   "Grape Granny": (game) => greenhouseCropIsGrowing({ crop: "Grape", game }),
   "Rice Panda": (game) => greenhouseCropIsGrowing({ crop: "Rice", game }),
@@ -489,6 +495,9 @@ export const REMOVAL_RESTRICTIONS: Partial<
   // Pharaoh's Treasure
   "Pharaoh Chicken": (game) => areBonusTreasureHolesDug(game),
   "Desert Rose": (game) => areFlowersGrowing(game),
+  "Lemon Shark": (game) => areFruitsGrowing(game, "Lemon"),
+  "Lemon Frog": (game) => areFruitsGrowing(game, "Lemon"),
+  "Reveling Lemon": (game) => areFruitsGrowing(game, "Lemon"),
 };
 
 export const BUD_REMOVAL_RESTRICTIONS: Record<

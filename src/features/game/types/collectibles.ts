@@ -1,6 +1,7 @@
 import Decimal from "decimal.js-light";
 import { GameState, Inventory } from "./game";
 import { translate } from "lib/i18n/translate";
+import { SEASONS } from "./seasons";
 
 export type CollectibleLocation = "farm" | "home";
 
@@ -38,7 +39,9 @@ export type TreasureCollectibleItem =
   | "Treasure Map"
   | "Adrift Ark"
   | "Castellan"
-  | "Sunlit Citadel";
+  | "Sunlit Citadel"
+  | "Baobab Tree"
+  | "Camel";
 
 export type SoldOutCollectibleName =
   | "Sir Goldensnout"
@@ -81,7 +84,12 @@ export type SoldOutCollectibleName =
   | "Grape Granny"
   | "Royal Throne"
   | "Lily Egg"
-  | "Goblet";
+  | "Goblet"
+  | "Pharaoh Gnome"
+  | "Lemon Tea Bath"
+  | "Tomato Clown"
+  | "Pyramid"
+  | "Oasis";
 
 export type MegaStoreCollectibleName =
   | "Flower Cart"
@@ -111,7 +119,7 @@ export type MegaStoreCollectibleName =
   // Pharaoh's Treasure
   | "Hapy Jar"
   | "Imsety Jar"
-  | "Tomato Core"
+  | "Cannonball"
   | "Sarcophagus"
   | "Duamutef Jar"
   | "Qebehsenuef Jar"
@@ -123,7 +131,8 @@ export type MegaStoreCollectibleName =
   | "Sand Golem"
   | "Cactus King"
   | "Lemon Frog"
-  | "Scarab Beetle";
+  | "Scarab Beetle"
+  | "Tomato Bombard";
 
 export type GoblinBlacksmithItemName =
   | "Purple Trail"
@@ -222,8 +231,8 @@ export const TREASURE_COLLECTIBLE_ITEM: Record<
     description: translate("description.treasure.map"),
     boost: translate("description.treasure.map.boost"),
     ingredients: {
-      Gold: new Decimal(5),
-      "Wooden Compass": new Decimal(2),
+      Sand: new Decimal(50),
+      Hieroglyph: new Decimal(20),
     },
   },
   "Adrift Ark": {
@@ -246,6 +255,24 @@ export const TREASURE_COLLECTIBLE_ITEM: Record<
       Scarab: new Decimal(40),
     },
     description: "A Castle to show your pride",
+    from: SEASONS["Pharaoh's Treasure"].startDate,
+    to: SEASONS["Pharaoh's Treasure"].endDate,
+  },
+  "Baobab Tree": {
+    ingredients: {
+      Scarab: new Decimal(35),
+    },
+    description: "A nice looking tree!",
+    from: SEASONS["Pharaoh's Treasure"].startDate,
+    to: SEASONS["Pharaoh's Treasure"].endDate,
+  },
+  Camel: {
+    ingredients: {
+      Scarab: new Decimal(200),
+    },
+    description: "A mean looking camel!",
+    from: SEASONS["Pharaoh's Treasure"].startDate,
+    to: SEASONS["Pharaoh's Treasure"].endDate,
   },
 };
 
