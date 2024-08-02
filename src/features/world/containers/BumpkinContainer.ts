@@ -10,6 +10,8 @@ import { getAnimationUrl } from "../lib/animations";
 import { InventoryItemName } from "features/game/types/game";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { ItemContainer } from "features/portal/recipeRush/containers/ItemContainer";
+import { ITEM_IDS } from "features/game/types/bumpkin";
+import { CONFIG } from "lib/config";
 import {
   AudioLocalStorageKeys,
   getCachedAudioSetting,
@@ -144,7 +146,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
               this.alert?.destroy();
             }
           }
-        }
+        },
       );
     }
 
@@ -184,86 +186,86 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.carryingAnimationKey = `${keyName}-bumpkin-carrying`;
     this.carryingIdleAnimationKey = `${keyName}-bumpkin-carrying-idle`;
 
-    // //If Bumpkin has an Aura equipped
-    // if (this.clothing.aura !== undefined) {
-    //   const auraName = this.clothing.aura;
-    //   //Back-Aura
-    //   if (scene.textures.exists(this.backAuraKey)) {
-    //     const backaura = scene.add
-    //       .sprite(0, -3, this.backAuraKey)
-    //       .setOrigin(0.5);
-    //     this.add(backaura);
-    //     this.moveTo(backaura, 1);
-    //     this.backfx = backaura;
-    //     this.backfx.play(this.backAuraAnimationKey as string, true);
-    //   } else {
-    //     const backauraLoader = scene.load.spritesheet(
-    //       this.backAuraKey,
-    //       `${CONFIG.PROTECTED_IMAGE_URL}/aura/back/${ITEM_IDS[auraName]}.png`,
-    //       {
-    //         frameWidth: 20,
-    //         frameHeight: 19,
-    //       }
-    //     );
+    //If Bumpkin has an Aura equipped
+    if (this.clothing.aura !== undefined) {
+      const auraName = this.clothing.aura;
+      //Back-Aura
+      if (scene.textures.exists(this.backAuraKey)) {
+        const backaura = scene.add
+          .sprite(0, -3, this.backAuraKey)
+          .setOrigin(0.5);
+        this.add(backaura);
+        this.moveTo(backaura, 1);
+        this.backfx = backaura;
+        this.backfx.play(this.backAuraAnimationKey as string, true);
+      } else {
+        const backauraLoader = scene.load.spritesheet(
+          this.backAuraKey,
+          `${CONFIG.PROTECTED_IMAGE_URL}/aura/back/${ITEM_IDS[auraName]}.png`,
+          {
+            frameWidth: 20,
+            frameHeight: 19,
+          },
+        );
 
-    //     backauraLoader.addListener(Phaser.Loader.Events.COMPLETE, () => {
-    //       if (
-    //         !scene.textures.exists(this.backAuraKey as string) ||
-    //         this.ready
-    //       ) {
-    //         return;
-    //       }
-    //       const backaura = scene.add
-    //         .sprite(0, -3, this.backAuraKey as string)
-    //         .setOrigin(0.5);
-    //       this.add(backaura);
-    //       this.moveTo(backaura, 1);
-    //       this.backfx = backaura;
+        backauraLoader.addListener(Phaser.Loader.Events.COMPLETE, () => {
+          if (
+            !scene.textures.exists(this.backAuraKey as string) ||
+            this.ready
+          ) {
+            return;
+          }
+          const backaura = scene.add
+            .sprite(0, -3, this.backAuraKey as string)
+            .setOrigin(0.5);
+          this.add(backaura);
+          this.moveTo(backaura, 1);
+          this.backfx = backaura;
 
-    //       this.createBackAuraAnimation();
-    //       this.backfx.play(this.backAuraAnimationKey as string, true);
-    //       backauraLoader.removeAllListeners();
-    //     });
-    //   }
-    //   //Front-Aura
-    //   if (scene.textures.exists(this.frontAuraKey)) {
-    //     const frontaura = scene.add
-    //       .sprite(0, 2, this.frontAuraKey)
-    //       .setOrigin(0.5);
-    //     this.add(frontaura);
-    //     this.moveTo(frontaura, 3);
-    //     this.frontfx = frontaura;
-    //     this.frontfx.play(this.frontAuraAnimationKey as string, true);
-    //   } else {
-    //     const frontauraLoader = scene.load.spritesheet(
-    //       this.frontAuraKey,
-    //       `${CONFIG.PROTECTED_IMAGE_URL}/aura/front/${ITEM_IDS[auraName]}.png`,
-    //       {
-    //         frameWidth: 20,
-    //         frameHeight: 19,
-    //       }
-    //     );
+          this.createBackAuraAnimation();
+          this.backfx.play(this.backAuraAnimationKey as string, true);
+          backauraLoader.removeAllListeners();
+        });
+      }
+      //Front-Aura
+      if (scene.textures.exists(this.frontAuraKey)) {
+        const frontaura = scene.add
+          .sprite(0, 2, this.frontAuraKey)
+          .setOrigin(0.5);
+        this.add(frontaura);
+        this.moveTo(frontaura, 3);
+        this.frontfx = frontaura;
+        this.frontfx.play(this.frontAuraAnimationKey as string, true);
+      } else {
+        const frontauraLoader = scene.load.spritesheet(
+          this.frontAuraKey,
+          `${CONFIG.PROTECTED_IMAGE_URL}/aura/front/${ITEM_IDS[auraName]}.png`,
+          {
+            frameWidth: 20,
+            frameHeight: 19,
+          },
+        );
 
-    //     frontauraLoader.addListener(Phaser.Loader.Events.COMPLETE, () => {
-    //       if (
-    //         !scene.textures.exists(this.frontAuraKey as string) ||
-    //         this.ready
-    //       ) {
-    //         return;
-    //       }
-    //       const frontaura = scene.add
-    //         .sprite(0, 2, this.frontAuraKey as string)
-    //         .setOrigin(0.5);
-    //       this.add(frontaura);
-    //       this.moveTo(frontaura, 3);
-    //       this.frontfx = frontaura;
+        frontauraLoader.addListener(Phaser.Loader.Events.COMPLETE, () => {
+          if (
+            !scene.textures.exists(this.frontAuraKey as string) ||
+            this.ready
+          ) {
+            return;
+          }
+          const frontaura = scene.add
+            .sprite(0, 2, this.frontAuraKey as string)
+            .setOrigin(0.5);
+          this.add(frontaura);
+          this.moveTo(frontaura, 3);
+          this.frontfx = frontaura;
 
-    //       this.createFrontAuraAnimation();
-    //       this.frontfx.play(this.frontAuraAnimationKey as string, true);
-    //       frontauraLoader.removeAllListeners();
-    //     });
-    //   }
-    // }
+          this.createFrontAuraAnimation();
+          this.frontfx.play(this.frontAuraAnimationKey as string, true);
+          frontauraLoader.removeAllListeners();
+        });
+      }
+    }
 
     // Idle
     if (scene.textures.exists(this.idleSpriteKey)) {
@@ -365,7 +367,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         {
           frameWidth: 96,
           frameHeight: 64,
-        }
+        },
       );
 
       carryingLoader.on(Phaser.Loader.Events.COMPLETE, () => {
@@ -385,7 +387,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         {
           frameWidth: 96,
           frameHeight: 64,
-        }
+        },
       );
 
       carryingIdleLoader.on(Phaser.Loader.Events.COMPLETE, () => {
@@ -434,7 +436,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.scene.anims.create({
       key: this.drillAnimationKey,
       frames: this.scene.anims.generateFrameNumbers(
-        this.drillAnimationKey as string
+        this.drillAnimationKey as string,
       ),
       frameRate: 10,
       repeat: -1,
@@ -447,7 +449,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.scene.anims.create({
       key: this.digAnimationKey,
       frames: this.scene.anims.generateFrameNumbers(
-        this.digAnimationKey as string
+        this.digAnimationKey as string,
       ),
       frameRate: 10,
       repeat: -1,
@@ -464,7 +466,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         {
           start: 0,
           end: 8,
-        }
+        },
       ),
       repeat: -1,
       frameRate: 10,
@@ -481,7 +483,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         {
           start: 0,
           end: 7,
-        }
+        },
       ),
       repeat: -1,
       frameRate: 10,
@@ -498,7 +500,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         {
           start: 0,
           end: 7,
-        }
+        },
       ),
       repeat: -1,
       frameRate: 10,
@@ -515,7 +517,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         {
           start: 0,
           end: 7,
-        }
+        },
       ),
       repeat: -1,
       frameRate: 10,
@@ -532,7 +534,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         {
           start: 0,
           end: 7,
-        }
+        },
       ),
       repeat: -1,
       frameRate: 10,
@@ -549,7 +551,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         {
           start: 0,
           end: 7,
-        }
+        },
       ),
       repeat: -1,
       frameRate: 10,
@@ -566,7 +568,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         {
           start: 0,
           end: 7,
-        }
+        },
       ),
       repeat: -1,
       frameRate: 10,
@@ -713,7 +715,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.speech = new SpeechBubble(
       this.scene,
       text,
-      this.sprite?.scaleX === 1 ? "right" : "left"
+      this.sprite?.scaleX === 1 ? "right" : "left",
     );
     this.add(this.speech);
 
@@ -761,7 +763,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         "Teeny Tiny Pixls",
         `+${quantity}`,
         5,
-        1
+        1,
       );
       label.setX(-label.width);
       offsetReaction = true;
@@ -812,7 +814,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         this.sprite.anims.play(this.digAnimationKey as string, true);
         const audioMuted = getCachedAudioSetting<boolean>(
           AudioLocalStorageKeys.audioMuted,
-          false
+          false,
         );
 
         if (!audioMuted) {
@@ -835,7 +837,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         this.sprite.anims.play(this.drillAnimationKey as string, true);
         const audioMuted = getCachedAudioSetting<boolean>(
           AudioLocalStorageKeys.audioMuted,
-          false
+          false,
         );
 
         if (!audioMuted) {
@@ -982,7 +984,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         if (p.downElement.nodeName === "CANVAS") {
           onClick();
         }
-      }
+      },
     );
   }
 
@@ -1037,7 +1039,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         // eslint-disable-next-line no-console
         console.log(
           "Bumpkin Container: Error playing carry idle animation: ",
-          e
+          e,
         );
       }
     }
