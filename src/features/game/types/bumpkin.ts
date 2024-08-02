@@ -174,7 +174,8 @@ export type BumpkinTool =
   | "Sunflorian Sword"
   | "Dev Wrench"
   | "Rock Hammer"
-  | "Water Gourd";
+  | "Water Gourd"
+  | "Ancient Shovel";
 
 export type BumpkinShoe =
   | "Black Farmer Boots"
@@ -284,7 +285,8 @@ export type BumpkinHat =
   | "Pharaoh Headdress"
   | "Explorer Hat"
   | "Oil Protection Hat"
-  | "Desert Merchant Turban";
+  | "Desert Merchant Turban"
+  | "Fossil Head";
 
 export type BumpkinPant =
   | "Farmer Overalls"
@@ -318,7 +320,8 @@ export type BumpkinPant =
   | "Bumpkin Pants"
   | "Sunflorian Pants"
   | "Explorer Shorts"
-  | "Oil Overalls";
+  | "Oil Overalls"
+  | "Grape Pants";
 
 export type BumpkinDress =
   | "Royal Dress"
@@ -348,7 +351,9 @@ export type BumpkinSecondaryTool =
   | "Tackle Box"
   | "Honeycomb Shield"
   | "Olive Shield"
-  | "Paw Shield";
+  | "Paw Shield"
+  | "Infernal Drill"
+  | "Lemon Shield";
 
 // Goes over clothes + head
 export type BumpkinOnesie =
@@ -387,7 +392,9 @@ export type BumpkinWings =
   | "Crow Wings"
   | "Bat Wings"
   | "Butterfly Wings"
-  | "Bee Wings";
+  | "Bee Wings"
+  | "Scarab Wings"
+  | "Bionic Drill";
 
 export type BumpkinBeard = "Wise Beard" | "Hoary Chin" | "Santa Beard";
 
@@ -778,6 +785,13 @@ export const ITEM_IDS: Record<BumpkinItem, number> = {
   "Rocket Onesie": 366,
   "Coin Aura": 367,
   "Ankh Shirt": 368,
+  "Ancient Shovel": 369,
+  "Infernal Drill": 370,
+  "Lemon Shield": 371,
+  "Scarab Wings": 372,
+  "Grape Pants": 373,
+  "Bionic Drill": 374,
+  "Fossil Head": 375,
 };
 
 // The reverse of above
@@ -1207,4 +1221,11 @@ export const BUMPKIN_ITEM_PART: Record<BumpkinItem, keyof Wallet> = {
   "Rocket Onesie": "onesie",
   "Coin Aura": "aura",
   "Ankh Shirt": "shirt",
+  "Ancient Shovel": "tool",
+  "Infernal Drill": "secondaryTool",
+  "Lemon Shield": "secondaryTool",
+  "Scarab Wings": "wings",
+  "Grape Pants": "pants",
+  "Bionic Drill": "wings",
+  "Fossil Head": "hat",
 };

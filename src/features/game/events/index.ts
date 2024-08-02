@@ -306,7 +306,6 @@ import {
   HarvestCropMachineAction,
 } from "./landExpansion/harvestCropMachine";
 import { joinFaction, JoinFactionAction } from "./landExpansion/joinFaction";
-import { claimEmblems, ClaimEmblemsAction } from "./landExpansion/claimEmblems";
 import {
   completeKingdomChore,
   CompleteKingdomChoreAction,
@@ -336,6 +335,7 @@ import {
   SkipKingdomChoreAction,
 } from "./landExpansion/skipKingdomChore";
 import { leaveFaction, LeaveFactionAction } from "./landExpansion/leaveFaction";
+import { BuyMoreDigsAction, buyMoreDigs } from "./landExpansion/buyMoreDigs";
 
 export type PlayingEvent =
   | OilGreenhouseAction
@@ -426,7 +426,6 @@ export type PlayingEvent =
   | HarvestCropMachineAction
   | SupplyCookingOilAction
   | JoinFactionAction
-  | ClaimEmblemsAction
   | CompleteKingdomChoreAction
   | SkipKingdomChoreAction
   | RefreshKingdomChoresAction
@@ -434,7 +433,8 @@ export type PlayingEvent =
   | BuyFactionShopItemAction
   | ClaimFactionPrizeAction
   | FeedFactionPetAction
-  | LeaveFactionAction;
+  | LeaveFactionAction
+  | BuyMoreDigsAction;
 
 export type PlacementEvent =
   | ConstructBuildingAction
@@ -591,13 +591,13 @@ export const PLAYING_EVENTS: Handlers<PlayingEvent> = {
   "cropMachine.supplied": supplyCropMachine,
   "cropMachine.harvested": harvestCropMachine,
   "cookingOil.supplied": supplyCookingOil,
-  "emblems.claimed": claimEmblems,
   "kingdomChore.completed": completeKingdomChore,
   "kingdomChore.skipped": skipKingdomChore,
   "kingdomChores.refreshed": refreshKingdomChores,
   "factionKitchen.delivered": deliverFactionKitchen,
   "factionShopItem.bought": buyFactionShopItem,
   "factionPet.fed": feedFactionPet,
+  "desert.digsBought": buyMoreDigs,
 };
 
 export const PLACEMENT_EVENTS: Handlers<PlacementEvent> = {
