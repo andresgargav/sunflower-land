@@ -1,21 +1,22 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { Coordinates } from "../RecipeRushTypes";
+import { PositionConfig } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { ITEM_BUMPKIN } from "../RecipeRushConstants";
 import { BaseScene } from "features/world/scenes/BaseScene";
 import { ItemContainer } from "./ItemContainer";
+import { CookingToolContainer } from "./CookingToolContainer";
 
 interface Props {
   x: number;
   y: number;
   frame: number;
   scene: BaseScene;
-  itemPosition: Coordinates;
+  itemPosition: PositionConfig;
   player?: BumpkinContainer;
 }
 
 export class CountertopContainer extends Phaser.GameObjects.Container {
-  private itemPosition: Coordinates;
+  private itemPosition: PositionConfig;
   private player?: BumpkinContainer;
   private item: ItemContainer | null;
 
@@ -40,6 +41,7 @@ export class CountertopContainer extends Phaser.GameObjects.Container {
     this.setSize(sprite.width, sprite.height);
     this.setInteractive({ cursor: "pointer" });
     this.add(sprite);
+    this.setDepth(1);
 
     scene.add.existing(this);
   }
@@ -67,7 +69,14 @@ export class CountertopContainer extends Phaser.GameObjects.Container {
   private moveItemToCountertop() {
     const item = this.player?.dropItem();
     item?.adjustDefault(this.itemPosition.x, this.itemPosition.y);
+    if (item instanceof CookingToolContainer) {
+      item.setDirection(this.itemPosition.direction);
+    }
     item && this.add(item);
     this.item = item as ItemContainer;
+  }
+
+  setItem(item: ItemContainer | null) {
+    this.item = item;
   }
 }

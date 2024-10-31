@@ -8,6 +8,9 @@ import {
   CookingToolInfo,
   IngredientStates,
   CookingTools,
+  CookingToolBases,
+  CookingToolBaseInfo,
+  PositionConfig,
 } from "./RecipeRushTypes";
 import { calcYPosition } from "./lib/recipeRushUtils";
 import { CropName } from "features/game/types/crops";
@@ -109,21 +112,21 @@ export const INGREDIENT_BOXES_CONFIGURATIONS: SpriteConfig[] = [
 
 export const COUNTERTOPS_CONFIGURATIONS: SpritePositionConfig[] = [
   // Middle - Top
-  { frame: 0, x: SQUARE_WIDTH * 16, y: SQUARE_WIDTH * 5, pos: "MTL" },
-  // { frame: 1, x: SQUARE_WIDTH * 17, y: SQUARE_WIDTH * 5, pos: "MT" },
-  // { frame: 1, x: SQUARE_WIDTH * 18, y: SQUARE_WIDTH * 5, pos: "MT" },
-  { frame: 1, x: SQUARE_WIDTH * 19, y: SQUARE_WIDTH * 5, pos: "MT" },
-  { frame: 1, x: SQUARE_WIDTH * 20, y: SQUARE_WIDTH * 5, pos: "MT" },
-  { frame: 1, x: SQUARE_WIDTH * 21, y: SQUARE_WIDTH * 5, pos: "MT" },
-  { frame: 1, x: SQUARE_WIDTH * 22, y: SQUARE_WIDTH * 5, pos: "MT" },
-  { frame: 2, x: SQUARE_WIDTH * 23, y: SQUARE_WIDTH * 5, pos: "MTR" },
+  { frame: 0, x: SQUARE_WIDTH * 16, y: SQUARE_WIDTH * 5, pos: "TL" },
+  // { frame: 1, x: SQUARE_WIDTH * 17, y: SQUARE_WIDTH * 5, pos: "T" },
+  // { frame: 1, x: SQUARE_WIDTH * 18, y: SQUARE_WIDTH * 5, pos: "T" },
+  { frame: 1, x: SQUARE_WIDTH * 19, y: SQUARE_WIDTH * 5, pos: "T" },
+  { frame: 1, x: SQUARE_WIDTH * 20, y: SQUARE_WIDTH * 5, pos: "T" },
+  { frame: 1, x: SQUARE_WIDTH * 21, y: SQUARE_WIDTH * 5, pos: "T" },
+  { frame: 1, x: SQUARE_WIDTH * 22, y: SQUARE_WIDTH * 5, pos: "T" },
+  { frame: 2, x: SQUARE_WIDTH * 23, y: SQUARE_WIDTH * 5, pos: "TR" },
   // Middle - Bottom
-  { frame: 3, x: SQUARE_WIDTH * 16, y: SQUARE_WIDTH * 15, pos: "MBL" },
-  { frame: 4, x: SQUARE_WIDTH * 17, y: SQUARE_WIDTH * 15, pos: "MB" },
-  { frame: 4, x: SQUARE_WIDTH * 19, y: SQUARE_WIDTH * 15, pos: "MB" },
-  { frame: 4, x: SQUARE_WIDTH * 20, y: SQUARE_WIDTH * 15, pos: "MB" },
-  { frame: 4, x: SQUARE_WIDTH * 21, y: SQUARE_WIDTH * 15, pos: "MB" },
-  { frame: 5, x: SQUARE_WIDTH * 23, y: SQUARE_WIDTH * 15, pos: "MBR" },
+  { frame: 3, x: SQUARE_WIDTH * 16, y: SQUARE_WIDTH * 15, pos: "BL" },
+  { frame: 4, x: SQUARE_WIDTH * 17, y: SQUARE_WIDTH * 15, pos: "B" },
+  { frame: 4, x: SQUARE_WIDTH * 19, y: SQUARE_WIDTH * 15, pos: "B" },
+  { frame: 4, x: SQUARE_WIDTH * 20, y: SQUARE_WIDTH * 15, pos: "B" },
+  { frame: 4, x: SQUARE_WIDTH * 21, y: SQUARE_WIDTH * 15, pos: "B" },
+  { frame: 5, x: SQUARE_WIDTH * 23, y: SQUARE_WIDTH * 15, pos: "BR" },
   // Right
   { frame: 6, x: SQUARE_WIDTH * 24, y: SQUARE_WIDTH * 6, pos: "RT" },
   { frame: 7, x: SQUARE_WIDTH * 24, y: SQUARE_WIDTH * 7, pos: "R" },
@@ -136,7 +139,7 @@ export const COUNTERTOPS_CONFIGURATIONS: SpritePositionConfig[] = [
   { frame: 10, x: SQUARE_WIDTH * 15, y: SQUARE_WIDTH * 7, pos: "L" },
   { frame: 11, x: SQUARE_WIDTH * 15, y: SQUARE_WIDTH * 8, pos: "LB" },
   // ---
-  { frame: 2, x: SQUARE_WIDTH * 15, y: SQUARE_WIDTH * 10, pos: "MTR" },
+  { frame: 2, x: SQUARE_WIDTH * 15, y: SQUARE_WIDTH * 10, pos: "TR" },
   // ---
   { frame: 9, x: SQUARE_WIDTH * 15, y: SQUARE_WIDTH * 12, pos: "LT" },
   { frame: 10, x: SQUARE_WIDTH * 15, y: SQUARE_WIDTH * 13, pos: "L" },
@@ -147,20 +150,21 @@ export const TRASH_CANS_CONFIGURATIONS: SpritePositionConfig[] = [
   { frame: 13, x: SQUARE_WIDTH * 24, y: SQUARE_WIDTH * 13, pos: "R" },
 ];
 
-export const POSITION_CONFIGURATIONS: Record<SpritePositions, Coordinates> = {
-  MTL: { x: 2, y: 2 }, // Middle - Top - Left
-  MT: { x: 1, y: 2 }, // Middle - Top
-  MTR: { x: -1, y: 2 }, // Middle - Top - Right
-  MBL: { x: 2, y: -2 }, // Middle - Bottom - Left
-  MB: { x: 0, y: -2 }, // Middle - Bottom
-  MBR: { x: -1, y: -2 }, // Middle - Bottom - Right
-  RT: { x: -2, y: 2 }, // Right - Top
-  R: { x: -2, y: 0 }, // Right
-  RB: { x: -2, y: -2 }, // Right - Bottom
-  LT: { x: 2, y: 1 }, // Left - Top
-  L: { x: 2, y: -1 }, // Left
-  LB: { x: 2, y: -2 }, // Left - Bottom
-};
+export const POSITION_CONFIGURATIONS: Record<SpritePositions, PositionConfig> =
+  {
+    TL: { x: 2, y: 2, direction: "Top" }, // Top - Left
+    T: { x: 1, y: 2, direction: "Top" }, // Top
+    TR: { x: -1, y: 2, direction: "Top" }, // Top - Right
+    BL: { x: 2, y: -2, direction: "Bottom" }, // Bottom - Left
+    B: { x: 0, y: -2, direction: "Bottom" }, // Bottom
+    BR: { x: -1, y: -2, direction: "Bottom" }, // Bottom - Right
+    RT: { x: -2, y: 2, direction: "Right" }, // Right - Top
+    R: { x: -2, y: 0, direction: "Right" }, // Right
+    RB: { x: -2, y: -2, direction: "Right" }, // Right - Bottom
+    LT: { x: 2, y: 1, direction: "Left" }, // Left - Top
+    L: { x: 2, y: -1, direction: "Left" }, // Left
+    LB: { x: 2, y: -2, direction: "Left" }, // Left - Bottom
+  };
 
 export const ALLOWED_TRANSITIONS: Record<IngredientStates, IngredientStates[]> =
   {
@@ -180,6 +184,12 @@ export const COOKING_TOOLS_INFORMATION: Record<CookingTools, CookingToolInfo> =
         end: 5,
         frameRate: 10,
       },
+      directionFrame: {
+        Top: 0,
+        Bottom: 6,
+        Right: 18,
+        Left: 12,
+      },
       effect: "CHOPPED",
       duration: 2500,
       canPickUp: false,
@@ -192,6 +202,16 @@ export const COOKING_TOOLS_INFORMATION: Record<CookingTools, CookingToolInfo> =
         start: 1,
         end: 5,
         frameRate: 7,
+      },
+      directionFrame: {
+        Top: 0,
+        Bottom: 0,
+        Right: 7,
+        Left: 7,
+      },
+      base: {
+        spriteName: "stove",
+        cookingToolYOffset: -2,
       },
       effect: "BOILED",
       duration: 2500,
@@ -206,6 +226,12 @@ export const COOKING_TOOLS_INFORMATION: Record<CookingTools, CookingToolInfo> =
         end: 5,
         frameRate: 10,
       },
+      directionFrame: {
+        Top: 0,
+        Bottom: 0,
+        Right: 7,
+        Left: 7,
+      },
       effect: "ROASTED",
       duration: 2500,
       canPickUp: true,
@@ -219,6 +245,12 @@ export const COOKING_TOOLS_INFORMATION: Record<CookingTools, CookingToolInfo> =
         end: 5,
         frameRate: 10,
       },
+      directionFrame: {
+        Top: 0,
+        Bottom: 0,
+        Right: 7,
+        Left: 7,
+      },
       effect: "FRIED",
       duration: 2500,
       canPickUp: true,
@@ -227,31 +259,41 @@ export const COOKING_TOOLS_INFORMATION: Record<CookingTools, CookingToolInfo> =
     },
   };
 
-export const CUTTING_BOARDS_CONFIGURATIONS: SpritePositionConfig[] = [
-  { frame: 0, x: SQUARE_WIDTH * 17, y: SQUARE_WIDTH * 5, pos: "MT" },
-  { frame: 6, x: SQUARE_WIDTH * 18, y: SQUARE_WIDTH * 15, pos: "MB" },
-  { frame: 6, x: SQUARE_WIDTH * 22, y: SQUARE_WIDTH * 15, pos: "MB" },
-  { frame: 12, x: SQUARE_WIDTH * 15, y: SQUARE_WIDTH * 12, pos: "LT" },
+export const COOKING_TOOL_BASES_INFORMATION: Record<
+  CookingToolBases,
+  CookingToolBaseInfo
+> = {
+  Stove: {
+    spriteName: "stove",
+    cookingToolYOffset: -2,
+  },
+};
+
+export const CUTTING_BOARD_BASES_CONFIGURATIONS: SpritePositionConfig[] = [
+  { frame: 0, x: SQUARE_WIDTH * 17, y: SQUARE_WIDTH * 5, pos: "T" },
+  { frame: 0, x: SQUARE_WIDTH * 18, y: SQUARE_WIDTH * 15, pos: "B" },
+  { frame: 0, x: SQUARE_WIDTH * 22, y: SQUARE_WIDTH * 15, pos: "B" },
+  { frame: 0, x: SQUARE_WIDTH * 15, y: SQUARE_WIDTH * 12, pos: "LT" },
 ];
 
-export const POTS_CONFIGURATIONS: SpritePositionConfig[] = [
-  { frame: 0, x: SQUARE_WIDTH * 18, y: SQUARE_WIDTH * 5, pos: "MT" },
+export const POT_BASES_CONFIGURATIONS: SpritePositionConfig[] = [
+  { frame: 0, x: SQUARE_WIDTH * 18, y: SQUARE_WIDTH * 5, pos: "T" },
 ];
 
-export const PANS_CONFIGURATIONS: SpritePositionConfig[] = [
-  { frame: 0, x: SQUARE_WIDTH * 19, y: SQUARE_WIDTH * 5, pos: "MT" },
+export const PAN_BASES_CONFIGURATIONS: SpritePositionConfig[] = [
+  { frame: 0, x: SQUARE_WIDTH * 19, y: SQUARE_WIDTH * 5, pos: "T" },
 ];
 
-export const DEEP_FRYERS_CONFIGURATIONS: SpritePositionConfig[] = [
-  { frame: 0, x: SQUARE_WIDTH * 20, y: SQUARE_WIDTH * 5, pos: "MT" },
+export const DEEP_FRYER_BASES_CONFIGURATIONS: SpritePositionConfig[] = [
+  { frame: 0, x: SQUARE_WIDTH * 20, y: SQUARE_WIDTH * 5, pos: "T" },
 ];
 
-export const COOKING_TOOLS_CONFIGURATIONS: Record<
+export const COOKING_TOOL_BASES_CONFIGURATIONS: Record<
   CookingTools,
   SpritePositionConfig[]
 > = {
-  "Cutting Board": CUTTING_BOARDS_CONFIGURATIONS,
-  Pot: POTS_CONFIGURATIONS,
-  Pan: PANS_CONFIGURATIONS,
-  "Deep Fryer": DEEP_FRYERS_CONFIGURATIONS,
+  "Cutting Board": CUTTING_BOARD_BASES_CONFIGURATIONS,
+  Pot: POT_BASES_CONFIGURATIONS,
+  // Pan: PAN_BASES_CONFIGURATIONS,
+  // "Deep Fryer": DEEP_FRYER_BASES_CONFIGURATIONS,
 };

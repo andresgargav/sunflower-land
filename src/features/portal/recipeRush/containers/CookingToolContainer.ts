@@ -1,9 +1,10 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import {
-  Coordinates,
   IngredientStates,
   CookingTools,
   AnimationConfig,
+  Directions,
+  PositionConfig,
 } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { BaseScene } from "features/world/scenes/BaseScene";
@@ -15,15 +16,17 @@ import {
 } from "../RecipeRushConstants";
 import { IngredientContainer } from "./IngredientContainer";
 import { ItemContainer } from "./ItemContainer";
+import { CookingToolBaseContainer } from "./CookingToolBaseContainer";
+import { CountertopContainer } from "./CountertopContainer";
 
 interface Props {
   x: number;
   y: number;
-  frame: number;
   animation: AnimationConfig;
+  directionFrame: Record<Directions, number>;
   spriteName: string;
   scene: BaseScene;
-  itemPosition: Coordinates;
+  itemPosition: PositionConfig;
   id: number;
   effect: IngredientStates;
   duration: number;
@@ -36,8 +39,11 @@ interface Props {
 
 export class CookingToolContainer extends ItemContainer {
   private id: number;
+  private animation: AnimationConfig;
+  private frame: number;
+  private directionFrame: Record<Directions, number>;
   private spriteName: string;
-  private itemPosition: Coordinates;
+  private itemPosition: PositionConfig;
   private effect: IngredientStates;
   private duration: number;
   private canPickUp: boolean;
@@ -50,14 +56,12 @@ export class CookingToolContainer extends ItemContainer {
   private progressBar: ProgressBar;
 
   scene: BaseScene;
-  defaultX: number;
-  defaultY: number;
 
   constructor({
     x,
     y,
-    frame,
     animation,
+    directionFrame,
     spriteName,
     scene,
     itemPosition,
@@ -70,9 +74,10 @@ export class CookingToolContainer extends ItemContainer {
     name,
     player,
   }: Props) {
-    super(scene, x + SQUARE_WIDTH / 2, y + SQUARE_WIDTH / 2);
-    this.defaultX = x + SQUARE_WIDTH / 2;
-    this.defaultY = y + SQUARE_WIDTH / 2;
+    super(scene, x, y);
+    this.animation = animation;
+    this.frame = directionFrame[itemPosition.direction];
+    this.directionFrame = directionFrame;
     this.spriteName = spriteName;
     this.scene = scene;
     this.itemPosition = itemPosition;
@@ -87,44 +92,12 @@ export class CookingToolContainer extends ItemContainer {
     this.ingredient = null;
 
     // Cooking Tool Sprite
-    this.sprite = scene.add.sprite(
-      this.itemPosition.x,
-      this.itemPosition.y,
-      spriteName,
-      frame
-    );
-
-    // Animations
-    if (canPickUp) {
-      scene.anims.create({
-        key: `${spriteName}_${id}_final_idle`,
-        frames: [{ key: spriteName, frame: animation.end + 1 }],
-        repeat: -1,
-        frameRate: 10,
-      });
-    }
-
-    scene.anims.create({
-      key: `${spriteName}_${id}_idle`,
-      frames: [{ key: spriteName, frame: frame }],
-      repeat: -1,
-      frameRate: 10,
-    });
-
-    scene.anims.create({
-      key: `${spriteName}_${id}_action`,
-      frames: scene.anims.generateFrameNumbers(spriteName, {
-        start: frame + animation.start,
-        end: frame + animation.end,
-      }),
-      repeat: -1,
-      frameRate: animation.frameRate,
-    });
+    this.sprite = scene.add.sprite(0, 0, spriteName, this.frame);
 
     // Progress Bar
     this.progressBar = new ProgressBar({
-      x: this.itemPosition.x - SQUARE_WIDTH / 2,
-      y: this.itemPosition.y + SQUARE_WIDTH / 2 - 1,
+      x: (SQUARE_WIDTH * -1) / 2,
+      y: SQUARE_WIDTH / 2 - 1,
       scene: scene,
       duration: this.duration,
       onComplete: this.onProgressComplete.bind(this),
@@ -156,19 +129,55 @@ export class CookingToolContainer extends ItemContainer {
   }
 
   private playFinalIdle() {
-    this.sprite.play(`${this.spriteName}_${this.id}_final_idle`, true);
+    const animationName = `${this.spriteName}_${this.id}_${this.frame}_final_idle`;
+
+    if (!this.scene.anims.exists(animationName)) {
+      this.scene.anims.create({
+        key: animationName,
+        frames: [{ key: this.spriteName, frame: this.animation.end + 1 }],
+        repeat: -1,
+        frameRate: 10,
+      });
+    }
+
+    this.sprite.play(animationName, true);
   }
 
   private playIdle() {
-    this.sprite.play(`${this.spriteName}_${this.id}_idle`, true);
+    const animationName = `${this.spriteName}_${this.id}_${this.frame}_idle`;
+
+    if (!this.scene.anims.exists(animationName)) {
+      this.scene.anims.create({
+        key: animationName,
+        frames: [{ key: this.spriteName, frame: this.frame }],
+        repeat: -1,
+        frameRate: 10,
+      });
+    }
+
+    this.sprite.play(animationName, true);
   }
 
   private playAction() {
-    this.sprite.play(`${this.spriteName}_${this.id}_action`, true);
+    const animationName = `${this.spriteName}_${this.id}_${this.frame}_action`;
+
+    if (!this.scene.anims.exists(animationName)) {
+      this.scene.anims.create({
+        key: animationName,
+        frames: this.scene.anims.generateFrameNumbers(this.spriteName, {
+          start: this.frame + this.animation.start,
+          end: this.frame + this.animation.end,
+        }),
+        repeat: -1,
+        frameRate: this.animation.frameRate,
+      });
+    }
+
+    this.sprite.play(animationName, true);
   }
 
   private performAction() {
-    if (this.ingredient && !this.player?.hasItem) {
+    if (!this.player?.hasItem) {
       // Transfer ingredient from the Cooking Tool to the Bumpkin
       this.moveItemToPlayer();
     } else if (!this.ingredient && this.player?.hasItem) {
@@ -186,6 +195,12 @@ export class CookingToolContainer extends ItemContainer {
     if (!this.canPickUp) {
       this.remove(item);
       this.ingredient = null;
+    } else {
+      const container = this.parentContainer as
+        | CookingToolBaseContainer
+        | CountertopContainer;
+      container?.setItem(null);
+      this.setDirection("Top");
     }
 
     item.setPosition(ITEM_BUMPKIN.x, ITEM_BUMPKIN.y);
@@ -205,10 +220,7 @@ export class CookingToolContainer extends ItemContainer {
     const ingredient = this.player.dropItem() as IngredientContainer;
     if (!ingredient) return;
 
-    ingredient.adjustDefault(
-      this.itemPosition.x,
-      this.itemPosition.y + this.ingredientYOffset
-    );
+    ingredient.adjustDefault(0, this.ingredientYOffset);
     this.add(ingredient);
     this.ingredient = ingredient;
 
@@ -239,9 +251,11 @@ export class CookingToolContainer extends ItemContainer {
 
   adjustDefault(x: number, y: number) {
     this.setPosition(x, y).setScale(1);
-    this.ingredient?.adjustDefault(
-      this.itemPosition.x,
-      this.itemPosition.y + this.ingredientYOffset
-    );
+    this.ingredient?.adjustDefault(0, this.ingredientYOffset);
+  }
+
+  setDirection(direction: Directions) {
+    this.frame = this.directionFrame[direction];
+    this.sprite.setFrame(this.directionFrame[direction]);
   }
 }

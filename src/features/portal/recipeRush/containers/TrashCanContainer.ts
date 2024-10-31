@@ -1,5 +1,5 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { Coordinates } from "../RecipeRushTypes";
+import { PositionConfig } from "../RecipeRushTypes";
 import { SQUARE_WIDTH } from "features/game/lib/constants";
 import { ITEM_BUMPKIN } from "../RecipeRushConstants";
 import { BaseScene } from "features/world/scenes/BaseScene";
@@ -11,12 +11,12 @@ interface Props {
   y: number;
   frame: number;
   scene: BaseScene;
-  itemPosition: Coordinates;
+  itemPosition: PositionConfig;
   player?: BumpkinContainer;
 }
 
 export class TrashCanContainer extends Phaser.GameObjects.Container {
-  private itemPosition: Coordinates;
+  private itemPosition: PositionConfig;
   private player?: BumpkinContainer;
   private item: IngredientContainer | RecipeContainer | null;
 
@@ -47,12 +47,12 @@ export class TrashCanContainer extends Phaser.GameObjects.Container {
 
   private removeItem() {
     if (!this.item && this.player?.hasItem) {
-      // Transfer item from the Bumpkin to the trash can
-      const item = this.player?.dropItem();
       if (
-        item instanceof IngredientContainer ||
-        item instanceof RecipeContainer
+        this.player?.item instanceof IngredientContainer ||
+        this.player?.item instanceof RecipeContainer
       ) {
+        // Transfer item from the Bumpkin to the trash can
+        const item = this.player?.dropItem();
         item
           ?.setPosition(this.itemPosition.x, this.itemPosition.y - 2)
           .setScale(ITEM_BUMPKIN.scale);

@@ -9,14 +9,14 @@ import {
   TRASH_CANS_CONFIGURATIONS,
   COOKING_TOOLS_INFORMATION,
   PLAYER_WALKING_SPEED,
-  COOKING_TOOLS_CONFIGURATIONS,
+  COOKING_TOOL_BASES_CONFIGURATIONS,
 } from "./RecipeRushConstants";
 import { CountertopContainer } from "./containers/CountertopContainer";
 import { IngredientBoxContainer } from "./containers/IngredientBoxContainer";
 import { TrashCanContainer } from "./containers/TrashCanContainer";
-import { CookingToolContainer } from "./containers/CookingToolContainer";
 import { CookingTools } from "./RecipeRushTypes";
 import { OutlineWhitePipeline } from "./shaders/OutlineWhiteShader";
+import { CookingToolBaseContainer } from "./containers/CookingToolBaseContainer";
 
 export const NPCS: NPCBumpkin[] = [
   {
@@ -70,6 +70,12 @@ export class RecipeRushScene extends BaseScene {
       frameHeight: 18,
     });
 
+    // Cooking tool bases
+    this.load.spritesheet("stove", "world/stove.png", {
+      frameWidth: 16,
+      frameHeight: 16,
+    });
+
     // Cooking tools and its actions
     this.load.spritesheet("cutting_board", "world/cutting_board.png", {
       frameWidth: 16,
@@ -96,8 +102,7 @@ export class RecipeRushScene extends BaseScene {
 
     this.addCropBoxes();
 
-    // Cooking Tools
-    this.addCookingTools();
+    this.addCookingToolBases();
 
     this.walkingSpeed = PLAYER_WALKING_SPEED;
 
@@ -151,7 +156,7 @@ export class RecipeRushScene extends BaseScene {
     ) {
       (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).pipelines.add(
         "WhitenPipeline",
-        new OutlineWhitePipeline(this.game)
+        new OutlineWhitePipeline(this.game),
       );
     }
   }
@@ -166,7 +171,7 @@ export class RecipeRushScene extends BaseScene {
           itemPosition: POSITION_CONFIGURATIONS[config.pos],
           scene: this,
           player: this.currentPlayer,
-        })
+        }),
     );
   }
 
@@ -180,7 +185,7 @@ export class RecipeRushScene extends BaseScene {
           itemPosition: POSITION_CONFIGURATIONS[config.pos],
           scene: this,
           player: this.currentPlayer,
-        })
+        }),
     );
   }
 
@@ -193,27 +198,27 @@ export class RecipeRushScene extends BaseScene {
           frame: config.frame,
           scene: this,
           player: this.currentPlayer,
-        })
+        }),
     );
   }
 
-  private addCookingTools() {
-    Object.keys(COOKING_TOOLS_CONFIGURATIONS).forEach((value) => {
+  private addCookingToolBases() {
+    Object.keys(COOKING_TOOL_BASES_CONFIGURATIONS).forEach((value) => {
       const cookingToolName = value as CookingTools;
 
-      COOKING_TOOLS_CONFIGURATIONS[cookingToolName].forEach(
+      COOKING_TOOL_BASES_CONFIGURATIONS[cookingToolName].forEach(
         (config, id) =>
-          new CookingToolContainer({
+          new CookingToolBaseContainer({
             x: config.x,
             y: config.y,
             frame: config.frame,
             scene: this,
             itemPosition: POSITION_CONFIGURATIONS[config.pos],
             id: id,
-            name: cookingToolName,
+            cookingToolName: cookingToolName,
             player: this.currentPlayer,
-            ...COOKING_TOOLS_INFORMATION[cookingToolName],
-          })
+            ...COOKING_TOOLS_INFORMATION[cookingToolName].base,
+          }),
       );
     });
   }
